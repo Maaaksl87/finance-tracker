@@ -1,16 +1,16 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import DashboardPage from "./pages/DashboardPage";
+import TransactionsPage from "./pages/TransactionsPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Всі маршрути, які мають мати Sidebar, 
-            будуть обгорнуті в 'Layout' */}
+        {/* Всі маршрути, які мають мати Sidebar,будуть обгорнуті в 'Layout' */}
         <Route element={<Layout />}>
           <Route path="/" element={<DashboardPage />} />
-          {/* <Route path="/settings" element={<SettingsPage />} /> */}
+          <Route path="/transactions" element={<TransactionsPage />} />
         </Route>
 
         {/* сторінки без Layout */}
