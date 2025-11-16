@@ -1,25 +1,19 @@
-import { Outlet, Link } from "react-router-dom";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import { ModeToggle } from "@/components/mode-toggle";
 
-const Layout = () => {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ display: "flex" }}>
-      <nav style={{ width: "200px", borderRight: "1px solid #ccc" }}>
-        <h2>FinanceTracker</h2>
-        <ul>
-          <li>
-            <Link to="/">Головна</Link>
-          </li>
-          <li>
-            <Link to="/transactions">Транзакції</Link>
-          </li>
-        </ul>
-      </nav>
-
-      <main style={{ flexGrow: 1, padding: "20px" }}>
-        <Outlet />
+    <SidebarProvider>
+      <AppSidebar />
+      <main>
+        <SidebarTrigger /> {/* button-icon for toggle sidebar */}
+        {children}
       </main>
-    </div>
-  );
-};
 
-export default Layout;
+      <div className="fixed bottom-4 right-4">
+        <ModeToggle />
+      </div>
+    </SidebarProvider>
+  );
+}
