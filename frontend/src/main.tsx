@@ -1,26 +1,12 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import "./index.css";
+// frontend/src/main.tsx (ПІСЛЯ)
+import React from "react";
+import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
+// Імпортуємо головний CSS файл (Vite вже створив його)
+import "./index.css"; 
 
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { CssBaseline } from "@mui/material";
-
-// створюємо базову тему
-const theme = createTheme({
-  palette: {
-    // colors
-    primary: {
-      main: "#1976d2",
-    },
-  },
-});
-
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
-  </StrictMode>
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 );

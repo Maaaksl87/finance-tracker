@@ -1,10 +1,8 @@
-import { Typography } from "@mui/material";
-
 const TransactionsPage = () => {
   return (
     <div>
-      <Typography variant="h4">Сторінка Транзакцій</Typography>
-      <Typography>Тут буде повний список транзакцій з фільтрами.</Typography>
+      <h1>Сторінка Транзакцій</h1>
+      <p>Тут буде повний список транзакцій з фільтрами.</p>
     </div>
   );
 };
