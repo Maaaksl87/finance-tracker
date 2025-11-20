@@ -1,11 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { User } from './schemas/user.schema';
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(@InjectModel(User.name) private userModel: Model<User>) {} // Додано конструктор для впровадження моделі користувача
+
+  async create(createUserDto: CreateUserDto) {
+    const hash = await bcrypt.hash(createUserDto.password, 10);
+    const createdUser = new this.userModel({
+      ...createUserDto,
+      password: hash,
+    });
+    return createdUser.save();
   }
 
   findAll() {
