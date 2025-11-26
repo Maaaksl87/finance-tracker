@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Хук для навігації
-import { useAuthStore } from "@/store/authStore"; // Наш склад
-import api from "@/api/axios"; // Наш поштар
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/store/authStore";
+import api from "@/api/axios";
 
 // Імпорти UI компонентів
 import { Button } from "@/components/ui/button";
