@@ -10,6 +10,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 //providers and routers
 import { ThemeProvider } from "@/components/theme-provider";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import TestSourcesPage from "./pages/TestSourcePage";
 
 function App() {
   return (
@@ -17,10 +18,12 @@ function App() {
       <ThemeProvider>
         <Routes>
           <Route path="/login" element={<LoginTest />} />
+
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>
               <Route path="/" element={<DashboardPage />} />
-              <Route path="transactions" element={<Transactions />} />
+              <Route path="/transactions" element={<Transactions />} />
+              <Route path="/sources" element={<TestSourcesPage />} />
             </Route>
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -10,12 +10,10 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    // Перевіряємо чи це браузер
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem("token");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
+    // Отримуємо токен напряму з Zustand store
+    const token = useAuthStore.getState().token;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
@@ -25,8 +23,9 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem("token");
+    if (error.response && error.response.status === 401) {
+      console.warn("Session expired or invalid token. Logging out...");
+      // localStorage.removeItem("token");
       useAuthStore.getState().logout(); // Очищаємо store
       window.location.href = "/login"; // Перекидаємо на логін
     }

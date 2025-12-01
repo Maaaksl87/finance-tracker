@@ -1,9 +1,18 @@
 import { useAuthStore } from "@/store/authStore";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 const ProtectedRoute = () => {
-  const isAuth = useAuthStore((state) => !!state.token); // Перевіряємо, чи є токен щоб визначити чи аутентифікований користувач
-  return isAuth ? <Outlet /> : <Navigate to="/login" replace />;
+  const location = useLocation();
+  const token = useAuthStore((state) => state.token); // Перевіряємо, чи є токен щоб визначити чи аутентифікований користувач
+  console.log("ProtectedRoute check:", {
+    path: location.pathname,
+    hasToken: !!token,
+  });
+  return token ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/login" state={{ from: location }} replace />
+  );
 };
 
 export default ProtectedRoute;
