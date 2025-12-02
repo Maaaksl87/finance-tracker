@@ -1,9 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { CreateSourceDto } from './dto/create-source.dto';
 import { UpdateSourceDto } from './dto/update-source.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Source } from './schemas/source.schema';
-import { Model } from 'mongoose';
+import { Model, ClientSession } from 'mongoose';
 
 @Injectable()
 export class SourcesService {
@@ -37,5 +41,34 @@ export class SourcesService {
 
   async remove(id: string, userId: string) {
     return this.sourceModel.findOneAndDelete({ _id: id, userId }).exec(); // ensure the source belongs to the user
+  }
+
+  // delta це сума зміни (наприклад, -100 або +500)
+  // session - опціональна MongoDB сесія для атомарних транзакцій
+  async changeBalance(
+    id: string,
+    delta: number,
+    userId: string,
+    session?: ClientSession,
+  ) {
+    const source = await this.sourceModel
+      .findOne({ _id: id, userId })
+      .session(session ?? null); // Використовуємо сесію якщо передана
+
+    if (!source) {
+      throw new NotFoundException(`Source with ID ${id} not found`);
+    }
+
+    const newBalance = source.balance + delta;
+
+    // Перевіряємо чи достатньо коштів для витрати
+    if (newBalance < 0) {
+      throw new BadRequestException(
+        `Insufficient balance. Current: ${source.balance}, required: ${Math.abs(delta)}`,
+      );
+    }
+
+    source.balance = newBalance;
+    return source.save({ session }); // Зберігаємо з сесією для атомарності
   }
 }
