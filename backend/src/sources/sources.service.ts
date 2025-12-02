@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSourceDto } from './dto/create-source.dto';
 import { UpdateSourceDto } from './dto/update-source.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -50,25 +46,18 @@ export class SourcesService {
     delta: number,
     userId: string,
     session?: ClientSession,
-  ) {
-    const source = await this.sourceModel
-      .findOne({ _id: id, userId })
-      .session(session ?? null); // Використовуємо сесію якщо передана
+  ): Promise<Source> {
+    // атомарне оновлення балансу
+    const updatedSource = await this.sourceModel.findOneAndUpdate(
+      { _id: id, userId },
+      { $inc: { balance: delta } },
+      { new: true, session },
+    );
 
-    if (!source) {
+    if (!updatedSource) {
       throw new NotFoundException(`Source with ID ${id} not found`);
     }
 
-    const newBalance = source.balance + delta;
-
-    // Перевіряємо чи достатньо коштів для витрати
-    if (newBalance < 0) {
-      throw new BadRequestException(
-        `Insufficient balance. Current: ${source.balance}, required: ${Math.abs(delta)}`,
-      );
-    }
-
-    source.balance = newBalance;
-    return source.save({ session }); // Зберігаємо з сесією для атомарності
+    return updatedSource;
   }
 }
