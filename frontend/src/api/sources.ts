@@ -1,5 +1,5 @@
 import api from "./axios";
-import type { Source, CreateSourceDto } from "../types";
+import type { Source, CreateSourceDto, UpdateSourceDto } from "../types";
 
 export const getSources = async (): Promise<Source[]> => {
   const { data } = await api.get<Source[]>("/sources");
@@ -17,13 +17,10 @@ export const deleteSource = async (id: string): Promise<void> => {
   await api.delete(`/sources/${id}`);
 };
 
-
-
-
 export const updateSource = async (
   id: string,
-  sourceData: Partial<CreateSourceDto>
+  sourceData: Partial<UpdateSourceDto>
 ): Promise<Source> => {
-  const { data } = await api.put<Source>(`/sources/${id}`, sourceData);
+  const { data } = await api.patch<Source>(`/sources/${id}`, sourceData);
   return data;
 };

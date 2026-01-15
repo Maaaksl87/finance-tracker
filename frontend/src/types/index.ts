@@ -12,6 +12,11 @@ export interface CreateSourceDto {
   balance: number;
 }
 
+export interface UpdateSourceDto {
+  name?: string;
+  balance?: number;
+}
+
 export enum TransactionType {
   INCOME = "income",
   EXPENSE = "expense",

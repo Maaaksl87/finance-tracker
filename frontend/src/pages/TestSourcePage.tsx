@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trash, MoreHorizontal } from "lucide-react";
 import { CreateSourceDialog } from "@/components/sources/CreateSourceDialog";
+import { EditSourceDialog } from "@/components/sources/EditSourceDialog";
+import { Pencil } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +17,7 @@ import {
 const TestSourcesPage = () => {
   const [sources, setSources] = useState<Source[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [editingSource, setEditingSource] = useState<Source | null>(null);
 
   const handleSourceCreated = (newSource: Source) => {
     setSources((prev) => [...prev, newSource]);
@@ -56,6 +59,18 @@ const TestSourcesPage = () => {
         <h1 className="text-3xl font-bold tracking-tight">Мої Гаманці</h1>
         <CreateSourceDialog onSuccess={handleSourceCreated} />
       </div>
+      {/* Редагування гаманця */}
+      {editingSource && (
+        <EditSourceDialog
+          source={editingSource}
+          open={!!editingSource} // Відкрито, якщо є вибраний гаманець
+          onOpenChange={(open) => !open && setEditingSource(null)} // При закритті очищаємо вибір
+          onSuccess={() => {
+            fetchSources(); // Оновлюємо список
+            setEditingSource(null); // Закриваємо
+          }}
+        />
+      )}
 
       {isLoading ? (
         <p>Завантаження...</p>
@@ -78,6 +93,14 @@ const TestSourcesPage = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
+                    {/* Пункт Редагувати */}
+                    <DropdownMenuItem
+                      onClick={() => setEditingSource(source)} // Встановлюємо активний гаманець
+                      className="cursor-pointer"
+                    >
+                      <Pencil className="mr-2 h-4 w-4" />
+                      Редагувати
+                    </DropdownMenuItem>
                     {/* Пункт Видалити */}
                     <DropdownMenuItem
                       className="text-red-600 focus:text-red-600 cursor-pointer"

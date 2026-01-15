@@ -9,6 +9,7 @@ import {
   ValidateIf,
   IsDate,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import { TransactionType } from '../schemas/transaction.schema';
 
 export class CreateTransactionDto {
@@ -28,6 +29,7 @@ export class CreateTransactionDto {
   description?: string;
 
   @IsOptional()
+  @Type(() => Date)
   @IsDate()
   date?: Date;
 

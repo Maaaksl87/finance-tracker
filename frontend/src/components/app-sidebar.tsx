@@ -30,8 +30,8 @@ const items = [
     icon: Wallet,
   },
   {
-    title: "Analytics / Insights",
-    url: "/analytics",
+    title: "Analytics",
+    url: "/stats",
     icon: Search,
   },
   {

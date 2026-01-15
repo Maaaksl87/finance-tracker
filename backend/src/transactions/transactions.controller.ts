@@ -31,7 +31,7 @@ export class TransactionsController {
   @Post()
   create(
     @Body() createTransactionDto: CreateTransactionDto,
-    @Request() req: RequestWithUser, // 👈 Тепер тут строгий тип!
+    @Request() req: RequestWithUser,
   ) {
     return this.transactionsService.create(createTransactionDto, req.user._id);
   }
