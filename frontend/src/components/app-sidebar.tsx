@@ -1,5 +1,5 @@
-import { Brain, Home, Inbox, Search, Settings, Wallet } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Brain, Home, Inbox, Search, Settings, Wallet } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import {
   Sidebar,
@@ -10,53 +10,53 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 // Menu items.
 const items = [
   {
-    title: "Dashboard",
+    title: "Головна",
     url: "/",
     icon: Home,
   },
   {
-    title: "Transactions",
+    title: "Транзакції",
     url: "/transactions",
     icon: Inbox,
   },
   {
-    title: "Sources",
+    title: "Джерела",
     url: "/sources",
     icon: Wallet,
   },
   {
-    title: "Analytics",
+    title: "Аналітика",
     url: "/stats",
     icon: Search,
   },
   {
-    title: "Budgets ",
+    title: "Бюджети",
     url: "/budgets",
     icon: Settings,
   },
   {
-    title: "AI Assistant",
+    title: "AI Асистент",
     url: "/ai",
     icon: Brain,
   },
   {
-    title: "Settings", // TODO: Перемістити вниз sidebar-menu
+    title: "Налаштування", // TODO: Перемістити вниз sidebar-menu
     url: "/settings",
     icon: Settings,
   },
-]
+];
 
 export function AppSidebar() {
   return (
-    <Sidebar className="border-none">
+    <Sidebar className="border-none" collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Expense Tracker</SidebarGroupLabel>
+          <SidebarGroupLabel>Трекер витрат</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -74,5 +74,5 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }
