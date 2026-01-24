@@ -53,7 +53,7 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar className="border-none">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Expense Tracker</SidebarGroupLabel>
