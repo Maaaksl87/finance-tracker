@@ -13,15 +13,7 @@ import { TransactionsService } from './transactions.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { TransactionType } from './schemas/transaction.schema';
-import { Request as ExpressRequest } from 'express';
-
-interface RequestWithUser extends ExpressRequest {
-  user: {
-    _id: string;
-    email: string;
-    name?: string;
-  };
-}
+import type { RequestWithUser } from '../common/interfaces/request-with-user.interface';
 
 @Controller('transactions')
 @UseGuards(JwtAuthGuard)
@@ -38,7 +30,7 @@ export class TransactionsController {
 
   @Get()
   findAll(
-    @Request() req: RequestWithUser, // 👈 І тут
+    @Request() req: RequestWithUser,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
     @Query('type') type?: TransactionType,
@@ -55,7 +47,7 @@ export class TransactionsController {
 
   @Get('stats')
   getStats(
-    @Request() req: RequestWithUser, // 👈 І тут
+    @Request() req: RequestWithUser,
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
   ) {

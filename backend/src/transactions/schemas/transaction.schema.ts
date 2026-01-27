@@ -5,11 +5,10 @@ import { Source } from '../../sources/schemas/source.schema';
 
 export type TransactionDocument = HydratedDocument<Transaction>;
 
-// Enum для типів - це good practice
 export enum TransactionType {
   INCOME = 'income',
   EXPENSE = 'expense',
-  TRANSFER = 'transfer', // Сюди входить і зняття готівки, і обмін
+  TRANSFER = 'transfer',
 }
 
 @Schema({ timestamps: true })
@@ -18,7 +17,7 @@ export class Transaction {
   amount: number;
 
   @Prop({ required: true, enum: TransactionType })
-  type: string;
+  type: TransactionType;
 
   @Prop({ default: 0 })
   fee: number;
@@ -55,6 +54,9 @@ export class Transaction {
 
   @Prop({ type: Types.ObjectId, ref: User.name, required: true })
   userId: Types.ObjectId;
+
+  @Prop({ type: Types.ObjectId, ref: 'SavingPlan', required: false })
+  savingPlanId?: Types.ObjectId;
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);

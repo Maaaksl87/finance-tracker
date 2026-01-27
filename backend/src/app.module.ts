@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { SourcesModule } from './sources/sources.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { SavingPlansModule } from './saving-plans/saving-palns.module';
 
 @Module({
   imports: [
@@ -15,7 +17,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
         uri: configService.get<string>('MONGO_URI'),
       }),
       inject: [ConfigService],
@@ -24,6 +26,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     AuthModule,
     SourcesModule,
     TransactionsModule,
+    SavingPlansModule,
   ],
   controllers: [AppController],
   providers: [AppService],
