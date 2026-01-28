@@ -17,11 +17,14 @@ export interface UpdateSourceDto {
   balance?: number;
 }
 
-export enum TransactionType {
-  INCOME = "income",
-  EXPENSE = "expense",
-  TRANSFER = "transfer",
-}
+export const TransactionType = {
+  INCOME: "income",
+  EXPENSE: "expense",
+  TRANSFER: "transfer",
+} as const;
+
+export type TransactionType =
+  (typeof TransactionType)[keyof typeof TransactionType];
 
 export interface Transaction {
   _id: string;
@@ -64,4 +67,53 @@ export interface Pagination {
   total: number;
   hasNext: boolean;
   hasPrev: boolean;
+}
+
+export const SavingPlanStatus = {
+  ACTIVE: "active",
+  COMPLETED: "completed",
+  PAUSED: "paused",
+} as const;
+
+export type SavingPlanStatus =
+  (typeof SavingPlanStatus)[keyof typeof SavingPlanStatus];
+
+export interface SavingPlan {
+  _id: string;
+  title: string;
+  targetAmount: number;
+  currentAmount: number;
+  icon?: string;
+  deadline?: string;
+  description?: string;
+  status: SavingPlanStatus;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateSavingPlanDto {
+  title: string;
+  targetAmount: number;
+  icon?: string;
+  deadline?: string;
+  description?: string;
+}
+
+export interface SavingPlanStats {
+  totalPlans: number;
+  activePlans: number;
+  completedPlans: number;
+  totalSaved: number;
+  totalTarget: number;
+}
+
+export interface UpdateSavingPlanDto {
+  title?: string;
+  targetAmount?: number;
+  icon?: string;
+  deadline?: Date;
+  description?: string;
+  currentAmount?: number;
+  status?: SavingPlanStatus;
 }
