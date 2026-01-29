@@ -18,6 +18,9 @@ export class SavingPlansService {
   constructor(
     @InjectModel(SavingPlan.name)
     private savingPlanModel: Model<SavingPlanDocument>,
+
+    @InjectModel(Transaction.name)
+    private transactionModel: Model<TransactionDocument>,
   ) {}
 
   async create(
@@ -191,5 +194,19 @@ export class SavingPlansService {
       totalSaved: plans.reduce((sum, p) => sum + p.currentAmount, 0),
       totalTarget: plans.reduce((sum, p) => sum + p.targetAmount, 0),
     };
+  }
+
+  async getTransactions(userId: string, planId: string) {
+    await this.findOne(userId, planId);
+
+    return this.transactionModel
+      .find({
+        userId: new Types.ObjectId(userId),
+        savingPlanId: new Types.ObjectId(planId),
+      })
+      .sort({ date: -1 })
+      .limit(30)
+      .populate('sourceId', 'name balance')
+      .exec();
   }
 }

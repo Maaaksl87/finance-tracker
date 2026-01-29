@@ -44,6 +44,11 @@ export class SavingPlansController {
     return this.savingPlansService.findOne(req.user._id, id);
   }
 
+  @Get(':id/transactions')
+  getTransactions(@Request() req: RequestWithUser, @Param('id') id: string) {
+    return this.savingPlansService.getTransactions(req.user._id, id);
+  }
+
   @Patch(':id')
   update(
     @Request() req: RequestWithUser,

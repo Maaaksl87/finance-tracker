@@ -4,6 +4,7 @@ import type {
   CreateSavingPlanDto,
   UpdateSavingPlanDto,
   SavingPlanStats,
+  Transaction,
 } from "../types";
 
 export const getSavingPlans = async (): Promise<SavingPlan[]> => {
@@ -65,5 +66,14 @@ export const withdrawFunds = async (
   const { data } = await api.post<SavingPlan>(`/saving-plans/${id}/withdraw`, {
     amount,
   });
+  return data;
+};
+
+export const getSavingPlanTransactions = async (
+  id: string
+): Promise<Transaction[]> => {
+  const { data } = await api.get<Transaction[]>(
+    `/saving-plans/${id}/transactions`
+  );
   return data;
 };

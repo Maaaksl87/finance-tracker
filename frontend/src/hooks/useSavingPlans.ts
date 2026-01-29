@@ -14,6 +14,7 @@ import type {
   CreateSavingPlanDto,
   UpdateSavingPlanDto,
   SavingPlanStats,
+  Transaction,
 } from "@/types";
 
 export const savingPlansKeys = {
@@ -21,6 +22,7 @@ export const savingPlansKeys = {
   lists: () => [...savingPlansKeys.all, "list"] as const,
   detail: (id: string) => [...savingPlansKeys.all, "detail", id] as const,
   stats: () => [...savingPlansKeys.all, "stats"] as const,
+  transactions: (id: string) => [...savingPlansKeys.detail(id), "transactions"] as const,
 };
 
 export function useSavingPlans() {
@@ -208,5 +210,13 @@ export function useWithdrawFunds() {
         queryKey: savingPlansKeys.stats(),
       });
     },
+  });
+}
+
+export function useSavingPlanTransactions(id: string) {
+  return useQuery<Transaction[]>({
+    queryKey: savingPlansKeys.transactions(id),
+    queryFn: () => getSavingPlanTransactions(id),
+    enabled: !!id,
   });
 }
