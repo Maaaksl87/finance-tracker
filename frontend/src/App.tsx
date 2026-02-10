@@ -7,24 +7,53 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import TestSourcesPage from "./pages/TestSourcePage";
 import StatsPage from "./pages/StatsPage";
 import AuthPage from "./components/auth/AuthPage";
+import TestCryptoPage from "./pages/TestCryptoPage";
 
 //providers and routers
 import { ThemeProvider } from "@/components/theme-provider";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { RegisterForm } from "./components/auth/RegisterForm";
+import { LoginForm } from "./components/auth/LoginForm";
 
 function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
         <Routes>
-          <Route path="/login" element={<AuthPage />} />
+          <Route path="/auth" element={<AuthPage />}>
+            <Route path="login" element={<LoginForm />} />
+            <Route path="register" element={<RegisterForm />} />
+          </Route>
           //TODO: переглянути всі компоненти та за потреби оптимізувати
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>
-              <Route path="/" element={<DashboardPage />} />
-              <Route path="/transactions" element={<Transactions />} />
-              <Route path="/sources" element={<TestSourcesPage />} /> //TODO:виправити на SourcesPage
-              <Route path="/stats" element={<StatsPage />} /> //TODO: покращити UI та зарефакторити логіку StatsPage
+              <Route
+                path="/"
+                element={<DashboardPage />}
+                handle={{ title: "Головна" }}
+              />
+              <Route
+                path="/transactions"
+                element={<Transactions />}
+                handle={{ title: "Транзакції" }}
+              />
+              <Route
+                path="/sources"
+                element={<TestSourcesPage />}
+                handle={{ title: "Джерела" }}
+              />{" "}
+              //TODO:виправити на SourcesPage
+              <Route
+                path="/stats"
+                element={<StatsPage />}
+                handle={{ title: "Статистика" }}
+              />{" "}
+              //TODO: покращити UI та зарефакторити логіку StatsPage
+              <Route
+                path="/crypto"
+                element={<TestCryptoPage />}
+                handle={{ title: "Криптобіржі" }}
+              />
             </Route>
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />

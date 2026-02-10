@@ -3,6 +3,7 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { User } from 'src/users/schemas/user.schema';
+import { ObjectId } from 'mongoose';
 
 export type AuthJwtPayload = {
   sub: string;
@@ -10,13 +11,15 @@ export type AuthJwtPayload = {
   name: string;
 };
 
-export type UserWithoutPassword = Omit<User, 'password'> & { _id: string };
+export type UserWithoutPassword = Omit<User, 'password'> & {
+  _id: string | ObjectId; //todo: переглянути типізацію створення користувача
+};
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService, // Інжектимо сервіс юзерів
-    private jwtService: JwtService, // Інжектимо сервіс для токенів
+    private readonly usersService: UsersService, // Інжектимо сервіс юзерів
+    private readonly jwtService: JwtService, // Інжектимо сервіс для токенів
   ) {}
 
   async validateUser(
