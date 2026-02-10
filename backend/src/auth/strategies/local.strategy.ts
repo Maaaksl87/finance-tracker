@@ -1,16 +1,17 @@
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
-import { AuthService } from '../auth.service';
+import { AuthService, UserWithoutPassword } from '../auth.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { User } from 'src/users/schemas/user.schema';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {
-    super({ usernameField: 'email' }); // Використовуємо 'email' замість 'username'
+    super({ usernameField: 'email' });
   }
-
-  async validate(email: string, password: string): Promise<User> {
+  async validate(
+    email: string,
+    password: string,
+  ): Promise<UserWithoutPassword> {
     const user = await this.authService.validateUser(email, password);
     if (!user) throw new UnauthorizedException('Невірний email або пароль');
     return user;

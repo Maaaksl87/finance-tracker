@@ -15,7 +15,7 @@ import { PassportModule } from '@nestjs/passport';
     ConfigModule, // Щоб читати .env
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'), // Секретний ключ з .env
         signOptions: { expiresIn: '1h' }, // Токен живе 1 годину
       }),
