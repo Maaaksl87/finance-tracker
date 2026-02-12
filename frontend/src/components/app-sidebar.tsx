@@ -1,4 +1,4 @@
-import { Brain, Home, Inbox, Search, Settings, Wallet } from "lucide-react";
+import { Brain, Home, Inbox, Search, Settings, Wallet, Coins, } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import {
@@ -34,11 +34,17 @@ const items = [
     url: "/stats",
     icon: Search,
   },
+  // {
+  //   title: "Бюджети",
+  //   url: "/budgets",
+  //   icon: Settings,
+  // },
   {
-    title: "Бюджети",
-    url: "/budgets",
-    icon: Settings,
+    title: "Плани заощаджень",
+    url: "/saving-plans",
+    icon: Coins,
   },
+
   {
     title: "AI Асистент",
     url: "/ai",

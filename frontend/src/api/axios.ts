@@ -27,7 +27,7 @@ api.interceptors.response.use(
       console.warn("Session expired or invalid token. Logging out...");
       // localStorage.removeItem("token");
       useAuthStore.getState().logout(); // Очищаємо store
-      window.location.href = "/login"; // Перекидаємо на логін
+      // window.location.href = "/auth/login"; // Перекидаємо на логін
     }
     return Promise.reject(error);
   }

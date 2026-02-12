@@ -7,13 +7,13 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import TestSourcesPage from "./pages/TestSourcePage";
 import StatsPage from "./pages/StatsPage";
 import AuthPage from "./components/auth/AuthPage";
-import TestCryptoPage from "./pages/TestCryptoPage";
 
 //providers and routers
 import { ThemeProvider } from "@/components/theme-provider";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { RegisterForm } from "./components/auth/RegisterForm";
 import { LoginForm } from "./components/auth/LoginForm";
+import SavingPlansPage from "./pages/SavingPlansPage";
 
 function App() {
   return (
@@ -50,9 +50,9 @@ function App() {
               />{" "}
               //TODO: покращити UI та зарефакторити логіку StatsPage
               <Route
-                path="/crypto"
-                element={<TestCryptoPage />}
-                handle={{ title: "Криптобіржі" }}
+                path="/saving-plans"
+                element={<SavingPlansPage />}
+                handle={{ title: "Плани заощаджень" }}
               />
             </Route>
           </Route>

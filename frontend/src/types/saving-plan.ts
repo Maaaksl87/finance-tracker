@@ -15,11 +15,15 @@ export interface SavingPlan {
   icon?: string;
   deadline?: string;
   description?: string;
-  status: SavingPlanStatus;
+  status: SavingPlanStatus; // todo: переглянути логіку задання статусу.
   userId: string;
   createdAt: string;
   updatedAt: string;
 }
+
+export type UpdateSavingPlanDto = Partial<
+  Omit<SavingPlan, "_id" | "userId" | "createdAt" | "updatedAt">
+>;
 
 export interface CreateSavingPlanDto {
   title: string;
@@ -35,14 +39,5 @@ export interface SavingPlanStats {
   completedPlans: number;
   totalSaved: number;
   totalTarget: number;
-}
-
-export interface UpdateSavingPlanDto {
-  title?: string;
-  targetAmount?: number;
-  icon?: string;
-  deadline?: Date;
-  description?: string;
-  currentAmount?: number;
-  status?: SavingPlanStatus;
+  completionRate: number; // %
 }
