@@ -12,6 +12,10 @@ import {
 } from './schemas/saving-plan.schema';
 import { CreateSavingPlanDto } from './dto/create-saving-plan.dto';
 import { UpdateSavingPlanDto } from './dto/update-saving-plan.dto';
+import {
+  Transaction,
+  TransactionDocument,
+} from '../transactions/schemas/transaction.schema';
 
 @Injectable()
 export class SavingPlansService {

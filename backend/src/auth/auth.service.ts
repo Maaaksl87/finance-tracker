@@ -3,7 +3,6 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { User } from 'src/users/schemas/user.schema';
-import { ObjectId } from 'mongoose';
 
 export type AuthJwtPayload = {
   sub: string;
@@ -12,7 +11,7 @@ export type AuthJwtPayload = {
 };
 
 export type UserWithoutPassword = Omit<User, 'password'> & {
-  _id: string | ObjectId; //todo: переглянути типізацію створення користувача
+  _id: string; //todo: переглянути типізацію створення користувача
 };
 
 @Injectable()

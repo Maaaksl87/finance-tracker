@@ -33,7 +33,10 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   async register(@Body() createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);
-    return this.authService.login(user);
+    return this.authService.login({
+      ...user.toObject(),
+      _id: user._id.toString(),
+    });
   }
 
   @UseGuards(JwtAuthGuard)
