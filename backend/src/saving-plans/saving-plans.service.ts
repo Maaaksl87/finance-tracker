@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import {
@@ -27,10 +23,7 @@ export class SavingPlansService {
     private transactionModel: Model<TransactionDocument>,
   ) {}
 
-  async create(
-    userId: string,
-    createDto: CreateSavingPlanDto,
-  ): Promise<SavingPlan> {
+  async create(userId: string, createDto: CreateSavingPlanDto): Promise<SavingPlan> {
     const savingPlan = new this.savingPlanModel({
       ...createDto,
       userId: new Types.ObjectId(userId),
@@ -113,11 +106,7 @@ export class SavingPlansService {
     return { deleted: true };
   }
 
-  async addFunds(
-    userId: string,
-    id: string,
-    amount: number,
-  ): Promise<SavingPlan> {
+  async addFunds(userId: string, id: string, amount: number): Promise<SavingPlan> {
     const savingPlan = await this.findOne(userId, id);
 
     if (savingPlan.status === SavingPlanStatus.COMPLETED) {
@@ -137,9 +126,7 @@ export class SavingPlansService {
         {
           $set: {
             currentAmount: newAmount,
-            status: isCompleted
-              ? SavingPlanStatus.COMPLETED
-              : SavingPlanStatus.ACTIVE,
+            status: isCompleted ? SavingPlanStatus.COMPLETED : SavingPlanStatus.ACTIVE,
           },
         },
         { new: true },
@@ -148,11 +135,7 @@ export class SavingPlansService {
       .exec();
   }
 
-  async withdrawFunds(
-    userId: string,
-    id: string,
-    amount: number,
-  ): Promise<SavingPlan> {
+  async withdrawFunds(userId: string, id: string, amount: number): Promise<SavingPlan> {
     const savingPlan = await this.findOne(userId, id);
 
     if (amount > savingPlan.currentAmount) {
@@ -190,11 +173,8 @@ export class SavingPlansService {
 
     return {
       totalPlans: plans.length,
-      activePlans: plans.filter((p) => p.status === SavingPlanStatus.ACTIVE)
-        .length,
-      completedPlans: plans.filter(
-        (p) => p.status === SavingPlanStatus.COMPLETED,
-      ).length,
+      activePlans: plans.filter((p) => p.status === SavingPlanStatus.ACTIVE).length,
+      completedPlans: plans.filter((p) => p.status === SavingPlanStatus.COMPLETED).length,
       totalSaved: plans.reduce((sum, p) => sum + p.currentAmount, 0),
       totalTarget: plans.reduce((sum, p) => sum + p.targetAmount, 0),
     };

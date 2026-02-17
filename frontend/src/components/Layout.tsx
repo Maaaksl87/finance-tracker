@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import {
   SidebarProvider,
   SidebarTrigger,
@@ -19,11 +19,17 @@ import {
 
 export default function Layout() {
   const user = useAuthStore((state) => state.user);
+  const location = useLocation();
+
+  // Сторінки без скролу
+  // TODO: ЗАРЕФАКТОРИТИ ТА ЗНАЙТИ ОПТИМАЛЬНИЙ СПОСІБ
+  const pagesWithoutScroll = ["/saving-plans"];
+  const shouldHaveScroll = !pagesWithoutScroll.includes(location.pathname);
 
   return (
     <SidebarProvider className="bg-background">
       <AppSidebar />
-      <SidebarInset>
+      <SidebarInset className="flex flex-col">
         <header className="flex h-16 shrink-0 items-center gap-2">
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
@@ -46,10 +52,9 @@ export default function Layout() {
             </Breadcrumb>
           </div>
         </header>
-        <div className="flex-1 overflow-y-auto p-4">
+        <div
+          className={`flex-1 p-4 ${shouldHaveScroll ? "overflow-y-auto" : "overflow-hidden"}`}>
           <Outlet />
-
-          {/* <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" /> */}
         </div>
       </SidebarInset>
     </SidebarProvider>
