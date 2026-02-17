@@ -1,30 +1,29 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useSavingPlans } from "@/hooks/useSavingPlans";
 
 function SavingPlanStatsCards() {
+  const { data: plans } = useSavingPlans();
+
   return (
-    <div className="grid gap-4 mb-3 md:grid-cols-3">
-      <Card>
+    <div className="flex gap-4">
+      <Card className="flex-1">
         <CardHeader>
           <CardTitle className="font-normal">Зібрано всього</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-2xl font-bold">$2000.00</p>
+          <p className="text-2xl font-bold">
+            {plans?.reduce((sum, plan) => sum + plan.currentAmount, 0) || 0}
+          </p>
         </CardContent>
       </Card>
-      <Card>
+      <Card className="flex-1">
         <CardHeader>
-          <CardTitle>Загальна сума планів</CardTitle>
+          <CardTitle className="font-normal">Загальна сума планів</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-2xl font-bold">$90000.00</p>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Загальна кількість планів</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-2xl font-bold">5</p>
+          <p className="text-2xl font-bold">
+            {plans?.reduce((sum, plan) => sum + plan.targetAmount, 0) || 0}
+          </p>
         </CardContent>
       </Card>
     </div>

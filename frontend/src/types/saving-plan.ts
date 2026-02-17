@@ -17,6 +17,7 @@ export interface SavingPlan {
   description?: string;
   status: SavingPlanStatus; // todo: переглянути логіку задання статусу.
   userId: string;
+  completionRate: number;
   createdAt: string;
   updatedAt: string;
 }
