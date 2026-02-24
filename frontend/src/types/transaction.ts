@@ -1,5 +1,3 @@
-import { type Source } from "./sources";
-
 export const TransactionType = {
   INCOME: "income",
   EXPENSE: "expense",
@@ -44,10 +42,13 @@ export interface TransactionStats {
   };
 }
 
-export interface TransactionPagination {
+export interface Pagination {
   current: number;
   pages: number;
   total: number;
   hasNext: boolean;
   hasPrev: boolean;
 }
+
+/** @deprecated Use Pagination instead */
+export type TransactionPagination = Pagination;

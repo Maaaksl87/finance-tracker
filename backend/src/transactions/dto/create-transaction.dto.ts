@@ -8,6 +8,7 @@ import {
   IsMongoId,
   ValidateIf,
   IsDate,
+  MaxLength,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { TransactionType } from '../schemas/transaction.schema';
@@ -22,10 +23,12 @@ export class CreateTransactionDto {
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(100)
   category: string;
 
   @IsString()
   @IsOptional()
+  @MaxLength(500)
   description?: string;
 
   @IsOptional()
@@ -37,7 +40,7 @@ export class CreateTransactionDto {
   sourceId: string;
 
   // Куди (Обов'язкове ТІЛЬКИ якщо тип = TRANSFER)
-  @ValidateIf((o) => o.type === TransactionType.TRANSFER)
+  @ValidateIf((o: CreateTransactionDto) => o.type === TransactionType.TRANSFER)
   @IsNotEmpty({ message: 'Destination source is required for transfers' })
   @IsMongoId()
   destinationSourceId?: string;

@@ -26,10 +26,10 @@ export class Transaction {
   currency: string;
 
   @Prop()
-  exchangeRate?: number; // Курс обміну валют
+  exchangeRate?: number;
 
   @Prop()
-  receiptUrl?: string; // URL для збереження чека чи іншого документа(майбутня реалізація)
+  receiptUrl?: string;
 
   @Prop({ required: true })
   category: string;
@@ -38,7 +38,7 @@ export class Transaction {
   description?: string;
 
   @Prop({ type: Types.ObjectId, ref: Source.name })
-  destinationSourceId?: Types.ObjectId; // Куди (для трансферів)
+  destinationSourceId?: Types.ObjectId;
 
   @Prop({ required: true, default: Date.now })
   date: Date;
@@ -50,7 +50,7 @@ export class Transaction {
   tags?: string[];
 
   @Prop({ default: false })
-  excludeFromStats: boolean; // щоб виключити транзакцію зі статистики
+  excludeFromStats: boolean;
 
   @Prop({ type: Types.ObjectId, ref: User.name, required: true })
   userId: Types.ObjectId;
@@ -60,3 +60,10 @@ export class Transaction {
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);
+
+// Compound index for efficient per-user transaction queries sorted by date
+TransactionSchema.index({ userId: 1, date: -1 });
+// Index for filtering by type within a user's transactions
+TransactionSchema.index({ userId: 1, type: 1 });
+// Index for filtering by source within a user's transactions
+TransactionSchema.index({ userId: 1, sourceId: 1 });

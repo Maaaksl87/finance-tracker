@@ -9,9 +9,7 @@ import { SourcesModule } from '../sources/sources.module';
   controllers: [TransactionsController],
   providers: [TransactionsService],
   imports: [
-    MongooseModule.forFeature([
-      { name: Transaction.name, schema: TransactionSchema },
-    ]),
+    MongooseModule.forFeature([{ name: Transaction.name, schema: TransactionSchema }]),
     SourcesModule,
   ],
 })

@@ -4,7 +4,7 @@ import Layout from "./components/Layout";
 import DashboardPage from "./pages/DashboardPage";
 import Transactions from "./pages/Transactions";
 import ProtectedRoute from "./components/ProtectedRoute";
-import TestSourcesPage from "./pages/TestSourcePage";
+import SourcesPage from "./pages/TestSourcePage";
 import StatsPage from "./pages/StatsPage";
 import AuthPage from "./components/auth/AuthPage";
 
@@ -24,7 +24,6 @@ function App() {
             <Route path="login" element={<LoginForm />} />
             <Route path="register" element={<RegisterForm />} />
           </Route>
-          //TODO: переглянути всі компоненти та за потреби оптимізувати
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>
               <Route
@@ -39,16 +38,14 @@ function App() {
               />
               <Route
                 path="/sources"
-                element={<TestSourcesPage />}
+                element={<SourcesPage />}
                 handle={{ title: "Джерела" }}
-              />{" "}
-              //TODO:виправити на SourcesPage
+              />
               <Route
                 path="/stats"
                 element={<StatsPage />}
                 handle={{ title: "Статистика" }}
-              />{" "}
-              //TODO: покращити UI та зарефакторити логіку StatsPage
+              />
               <Route
                 path="/saving-plans"
                 element={<SavingPlansPage />}

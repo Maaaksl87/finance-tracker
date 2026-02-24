@@ -35,16 +35,10 @@ export class SavingPlansService {
   }
 
   async findAll(userId: string): Promise<SavingPlan[]> {
-    console.log('🔍 Finding plans for userId:', userId);
-
-    const plans = await this.savingPlanModel
+    return this.savingPlanModel
       .find({ userId: new Types.ObjectId(userId) })
       .sort({ createdAt: -1 })
       .exec();
-
-    console.log('📦 Found plans:', plans.length);
-
-    return plans;
   }
 
   async findOne(userId: string, id: string): Promise<SavingPlan> {

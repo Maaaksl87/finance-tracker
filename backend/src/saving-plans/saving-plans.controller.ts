@@ -22,10 +22,7 @@ export class SavingPlansController {
   constructor(private readonly savingPlansService: SavingPlansService) {}
 
   @Post()
-  create(
-    @Request() req: RequestWithUser,
-    @Body() createDto: CreateSavingPlanDto,
-  ) {
+  create(@Request() req: RequestWithUser, @Body() createDto: CreateSavingPlanDto) {
     return this.savingPlansService.create(req.user._id, createDto);
   }
 
@@ -69,11 +66,7 @@ export class SavingPlansController {
     @Param('id') id: string,
     @Body() addFundsDto: AddFundsDto,
   ) {
-    return this.savingPlansService.addFunds(
-      req.user._id,
-      id,
-      addFundsDto.amount,
-    );
+    return this.savingPlansService.addFunds(req.user._id, id, addFundsDto.amount);
   }
   @Post(':id/withdraw')
   withdrawFunds(
@@ -81,10 +74,6 @@ export class SavingPlansController {
     @Param('id') id: string,
     @Body() withdrawDto: AddFundsDto,
   ) {
-    return this.savingPlansService.withdrawFunds(
-      req.user._id,
-      id,
-      withdrawDto.amount,
-    );
+    return this.savingPlansService.withdrawFunds(req.user._id, id, withdrawDto.amount);
   }
 }

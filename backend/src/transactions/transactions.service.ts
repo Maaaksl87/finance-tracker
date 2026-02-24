@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ClientSession } from 'mongoose';
@@ -22,8 +18,7 @@ export class TransactionsService {
   ) {}
 
   async create(createTransactionDto: CreateTransactionDto, userId: string) {
-    const { type, amount, sourceId, destinationSourceId } =
-      createTransactionDto;
+    const { type, amount, sourceId, destinationSourceId } = createTransactionDto;
 
     // Валідація
     if (amount <= 0) {
@@ -43,30 +38,15 @@ export class TransactionsService {
       return await session.withTransaction(async () => {
         switch (type) {
           case TransactionType.EXPENSE:
-            await this.sourcesService.changeBalance(
-              sourceId,
-              -amount,
-              userId,
-              session,
-            );
+            await this.sourcesService.changeBalance(sourceId, -amount, userId, session);
             break;
 
           case TransactionType.INCOME:
-            await this.sourcesService.changeBalance(
-              sourceId,
-              amount,
-              userId,
-              session,
-            );
+            await this.sourcesService.changeBalance(sourceId, amount, userId, session);
             break;
 
           case TransactionType.TRANSFER:
-            await this.sourcesService.changeBalance(
-              sourceId,
-              -amount,
-              userId,
-              session,
-            );
+            await this.sourcesService.changeBalance(sourceId, -amount, userId, session);
             await this.sourcesService.changeBalance(
               destinationSourceId!,
               amount,
@@ -158,7 +138,7 @@ export class TransactionsService {
     try {
       return await session.withTransaction(async () => {
         // ✅ 8. Відкочуємо операції при видаленні
-        const transactionType = transaction.type as TransactionType;
+        const transactionType = transaction.type;
 
         switch (transactionType) {
           case TransactionType.EXPENSE:
@@ -238,8 +218,7 @@ export class TransactionsService {
     ]);
 
     // Хелпер для отримання значень
-    const getStat = (type: TransactionType) =>
-      stats.find((s) => s._id === type);
+    const getStat = (type: TransactionType) => stats.find((s) => s._id === type);
 
     return {
       totalIncome: getStat(TransactionType.INCOME)?.total ?? 0,

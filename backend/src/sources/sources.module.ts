@@ -7,9 +7,7 @@ import { Source, SourceSchema } from './schemas/source.schema';
 @Module({
   controllers: [SourcesController],
   providers: [SourcesService],
-  imports: [
-    MongooseModule.forFeature([{ name: Source.name, schema: SourceSchema }]),
-  ],
+  imports: [MongooseModule.forFeature([{ name: Source.name, schema: SourceSchema }])],
   exports: [SourcesService],
 })
 export class SourcesModule {}

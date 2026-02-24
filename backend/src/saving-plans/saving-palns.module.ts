@@ -3,7 +3,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { SavingPlansService } from './saving-plans.service';
 import { SavingPlansController } from './saving-plans.controller';
 import { SavingPlan, SavingPlanSchema } from './schemas/saving-plan.schema';
-import { Transaction, TransactionSchema } from '../transactions/schemas/transaction.schema';
+import {
+  Transaction,
+  TransactionSchema,
+} from '../transactions/schemas/transaction.schema';
 
 @Module({
   imports: [

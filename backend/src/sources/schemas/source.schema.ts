@@ -20,3 +20,6 @@ export class Source {
 }
 
 export const SourceSchema = SchemaFactory.createForClass(Source);
+
+// Index for efficient per-user source queries
+SourceSchema.index({ userId: 1 });
