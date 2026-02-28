@@ -1,11 +1,12 @@
-import { IsNotEmpty, IsNumber, IsString, Min } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, MaxLength, Min } from 'class-validator';
 
 export class CreateSourceDto {
   @IsString()
   @IsNotEmpty()
+  @MaxLength(20, { message: 'Назва джерела не може перевищувати 20 символів' })
   name: string;
 
   @IsNumber()
-  @Min(0, { message: 'Balance must be at least 0' })
+  @Min(0, { message: 'Баланс має бути не менше 0' })
   balance: number;
 }
