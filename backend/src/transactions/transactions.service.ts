@@ -1,17 +1,13 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { InjectConnection } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ClientSession } from 'mongoose';
-import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 
+import { SourcesService } from '../sources/sources.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { Transaction, TransactionType } from './schemas/transaction.schema';
-import { SourcesService } from '../sources/sources.service';
 
 @Injectable()
 export class TransactionsService {
@@ -22,18 +18,15 @@ export class TransactionsService {
   ) {}
 
   async create(createTransactionDto: CreateTransactionDto, userId: string) {
-    const { type, amount, sourceId, destinationSourceId } =
-      createTransactionDto;
+    const { type, amount, sourceId, destinationSourceId } = createTransactionDto;
 
     // Валідація
     if (amount <= 0) {
-      throw new BadRequestException('Amount must be greater than 0');
+      throw new BadRequestException('Сума повинна бути додатною');
     }
 
     if (type === TransactionType.TRANSFER && !destinationSourceId) {
-      throw new BadRequestException(
-        'Destination source ID is required for transfer transactions',
-      );
+      throw new BadRequestException('Для трансферу потрібно вказати цільове джерело');
     }
 
     // Використовуємо MongoDB транзакції для атомарності
@@ -43,30 +36,15 @@ export class TransactionsService {
       return await session.withTransaction(async () => {
         switch (type) {
           case TransactionType.EXPENSE:
-            await this.sourcesService.changeBalance(
-              sourceId,
-              -amount,
-              userId,
-              session,
-            );
+            await this.sourcesService.changeBalance(sourceId, -amount, userId, session);
             break;
 
           case TransactionType.INCOME:
-            await this.sourcesService.changeBalance(
-              sourceId,
-              amount,
-              userId,
-              session,
-            );
+            await this.sourcesService.changeBalance(sourceId, amount, userId, session);
             break;
 
           case TransactionType.TRANSFER:
-            await this.sourcesService.changeBalance(
-              sourceId,
-              -amount,
-              userId,
-              session,
-            );
+            await this.sourcesService.changeBalance(sourceId, -amount, userId, session);
             await this.sourcesService.changeBalance(
               destinationSourceId!,
               amount,
@@ -76,7 +54,7 @@ export class TransactionsService {
             break;
 
           default:
-            throw new BadRequestException('Invalid transaction type');
+            throw new BadRequestException('Невірний тип транзакції');
         }
 
         // Створюємо і зберігаємо транзакцію після успішних операцій
@@ -144,7 +122,7 @@ export class TransactionsService {
       .exec();
 
     if (!transaction) {
-      throw new NotFoundException(`Transaction with ID ${id} not found`);
+      throw new NotFoundException(`Транзакцію з ID ${id} не знайдено`);
     }
 
     return transaction;
@@ -157,8 +135,8 @@ export class TransactionsService {
 
     try {
       return await session.withTransaction(async () => {
-        // ✅ 8. Відкочуємо операції при видаленні
-        const transactionType = transaction.type as TransactionType;
+        //Відкочуємо операції при видаленні
+        const transactionType = transaction.type;
 
         switch (transactionType) {
           case TransactionType.EXPENSE:
@@ -238,8 +216,7 @@ export class TransactionsService {
     ]);
 
     // Хелпер для отримання значень
-    const getStat = (type: TransactionType) =>
-      stats.find((s) => s._id === type);
+    const getStat = (type: TransactionType) => stats.find((s) => s._id === type);
 
     return {
       totalIncome: getStat(TransactionType.INCOME)?.total ?? 0,

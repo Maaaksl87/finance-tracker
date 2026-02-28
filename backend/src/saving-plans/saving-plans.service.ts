@@ -1,17 +1,18 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+
+import {
+  Transaction,
+  TransactionDocument,
+} from '../transactions/schemas/transaction.schema';
+import { CreateSavingPlanDto } from './dto/create-saving-plan.dto';
+import { UpdateSavingPlanDto } from './dto/update-saving-plan.dto';
 import {
   SavingPlan,
   SavingPlanDocument,
   SavingPlanStatus,
 } from './schemas/saving-plan.schema';
-import { CreateSavingPlanDto } from './dto/create-saving-plan.dto';
-import { UpdateSavingPlanDto } from './dto/update-saving-plan.dto';
-import {
-  Transaction,
-  TransactionDocument,
-} from '../transactions/schemas/transaction.schema';
 
 @Injectable()
 export class SavingPlansService {
@@ -35,16 +36,10 @@ export class SavingPlansService {
   }
 
   async findAll(userId: string): Promise<SavingPlan[]> {
-    console.log('🔍 Finding plans for userId:', userId);
-
-    const plans = await this.savingPlanModel
+    return this.savingPlanModel
       .find({ userId: new Types.ObjectId(userId) })
       .sort({ createdAt: -1 })
       .exec();
-
-    console.log('📦 Found plans:', plans.length);
-
-    return plans;
   }
 
   async findOne(userId: string, id: string): Promise<SavingPlan> {
@@ -116,7 +111,9 @@ export class SavingPlansService {
     if (savingPlan.status === SavingPlanStatus.PAUSED) {
       throw new BadRequestException('Цей план заощаджень призупинено');
     }
-
+    if (amount <= 0) {
+      throw new BadRequestException('Сума повинна бути додатною');
+    }
     const newAmount = savingPlan.currentAmount + amount;
     const isCompleted = newAmount >= savingPlan.targetAmount;
 
@@ -140,6 +137,10 @@ export class SavingPlansService {
 
     if (amount > savingPlan.currentAmount) {
       throw new BadRequestException('Недостатньо коштів у плані заощаджень');
+    }
+
+    if (amount <= 0) {
+      throw new BadRequestException('Сума повинна бути додатною');
     }
 
     const newAmount = savingPlan.currentAmount - amount;
