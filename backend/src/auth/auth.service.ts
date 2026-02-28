@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
+
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { User } from 'src/users/schemas/user.schema';
+
+import { UsersService } from '../users/users.service';
 
 export type AuthJwtPayload = {
   sub: string;
@@ -10,15 +13,21 @@ export type AuthJwtPayload = {
   name: string;
 };
 
+export type LoginUser = {
+  _id: string;
+  email: string;
+  name: string;
+};
+
 export type UserWithoutPassword = Omit<User, 'password'> & {
-  _id: string; //todo: переглянути типізацію створення користувача
+  _id: string;
 };
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService, // Інжектимо сервіс юзерів
-    private readonly jwtService: JwtService, // Інжектимо сервіс для токенів
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async validateUser(
@@ -36,7 +45,16 @@ export class AuthService {
     return null;
   }
 
-  login(user: UserWithoutPassword) {
+  async register(createUserDto: CreateUserDto) {
+    const user = await this.usersService.create(createUserDto);
+    return this.login({
+      _id: user._id.toString(),
+      email: user.email,
+      name: user.name,
+    });
+  }
+
+  login(user: LoginUser) {
     const payload: AuthJwtPayload = {
       email: user.email,
       sub: user._id,

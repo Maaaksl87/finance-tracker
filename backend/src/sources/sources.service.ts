@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { ClientSession, Model } from 'mongoose';
+
 import { CreateSourceDto } from './dto/create-source.dto';
 import { UpdateSourceDto } from './dto/update-source.dto';
-import { InjectModel } from '@nestjs/mongoose';
 import { Source } from './schemas/source.schema';
-import { Model, ClientSession } from 'mongoose';
 
 @Injectable()
 export class SourcesService {
@@ -22,21 +23,27 @@ export class SourcesService {
   }
 
   async findOne(id: string, userId: string) {
-    return this.sourceModel.findOne({ _id: id, userId }).exec(); // check both source ID and user ID
+    const source = await this.sourceModel.findOne({ _id: id, userId }).exec(); // check both source ID and user ID
+    if (!source) throw new NotFoundException('Джерело не знайдено');
+    return source;
   }
 
   async update(id: string, updateSourceDto: UpdateSourceDto, userId: string) {
-    return this.sourceModel
+    const updatedSource = await this.sourceModel
       .findOneAndUpdate(
         { _id: id, userId }, // ensure the source belongs to the user
         updateSourceDto,
         { new: true }, // return the updated document
       )
       .exec();
+    if (!updatedSource) throw new NotFoundException('Джерело не знайдено');
+    return updatedSource;
   }
 
   async remove(id: string, userId: string) {
-    return this.sourceModel.findOneAndDelete({ _id: id, userId }).exec(); // ensure the source belongs to the user
+    const source = await this.sourceModel.findOneAndDelete({ _id: id, userId }).exec(); // ensure the source belongs to the user
+    if (!source) throw new NotFoundException('Схоже, що такого джерела не існує');
+    return source;
   }
 
   // delta це сума зміни (наприклад, -100 або +500)
@@ -54,10 +61,8 @@ export class SourcesService {
       { new: true, session },
     );
 
-    if (!updatedSource) {
-      throw new NotFoundException(`Source with ID ${id} not found`);
-    }
-
+    if (!updatedSource)
+      throw new NotFoundException(`Джерело з ID ${id} не знайдено для цього користувача`);
     return updatedSource;
   }
 }

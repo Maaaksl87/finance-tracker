@@ -1,26 +1,24 @@
 import {
+  Body,
   Controller,
-  Post,
-  UseGuards,
   Get,
   HttpCode,
   HttpStatus,
+  Post,
   Req,
-  Body,
+  UseGuards,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { LocalGuard } from './guards/local.guard';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import type { RequestWithUser } from '../common/interfaces/request-with-user.interface';
+
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
-import { UsersService } from 'src/users/users.service';
+
+import type { RequestWithUser } from '../common/interfaces/request-with-user.interface';
+import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { LocalGuard } from './guards/local.guard';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly usersService: UsersService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @UseGuards(LocalGuard)
   @HttpCode(HttpStatus.OK)
@@ -31,12 +29,8 @@ export class AuthController {
 
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
-  async register(@Body() createUserDto: CreateUserDto) {
-    const user = await this.usersService.create(createUserDto);
-    return this.authService.login({
-      ...user.toObject(),
-      _id: user._id.toString(),
-    });
+  register(@Body() createUserDto: CreateUserDto) {
+    return this.authService.register(createUserDto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -45,5 +39,3 @@ export class AuthController {
     return req.user;
   }
 }
-
-//todo: переглянути можливість розділення логіки для реєстрації та логіну, можливо створити окремий контролер для реєстрації, а в auth.controller залишити лише логін та отримання профілю
