@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { format } from "date-fns";
-import { CalendarIcon, Plus } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { format } from 'date-fns';
+import { CalendarIcon, Plus } from 'lucide-react';
 
-import { CreateTransactionDto, Source, TransactionType } from "@/types";
-import { createTransaction } from "@/api/transactions";
-import { getSources } from "@/api/sources"; // Нам треба список гаманців!
+import { CreateTransactionDto, Source, TransactionType } from '@/types';
+import { createTransaction } from '@/api/transactions';
+import { getSources } from '@/api/sources'; // Нам треба список гаманців!
 
 import {
   Dialog,
@@ -15,7 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -23,44 +23,45 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
 
 // 1. СХЕМА ВАЛІДАЦІЇ (ZOD)
 // Це правила, за якими форма перевіряє себе перед відправкою
-const formSchema = z.object({
-  amount: z.coerce.number().min(0.01, "Сума має бути більше 0"), // coerce перетворить рядок у число
-  type: z.nativeEnum(TransactionType),
-  category: z.string().min(1, "Оберіть категорію"),
-  description: z.string().optional(),
-  date: z.date(),
-  sourceId: z.string().min(1, "Оберіть гаманець"),
-  destinationSourceId: z.string().optional(),
-}).refine((data) => {
-  // Кастомна перевірка: Якщо це ПЕРЕКАЗ, то destinationSourceId обовязковий
-  if (data.type === TransactionType.TRANSFER && !data.destinationSourceId) {
-    return false;
-  }
-  return true;
-}, {
-  message: "Оберіть гаманець для зарахування",
-  path: ["destinationSourceId"],
-});
+const formSchema = z
+  .object({
+    amount: z.coerce.number().min(0.01, 'Сума має бути більше 0'), // coerce перетворить рядок у число
+    type: z.nativeEnum(TransactionType),
+    category: z.string().min(1, 'Оберіть категорію'),
+    description: z.string().optional(),
+    date: z.date(),
+    sourceId: z.string().min(1, 'Оберіть гаманець'),
+    destinationSourceId: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      // Кастомна перевірка: Якщо це ПЕРЕКАЗ, то destinationSourceId обовязковий
+      if (data.type === TransactionType.TRANSFER && !data.destinationSourceId) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: 'Оберіть гаманець для зарахування',
+      path: ['destinationSourceId'],
+    },
+  );
 
 // Тип даних форми на основі схеми
 type FormValues = z.infer<typeof formSchema>;
@@ -80,16 +81,16 @@ export function TestCreateTransactionDialog({ onSuccess }: Props) {
     defaultValues: {
       amount: 0,
       type: TransactionType.EXPENSE,
-      category: "Food", // Можна змінити на пустий рядок
-      description: "",
+      category: 'Food', // Можна змінити на пустий рядок
+      description: '',
       date: new Date(),
-      sourceId: "",
-      destinationSourceId: "",
+      sourceId: '',
+      destinationSourceId: '',
     },
   });
 
   // Слідкуємо за типом транзакції, щоб показувати/ховати поля
-  const transactionType = form.watch("type");
+  const transactionType = form.watch('type');
 
   // 3. Завантаження гаманців при відкритті
   useEffect(() => {
@@ -117,12 +118,12 @@ export function TestCreateTransactionDialog({ onSuccess }: Props) {
       };
 
       await createTransaction(payload);
-      
+
       onSuccess(); // Оновлюємо список батька
       setOpen(false); // Закриваємо вікно
       form.reset(); // Чистимо форму
     } catch (error) {
-      console.error("Failed to create transaction", error);
+      console.error('Failed to create transaction', error);
     } finally {
       setIsLoading(false);
     }
@@ -142,7 +143,6 @@ export function TestCreateTransactionDialog({ onSuccess }: Props) {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            
             {/* РЯДОК 1: Тип та Дата */}
             <div className="grid grid-cols-2 gap-4">
               <FormField
@@ -158,9 +158,13 @@ export function TestCreateTransactionDialog({ onSuccess }: Props) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value={TransactionType.EXPENSE}>Витрата 🔴</SelectItem>
+                        <SelectItem value={TransactionType.EXPENSE}>
+                          Витрата 🔴
+                        </SelectItem>
                         <SelectItem value={TransactionType.INCOME}>Дохід 🟢</SelectItem>
-                        <SelectItem value={TransactionType.TRANSFER}>Переказ 🔵</SelectItem>
+                        <SelectItem value={TransactionType.TRANSFER}>
+                          Переказ 🔵
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -178,14 +182,14 @@ export function TestCreateTransactionDialog({ onSuccess }: Props) {
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button
-                            variant={"outline"}
+                            variant={'outline'}
                             className={cn(
-                              "w-full pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
+                              'w-full pl-3 text-left font-normal',
+                              !field.value && 'text-muted-foreground',
                             )}
                           >
                             {field.value ? (
-                              format(field.value, "dd.MM.yyyy")
+                              format(field.value, 'dd.MM.yyyy')
                             ) : (
                               <span>Оберіть дату</span>
                             )}
@@ -199,7 +203,7 @@ export function TestCreateTransactionDialog({ onSuccess }: Props) {
                           selected={field.value}
                           onSelect={field.onChange}
                           disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
+                            date > new Date() || date < new Date('1900-01-01')
                           }
                           initialFocus
                         />
@@ -219,7 +223,9 @@ export function TestCreateTransactionDialog({ onSuccess }: Props) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      {transactionType === TransactionType.INCOME ? "Куди зарахувати" : "Звідки списати"}
+                      {transactionType === TransactionType.INCOME
+                        ? 'Куди зарахувати'
+                        : 'Звідки списати'}
                     </FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
@@ -257,12 +263,12 @@ export function TestCreateTransactionDialog({ onSuccess }: Props) {
                         <SelectContent>
                           {sources
                             // Не можна переказати на той самий гаманець
-                            .filter(s => s._id !== form.getValues("sourceId"))
+                            .filter((s) => s._id !== form.getValues('sourceId'))
                             .map((source) => (
-                            <SelectItem key={source._id} value={source._id}>
-                              {source.name} ({source.balance} ₴)
-                            </SelectItem>
-                          ))}
+                              <SelectItem key={source._id} value={source._id}>
+                                {source.name} ({source.balance} ₴)
+                              </SelectItem>
+                            ))}
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -320,7 +326,7 @@ export function TestCreateTransactionDialog({ onSuccess }: Props) {
             />
 
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Збереження..." : "Створити запис"}
+              {isLoading ? 'Збереження...' : 'Створити запис'}
             </Button>
           </form>
         </Form>

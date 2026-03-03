@@ -1,8 +1,9 @@
-import { format } from "date-fns";
-import { uk } from "date-fns/locale"; // Українська локалізація дати
-import { Trash2, ArrowRight } from "lucide-react";
+import type { Transaction } from '@/types';
+import { TransactionType } from '@/types';
+import { format } from 'date-fns';
+import { uk } from 'date-fns/locale';
+import { Trash2, ArrowRight } from 'lucide-react';
 
-import { Transaction, TransactionType } from "@/types";
 import {
   Table,
   TableBody,
@@ -10,38 +11,39 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { memo } from 'react';
 
 interface Props {
   data: Transaction[];
   onDelete: (id: string) => void;
 }
 
-export function TestTransactionsTable({ data, onDelete }: Props) {
+function TestTransactionsTable({ data, onDelete }: Props) {
   // Хелпер для форматування грошей
   const formatAmount = (amount: number, type: TransactionType) => {
     const isExpense = type === TransactionType.EXPENSE;
     const isIncome = type === TransactionType.INCOME;
 
     // Додаємо + або - для краси
-    const prefix = isIncome ? "+" : isExpense ? "-" : "";
+    const prefix = isIncome ? '+' : isExpense ? '-' : '';
 
     return (
       <span
         className={
           isIncome
-            ? "text-green-600 font-bold"
+            ? 'text-green-600 font-bold'
             : isExpense
-            ? "text-red-600 font-bold"
-            : "text-blue-600 font-bold"
+              ? 'text-red-600 font-bold'
+              : 'text-blue-600 font-bold'
         }
       >
         {prefix}
-        {amount.toLocaleString("uk-UA", {
+        {amount.toLocaleString('uk-UA', {
           minimumFractionDigits: 2,
-        })}{" "}
+        })}{' '}
         ₴
       </span>
     );
@@ -61,6 +63,9 @@ export function TestTransactionsTable({ data, onDelete }: Props) {
     }
   };
 
+  {
+    console.log('рендер таблиці', data.length);
+  }
   return (
     <div className="rounded-md border">
       <Table>
@@ -86,7 +91,7 @@ export function TestTransactionsTable({ data, onDelete }: Props) {
               <TableRow key={transaction._id}>
                 {/* 1. ДАТА */}
                 <TableCell className="font-medium">
-                  {format(new Date(transaction.date), "d MMM yyyy, HH:mm", {
+                  {format(new Date(transaction.date), 'd MMM yyyy, HH:mm', {
                     locale: uk,
                   })}
                 </TableCell>
@@ -97,9 +102,7 @@ export function TestTransactionsTable({ data, onDelete }: Props) {
                 {/* 3. КАТЕГОРІЯ + ОПИС */}
                 <TableCell>
                   <div className="flex flex-col">
-                    <span className="font-semibold">
-                      {transaction.category}
-                    </span>
+                    <span className="font-semibold">{transaction.category}</span>
                     {transaction.description && (
                       <span className="text-xs text-muted-foreground">
                         {transaction.description}
@@ -113,9 +116,9 @@ export function TestTransactionsTable({ data, onDelete }: Props) {
                   <div className="flex items-center gap-2 text-sm">
                     {/* Якщо це об'єкт (populate) - беремо name, інакше ID */}
                     <span>
-                      {typeof transaction.sourceId === "object"
+                      {typeof transaction.sourceId === 'object'
                         ? transaction.sourceId.name
-                        : "Гаманець"}
+                        : 'Гаманець'}
                     </span>
 
                     {/* Якщо це переказ, показуємо стрілочку і куди */}
@@ -124,9 +127,9 @@ export function TestTransactionsTable({ data, onDelete }: Props) {
                         <>
                           <ArrowRight className="h-3 w-3 text-muted-foreground" />
                           <span>
-                            {typeof transaction.destinationSourceId === "object"
+                            {typeof transaction.destinationSourceId === 'object'
                               ? transaction.destinationSourceId.name
-                              : "Гаманець"}
+                              : 'Гаманець'}
                           </span>
                         </>
                       )}
@@ -157,3 +160,5 @@ export function TestTransactionsTable({ data, onDelete }: Props) {
     </div>
   );
 }
+
+export default memo(TestTransactionsTable);
