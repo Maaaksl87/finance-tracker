@@ -67,14 +67,15 @@ export class SavingPlansController {
     @Param('id') id: string,
     @Body() addFundsDto: AddFundsDto,
   ) {
-    return this.savingPlansService.addFunds(req.user._id, id, addFundsDto.amount);
+    return this.savingPlansService.addFunds(req.user._id, id, addFundsDto);
   }
+
   @Post(':id/withdraw')
   withdrawFunds(
     @Request() req: RequestWithUser,
     @Param('id') id: string,
     @Body() withdrawDto: AddFundsDto,
   ) {
-    return this.savingPlansService.withdrawFunds(req.user._id, id, withdrawDto.amount);
+    return this.savingPlansService.withdrawFunds(req.user._id, id, withdrawDto);
   }
 }

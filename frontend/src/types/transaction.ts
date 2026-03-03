@@ -18,6 +18,7 @@ export interface Transaction {
   date: string;
   sourceId: Source | string;
   destinationSourceId?: Source | string;
+  savingPlanId?: string;
   userId: string;
   createdAt: string;
   updatedAt: string;
@@ -31,6 +32,7 @@ export interface CreateTransactionDto {
   date?: Date;
   sourceId: string;
   destinationSourceId?: string;
+  savingPlanId?: string;
 }
 
 export interface TransactionStats {
