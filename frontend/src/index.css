@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -46,74 +46,126 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --background-main: oklch(0.97 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --radius: 0.625rem; /* базовий радіус заокруглення для всіх елементів */
+
+  /* --- Загальний фон та текст --- */
+  --background: lab(100% 0.01 -0.01); /* задній фон для root (body, sidebar) */
+  --background-main: hsla(
+    203,
+    74%,
+    63%,
+    0.5
+  ); /* задній фон для main (контентна область) */
+  --foreground: rgb(28, 41, 79); /* основний колір тексту по всьому сайту */
+
+  /* --- Картки (Card) --- */
+  --card: rgba(255, 255, 255, 0.4); /* фон карток (транзакції, плани, статистика) */
+  /* --card-foreground: oklch(0.145 0 0); текст всередині карток */
+  --card-foreground: rgb(28, 41, 79); /* текст всередині карток */
+  /* --- Popover / Dropdown --- */
+  --popover: oklch(46.462% 0.08657 20.902); /* фон спливаючих меню і dropdown */
+  --popover-foreground: oklch(73.188% 0.23618 143.664); /* текст у popover та dropdown */
+
+  /* --- Основна дія (Primary) --- */
+  --primary: oklch(
+    54.275% 0.21121 28.106
+  ); /* колір головних кнопок і активних елементів */
+  --primary-foreground: oklch(0.985 0 0); /* текст на кнопках primary */
+
+  /* --- Вторинна дія (Secondary) --- */
+  --secondary: oklch(81.91% 0.18633 121.313); /* фон вторинних кнопок і тегів */
+  --secondary-foreground: oklch(0.205 0 0); /* текст на вторинних кнопках */
+
+  /* --- Приглушені елементи (Muted) --- */
+  --muted: oklch(0.97 0 0); /* фон неактивних вкладок, підказок, заглушок */
+  --muted-foreground: oklch(0.556 0 0); /* колір placeholder-тексту та підписів */
+
+  /* --- Акцент (Hover / виділення) --- */
+  --accent: oklch(0.97 0 0); /* фон при наведенні на елементи списку і меню */
+  --accent-foreground: oklch(0.205 0 0); /* текст на акцентних елементах */
+
+  /* --- Небезпечні дії (Destructive) --- */
+  --destructive: oklch(0.577 0.245 27.325); /* колір кнопок видалення та помилок */
+
+  /* --- Рамки та поля вводу --- */
+  --border: oklch(0.922 0 0); /* рамки карток, таблиць, роздільників */
+  --input: oklch(0.922 0 0); /* рамка полів вводу (input, select) */
+  --ring: oklch(0.708 0 0); /* обведення фокусу на полях вводу і кнопках */
+
+  /* --- Графіки (Charts) --- */
+  --chart-1: oklch(0.646 0.222 41.116); /* колір 1-ї серії даних */
+  --chart-2: oklch(0.6 0.118 184.704); /* колір 2-ї серії даних */
+  --chart-3: oklch(0.398 0.07 227.392); /* колір 3-ї серії даних */
+  --chart-4: oklch(0.828 0.189 84.429); /* колір 4-ї серії даних */
+  --chart-5: oklch(0.769 0.188 70.08); /* колір 5-ї серії даних */
+
+  /* --- Sidebar --- */
+  --sidebar: rgba(178, 220, 242, 0.6); /* фон бокової панелі навігації */
+  --sidebar-foreground: oklch(0.145 0 0); /* основний текст у sidebar */
+  --sidebar-primary: oklch(0.205 0 0); /* фон активного пункту меню */
+  --sidebar-primary-foreground: oklch(0.985 0 0); /* текст активного пункту меню */
+  --sidebar-accent: oklch(0.97 0 0); /* фон пункту меню при наведенні */
+  --sidebar-accent-foreground: oklch(0.205 0 0); /* текст пункту меню при наведенні */
+  --sidebar-border: oklch(0.922 0 0); /* роздільники і рамки в sidebar */
+  --sidebar-ring: oklch(0.708 0 0); /* обведення фокусу в sidebar */
 }
 
 .dark {
-  --background: hsl(0, 0%, 9%);
-  --background-main: oklch(14.479% 0.00002 271.152);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: #171717;
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* --- Загальний фон та текст --- */
+  --background: hsl(0, 0%, 9%); /* задній фон для root у темній темі */
+  --background-main: oklch(
+    60.058% 0.24982 332.981 / 0.72
+  ); /* задній фон для main у темній темі */
+  --foreground: oklch(0.985 0 0); /* основний колір тексту у темній темі */
+
+  /* --- Картки (Card) --- */
+  --card: oklch(0.205 0 0); /* фон карток у темній темі */
+  --card-foreground: oklch(0.985 0 0); /* текст всередині карток */
+
+  /* --- Popover / Dropdown --- */
+  --popover: oklch(0.205 0 0); /* фон спливаючих меню і dropdown */
+  --popover-foreground: oklch(0.985 0 0); /* текст у popover та dropdown */
+
+  /* --- Основна дія (Primary) --- */
+  --primary: oklch(0.922 0 0); /* колір головних кнопок і активних елементів */
+  --primary-foreground: oklch(0.205 0 0); /* текст на кнопках primary */
+
+  /* --- Вторинна дія (Secondary) --- */
+  --secondary: oklch(0.269 0 0); /* фон вторинних кнопок і тегів */
+  --secondary-foreground: oklch(0.985 0 0); /* текст на вторинних кнопках */
+
+  /* --- Приглушені елементи (Muted) --- */
+  --muted: oklch(0.269 0 0); /* фон неактивних вкладок, підказок, заглушок */
+  --muted-foreground: oklch(0.708 0 0); /* колір placeholder-тексту та підписів */
+
+  /* --- Акцент (Hover / виділення) --- */
+  --accent: oklch(0.269 0 0); /* фон при наведенні на елементи списку і меню */
+  --accent-foreground: oklch(0.985 0 0); /* текст на акцентних елементах */
+
+  /* --- Небезпечні дії (Destructive) --- */
+  --destructive: oklch(0.704 0.191 22.216); /* колір кнопок видалення та помилок */
+
+  /* --- Рамки та поля вводу --- */
+  --border: oklch(1 0 0 / 10%); /* рамки карток, таблиць, роздільників */
+  --input: oklch(1 0 0 / 15%); /* рамка полів вводу (input, select) */
+  --ring: oklch(0.556 0 0); /* обведення фокусу на полях вводу і кнопках */
+
+  /* --- Графіки (Charts) --- */
+  --chart-1: oklch(0.488 0.243 264.376); /* колір 1-ї серії даних */
+  --chart-2: oklch(0.696 0.17 162.48); /* колір 2-ї серії даних */
+  --chart-3: oklch(0.769 0.188 70.08); /* колір 3-ї серії даних */
+  --chart-4: oklch(0.627 0.265 303.9); /* колір 4-ї серії даних */
+  --chart-5: oklch(0.645 0.246 16.439); /* колір 5-ї серії даних */
+
+  /* --- Sidebar --- */
+  --sidebar: rgba(23, 23, 23, 0.78); /* фон бокової панелі навігації */
+  --sidebar-foreground: oklch(0.985 0 0); /* основний текст у sidebar */
+  --sidebar-primary: oklch(0.488 0.243 264.376); /* фон активного пункту меню */
+  --sidebar-primary-foreground: oklch(0.985 0 0); /* текст активного пункту меню */
+  --sidebar-accent: oklch(0.269 0 0); /* фон пункту меню при наведенні */
+  --sidebar-accent-foreground: oklch(0.985 0 0); /* текст пункту меню при наведенні */
+  --sidebar-border: oklch(1 0 0 / 10%); /* роздільники і рамки в sidebar */
+  --sidebar-ring: oklch(0.556 0 0); /* обведення фокусу в sidebar */
 }
 
 @layer base {
@@ -121,19 +173,19 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground bg-background-main;
+    @apply bg-background text-foreground;
   }
 }
 /* Input number */
 /* Chrome, Safari, Edge */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* Firefox */
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 
@@ -143,4 +195,21 @@ input[type="number"] {
 
 *::-webkit-scrollbar-thumb {
   background: #171717;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+  33% {
+    transform: translateY(-40px) scale(1.05);
+  }
+  66% {
+    transform: translateY(30px) scale(0.97);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }

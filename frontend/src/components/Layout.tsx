@@ -1,37 +1,28 @@
-import { Outlet, useLocation } from "react-router-dom";
-import {
-  SidebarProvider,
-  SidebarTrigger,
-  SidebarInset,
-} from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
-import { ModeToggle } from "@/components/mode-toggle";
-import { useAuthStore } from "@/store/authStore";
-import { Separator } from "./ui/separator";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "./ui/breadcrumb";
+import { Outlet, useLocation } from 'react-router-dom';
+import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/components/app-sidebar';
+import { ModeToggle } from '@/components/mode-toggle';
+import { Separator } from './ui/separator';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbList } from './ui/breadcrumb';
+import { BackgroundGlow } from './BackgroundGlow';
 
 export default function Layout() {
-  const user = useAuthStore((state) => state.user);
   const location = useLocation();
 
   // Сторінки без скролу
   // TODO: ЗАРЕФАКТОРИТИ ТА ЗНАЙТИ ОПТИМАЛЬНИЙ СПОСІБ
-  const pagesWithoutScroll = ["/saving-plans"];
+  const pagesWithoutScroll = ['/saving-plans'];
   const shouldHaveScroll = !pagesWithoutScroll.includes(location.pathname);
 
+  // const currentRoute = matches[matches.length - 1];
+  // const pageTitle = (currentRoute?.handle as { title?: string })?.title || 'Сторінка';
   return (
-    <SidebarProvider className="bg-background">
+    <SidebarProvider className="relative isolate h-dvh">
+      <BackgroundGlow />
       <AppSidebar />
-      <SidebarInset className="flex flex-col">
-        <header className="flex h-16 shrink-0 items-center gap-2">
-          <div className="flex items-center gap-2 px-4">
+      <SidebarInset className="relative z-10 flex flex-col h-full">
+        <header className="flex items-center justify-between h-16 gap-2 px-4 shrink-0">
+          <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
             <Separator
               orientation="vertical"
@@ -39,21 +30,17 @@ export default function Layout() {
             />
             <Breadcrumb>
               <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Building Your Application
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                  {/* <BreadcrumbPage>{pageTitle}</BreadcrumbPage> */}
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
           </div>
+          <ModeToggle />
         </header>
         <div
-          className={`flex-1 p-4 ${shouldHaveScroll ? "overflow-y-auto" : "overflow-hidden"}`}>
+          className={`flex-1 h-0 ${shouldHaveScroll ? 'overflow-y-auto px-4' : 'overflow-hidden'}`}
+        >
           <Outlet />
         </div>
       </SidebarInset>
