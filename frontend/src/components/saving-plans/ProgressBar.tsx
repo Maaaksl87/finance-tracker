@@ -1,14 +1,16 @@
-import { useSavingPlan } from '../../hooks/useSavingPlans';
-
 function ProgressBar({
-  selectedPlanId,
+  currentAmount,
+  targetAmount,
   className = '',
 }: {
-  selectedPlanId: string | null;
+  currentAmount?: number;
+  targetAmount?: number;
   className?: string;
 }) {
-  const { data: plan } = useSavingPlan(selectedPlanId || '');
-  const percentage = `${plan?.currentAmount && plan?.targetAmount ? (plan?.currentAmount / plan?.targetAmount) * 100 : 0}%`;
+  const rawPercentage =
+    currentAmount && targetAmount ? (currentAmount / targetAmount) * 100 : 0;
+  const clampedPercentage = Math.min(Math.max(rawPercentage, 0), 100);
+  const percentage = `${clampedPercentage}%`;
 
   return (
     <div className={`w-full h-1 bg-gray-400 rounded-full overflow-hidden ${className}`}>
