@@ -42,7 +42,7 @@ const TransactionsPage = () => {
       alert('Помилка видалення');
       fetchData(); // Відкат змін
     }
-  }, []);
+  }, [fetchData]);
 
   return (
     <div className="space-y-6">
