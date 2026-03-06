@@ -62,7 +62,7 @@ export function AppSidebar() {
     <Sidebar className="border-none" collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Трекер витрат</SidebarGroupLabel>
+          <SidebarGroupLabel>PennyWise</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

@@ -132,6 +132,7 @@ export class SavingPlansService {
       savingPlanId: new Types.ObjectId(id),
       userId: new Types.ObjectId(userId),
       date: new Date(),
+      excludeFromStats: true,
     }).save();
 
     return this.savingPlanModel
