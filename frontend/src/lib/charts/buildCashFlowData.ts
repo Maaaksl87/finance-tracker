@@ -18,8 +18,10 @@ export function buildCashFlowData(
 ): ChartDataPoint[] {
   return useMemo(() => {
     if (!transactions || transactions.length === 0) return [];
-    // Сортуємо транзакції від найновішої до найстарішої
-    const sorted = [...transactions].reverse();
+    // Сортуємо транзакції від найстарішої до найновішої для коректного розрахунку балансу
+    const sorted = [...transactions].sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+    );
 
     let currentBalance = 0;
 
