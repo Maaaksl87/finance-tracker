@@ -63,9 +63,6 @@ function TestTransactionsTable({ data, onDelete }: Props) {
     }
   };
 
-  {
-    console.log('рендер таблиці', data.length);
-  }
   return (
     <div className="rounded-md border">
       <Table>
