@@ -36,7 +36,7 @@ function SavingPlansList({
             <p>
               $ {plan.currentAmount} / $ {plan.targetAmount}
             </p>
-            <ProgressBar selectedPlanId={plan._id} />
+            <ProgressBar currentAmount={plan.currentAmount} targetAmount={plan.targetAmount} />
 
             <span className="absolute flex items-center justify-end text-sm text-zinc-500 top-4 right-5">
               {plan.targetAmount
