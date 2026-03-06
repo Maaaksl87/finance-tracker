@@ -74,11 +74,6 @@ export const getSavingPlanTransactions = async (params: {
 }): Promise<Transaction[]> => {
   const { data } = await api.get<Transaction[]>(
     `/saving-plans/${params.savingPlanId}/transactions`,
-    {
-      params: {
-        ...(params.limit && { limit: params.limit }),
-      },
-    },
   );
   return data;
 };
