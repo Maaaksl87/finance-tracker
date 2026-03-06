@@ -61,7 +61,7 @@ export default function SavingPlanChart({ selectedPlanId }: SavingPlanChartProps
         <Legend wrapperStyle={{ color: '#9ca3af' }} formatter={() => 'Накопичено'} />
         <Line
           type="monotone"
-          dataKey="amount"
+          dataKey="balance"
           stroke="#10b981"
           strokeWidth={2}
           dot={{ fill: '#10b981', r: 4 }}
