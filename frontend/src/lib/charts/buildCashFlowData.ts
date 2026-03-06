@@ -19,7 +19,9 @@ export function buildCashFlowData(
   return useMemo(() => {
     if (!transactions || transactions.length === 0) return [];
     // Сортуємо транзакції від найновішої до найстарішої
-    const sorted = [...transactions].reverse();
+    const sorted = [...transactions].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    );
 
     let currentBalance = 0;
 
