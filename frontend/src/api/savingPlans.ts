@@ -1,14 +1,14 @@
-import api from "./axios";
+import api from './axios';
 import type {
   SavingPlan,
   CreateSavingPlanDto,
   UpdateSavingPlanDto,
   SavingPlanStats,
   Transaction,
-} from "../types";
+} from '../types';
 
 export const getSavingPlans = async (): Promise<SavingPlan[]> => {
-  const { data } = await api.get<SavingPlan[]>("/saving-plans");
+  const { data } = await api.get<SavingPlan[]>('/saving-plans');
   return data;
 };
 
@@ -18,14 +18,14 @@ export const getSavingPlan = async (id: string): Promise<SavingPlan> => {
 };
 
 export const getSavingPlanStats = async (): Promise<SavingPlanStats> => {
-  const { data } = await api.get<SavingPlanStats>("/saving-plans/stats");
+  const { data } = await api.get<SavingPlanStats>('/saving-plans/stats');
   return data;
 };
 
 export const createSavingPlan = async (
   savingPlanData: CreateSavingPlanDto,
 ): Promise<SavingPlan> => {
-  const { data } = await api.post<SavingPlan>("/saving-plans", savingPlanData);
+  const { data } = await api.post<SavingPlan>('/saving-plans', savingPlanData);
   return data;
 };
 
@@ -33,16 +33,11 @@ export const updateSavingPlan = async (
   id: string,
   updateData: UpdateSavingPlanDto,
 ): Promise<SavingPlan> => {
-  const { data } = await api.patch<SavingPlan>(
-    `/saving-plans/${id}`,
-    updateData,
-  );
+  const { data } = await api.patch<SavingPlan>(`/saving-plans/${id}`, updateData);
   return data;
 };
 
-export const deleteSavingPlan = async (
-  id: string,
-): Promise<{ delete: boolean }> => {
+export const deleteSavingPlan = async (id: string): Promise<{ delete: boolean }> => {
   const { data } = await api.delete<{ delete: boolean }>(`/saving-plans/${id}`);
   return data;
 };
@@ -51,9 +46,11 @@ export const deleteSavingPlan = async (
 export const addFunds = async (
   id: string,
   amount: number,
+  sourceId: string,
 ): Promise<SavingPlan> => {
   const { data } = await api.post<SavingPlan>(`/saving-plans/${id}/add-funds`, {
     amount,
+    sourceId,
   });
   return data;
 };
@@ -62,18 +59,21 @@ export const addFunds = async (
 export const withdrawFunds = async (
   id: string,
   amount: number,
+  sourceId: string,
 ): Promise<SavingPlan> => {
   const { data } = await api.post<SavingPlan>(`/saving-plans/${id}/withdraw`, {
     amount,
+    sourceId,
   });
   return data;
 };
 
-export const getSavingPlanTransactions = async (
-  id: string
-): Promise<Transaction[]> => {
+export const getSavingPlanTransactions = async (params: {
+  savingPlanId: string;
+  limit?: number;
+}): Promise<Transaction[]> => {
   const { data } = await api.get<Transaction[]>(
-    `/saving-plans/${id}/transactions`
+    `/saving-plans/${params.savingPlanId}/transactions`,
   );
   return data;
 };

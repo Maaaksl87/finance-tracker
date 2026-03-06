@@ -1,11 +1,10 @@
 export const SavingPlanStatus = {
-  ACTIVE: "active",
-  COMPLETED: "completed",
-  PAUSED: "paused",
+  ACTIVE: 'active',
+  COMPLETED: 'completed',
+  PAUSED: 'paused',
 } as const;
 
-export type SavingPlanStatus =
-  (typeof SavingPlanStatus)[keyof typeof SavingPlanStatus];
+export type SavingPlanStatus = (typeof SavingPlanStatus)[keyof typeof SavingPlanStatus];
 
 export interface SavingPlan {
   _id: string;
@@ -15,15 +14,15 @@ export interface SavingPlan {
   icon?: string;
   deadline?: string;
   description?: string;
-  status: SavingPlanStatus; // todo: переглянути логіку задання статусу.
+  status: SavingPlanStatus;
   userId: string;
-  completionRate: number;
+  completionRate?: number;
   createdAt: string;
   updatedAt: string;
 }
 
 export type UpdateSavingPlanDto = Partial<
-  Omit<SavingPlan, "_id" | "userId" | "createdAt" | "updatedAt">
+  Omit<SavingPlan, '_id' | 'userId' | 'createdAt' | 'updatedAt'>
 >;
 
 export interface CreateSavingPlanDto {
@@ -40,5 +39,5 @@ export interface SavingPlanStats {
   completedPlans: number;
   totalSaved: number;
   totalTarget: number;
-  completionRate: number; // %
+  completionRate?: number;
 }

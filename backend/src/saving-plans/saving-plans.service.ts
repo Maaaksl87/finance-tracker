@@ -101,7 +101,12 @@ export class SavingPlansService {
     return { deleted: true };
   }
 
-  async addFunds(userId: string, id: string, amount: number): Promise<SavingPlan> {
+  async addFunds(
+    userId: string,
+    id: string,
+    dto: { amount: number; sourceId: string },
+  ): Promise<SavingPlan> {
+    const { amount, sourceId } = dto;
     const savingPlan = await this.findOne(userId, id);
 
     if (savingPlan.status === SavingPlanStatus.COMPLETED) {
@@ -116,6 +121,18 @@ export class SavingPlansService {
     }
     const newAmount = savingPlan.currentAmount + amount;
     const isCompleted = newAmount >= savingPlan.targetAmount;
+
+    // Створюємо транзакцію поповнення
+    await new this.transactionModel({
+      amount,
+      type: 'income',
+      category: 'Заощадження',
+      description: `Поповнення плану "${savingPlan.title}"`,
+      sourceId: new Types.ObjectId(sourceId),
+      savingPlanId: new Types.ObjectId(id),
+      userId: new Types.ObjectId(userId),
+      date: new Date(),
+    }).save();
 
     return this.savingPlanModel
       .findByIdAndUpdate(
@@ -132,7 +149,12 @@ export class SavingPlansService {
       .exec();
   }
 
-  async withdrawFunds(userId: string, id: string, amount: number): Promise<SavingPlan> {
+  async withdrawFunds(
+    userId: string,
+    id: string,
+    dto: { amount: number; sourceId: string },
+  ): Promise<SavingPlan> {
+    const { amount, sourceId } = dto;
     const savingPlan = await this.findOne(userId, id);
 
     if (amount > savingPlan.currentAmount) {
@@ -144,6 +166,18 @@ export class SavingPlansService {
     }
 
     const newAmount = savingPlan.currentAmount - amount;
+
+    // Створюємо транзакцію зняття
+    await new this.transactionModel({
+      amount,
+      type: 'expense',
+      category: 'Заощадження',
+      description: `Зняття з плану "${savingPlan.title}"`,
+      sourceId: new Types.ObjectId(sourceId),
+      savingPlanId: new Types.ObjectId(id),
+      userId: new Types.ObjectId(userId),
+      date: new Date(),
+    }).save();
 
     return this.savingPlanModel
       .findByIdAndUpdate(

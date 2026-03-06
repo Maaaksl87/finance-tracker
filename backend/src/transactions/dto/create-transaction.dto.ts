@@ -49,4 +49,8 @@ export class CreateTransactionDto {
   @IsNumber()
   @IsOptional()
   fee?: number;
+
+  @IsMongoId()
+  @IsOptional()
+  savingPlanId?: string;
 }

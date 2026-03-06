@@ -1,7 +1,7 @@
 import api from "./axios";
 import type {
   CreateTransactionDto,
-  Pagination,
+  TransactionPagination,
   Transaction,
   TransactionStats,
 } from "../types";
@@ -12,8 +12,7 @@ export const getTransactions = async (params?: {
   limit?: number;
   type?: string;
   sourceId?: string;
-}): Promise<{ transactions: Transaction[]; pagination: Pagination }> => {
-  // axios автоматично перетворить об'єкт params у query string (?page=1&limit=10...)
+}): Promise<{ transactions: Transaction[]; pagination: TransactionPagination }> => {
   const { data } = await api.get("/transactions", { params });
   return data;
 };

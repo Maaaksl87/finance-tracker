@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   getSavingPlans,
   getSavingPlan,
@@ -8,21 +8,22 @@ import {
   deleteSavingPlan,
   addFunds,
   withdrawFunds,
-} from "@/api/savingPlans";
+  getSavingPlanTransactions,
+} from '@/api/savingPlans';
 import type {
   SavingPlan,
   CreateSavingPlanDto,
   UpdateSavingPlanDto,
   SavingPlanStats,
   Transaction,
-} from "@/types";
+} from '@/types';
 
 export const savingPlansKeys = {
-  all: ["saving-plans"] as const,
-  lists: () => [...savingPlansKeys.all, "list"] as const,
-  detail: (id: string) => [...savingPlansKeys.all, "detail", id] as const,
-  stats: () => [...savingPlansKeys.all, "stats"] as const,
-  transactions: (id: string) => [...savingPlansKeys.detail(id), "transactions"] as const,
+  all: ['saving-plans'] as const,
+  lists: () => [...savingPlansKeys.all, 'list'] as const,
+  detail: (id: string) => [...savingPlansKeys.all, 'detail', id] as const,
+  stats: () => [...savingPlansKeys.all, 'stats'] as const,
+  transactions: (id: string) => [...savingPlansKeys.detail(id), 'transactions'] as const,
 };
 
 export function useSavingPlans() {
@@ -63,7 +64,7 @@ export function useCreateSavingPlan() {
       });
     },
     onError: (error) => {
-      console.error("Помилка створення:", error);
+      console.error('Помилка створення:', error);
     },
   });
 }
@@ -112,8 +113,15 @@ export function useAddFunds() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, amount }: { id: string; amount: number }) =>
-      addFunds(id, amount),
+    mutationFn: ({
+      id,
+      amount,
+      sourceId,
+    }: {
+      id: string;
+      amount: number;
+      sourceId: string;
+    }) => addFunds(id, amount, sourceId),
 
     // Оптимістичне оновлення
     onMutate: async ({ id, amount }) => {
@@ -160,6 +168,9 @@ export function useAddFunds() {
       queryClient.invalidateQueries({
         queryKey: savingPlansKeys.stats(),
       });
+      queryClient.invalidateQueries({
+        queryKey: savingPlansKeys.transactions(variables.id),
+      });
     },
   });
 }
@@ -168,8 +179,15 @@ export function useWithdrawFunds() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, amount }: { id: string; amount: number }) =>
-      withdrawFunds(id, amount),
+    mutationFn: ({
+      id,
+      amount,
+      sourceId,
+    }: {
+      id: string;
+      amount: number;
+      sourceId: string;
+    }) => withdrawFunds(id, amount, sourceId),
 
     onMutate: async ({ id, amount }) => {
       await queryClient.cancelQueries({
@@ -209,6 +227,9 @@ export function useWithdrawFunds() {
       queryClient.invalidateQueries({
         queryKey: savingPlansKeys.stats(),
       });
+      queryClient.invalidateQueries({
+        queryKey: savingPlansKeys.transactions(variables.id),
+      });
     },
   });
 }
@@ -216,7 +237,7 @@ export function useWithdrawFunds() {
 export function useSavingPlanTransactions(id: string) {
   return useQuery<Transaction[]>({
     queryKey: savingPlansKeys.transactions(id),
-    queryFn: () => getSavingPlanTransactions(id),
+    queryFn: () => getSavingPlanTransactions({ savingPlanId: id }),
     enabled: !!id,
   });
 }
