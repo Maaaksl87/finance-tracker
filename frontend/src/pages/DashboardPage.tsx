@@ -5,14 +5,9 @@ import {
   CardWithBackdrop,
 } from '@/components/ui/card';
 import { useAuthStore } from '@/store/authStore';
-import PlusCircle from 'lucide-react/dist/esm/icons/plus-circle';
-import ArrowRightLeft from 'lucide-react/dist/esm/icons/arrow-right-left';
-import Sparkles from 'lucide-react/dist/esm/icons/sparkles';
-import PiggyBank from 'lucide-react/dist/esm/icons/piggy-bank';
-import { Separator } from '@/components/ui/separator';
+import { PlusCircle, ArrowRightLeft, Sparkles, PiggyBank } from 'lucide-react';
 
 import { useTransactionStats } from '@/hooks/useTransactionStats';
-import { Button } from '@/components/ui/button';
 
 export default function DashboardPage() {
   const { stats, isLoading } = useTransactionStats();

@@ -14,7 +14,6 @@ import type {
   SavingPlan,
   CreateSavingPlanDto,
   UpdateSavingPlanDto,
-  SavingPlanStats,
   Transaction,
 } from '@/types';
 
@@ -76,7 +75,7 @@ export function useUpdateSavingPlan() {
     mutationFn: ({ id, data }: { id: string; data: UpdateSavingPlanDto }) =>
       updateSavingPlan(id, data),
 
-    onSuccess: (newPlan, variables) => {
+    onSuccess: (_newPlan, variables) => {
       queryClient.invalidateQueries({
         queryKey: savingPlansKeys.detail(variables.id),
       });
@@ -149,7 +148,7 @@ export function useAddFunds() {
       return { previousPlan };
     },
 
-    onError: (err, variables, context) => {
+    onError: (_err, variables, context) => {
       if (context?.previousPlan) {
         queryClient.setQueryData(
           savingPlansKeys.detail(variables.id),
@@ -208,7 +207,7 @@ export function useWithdrawFunds() {
       return { previousPlan };
     },
 
-    onError: (err, variables, context) => {
+    onError: (_err, variables, context) => {
       if (context?.previousPlan) {
         queryClient.setQueryData(
           savingPlansKeys.detail(variables.id),

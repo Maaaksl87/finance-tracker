@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTransactionStats } from '@/hooks/useTransactionStats';
 import { buildCashFlowData } from '@/lib/charts/buildCashFlowData';
 
-// 👇 Імпорти для графіків
 import {
   PieChart,
   Pie,
@@ -166,7 +165,7 @@ function StatsPage() {
                     paddingAngle={5}
                     dataKey="value"
                   >
-                    {pieChartData.map((entry, index) => (
+                    {pieChartData.map((_entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
