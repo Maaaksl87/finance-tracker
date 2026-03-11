@@ -9,7 +9,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: 'http://localhost:5173', // Дозволяємо доступ ТІЛЬКИ з нашого фронтенду
+    origin: '*', // Дозволяємо доступ з будь-якого домену
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Дозволяємо передавати куки та заголовки авторизації
   });
@@ -21,6 +21,6 @@ async function bootstrap() {
       transform: true, // Автоматично перетворює типи (наприклад, string "10" у number 10)
     }),
   );
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
