@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useAuthStore } from '@/store/authStore';
 
 const api = axios.create({
-  baseURL: 'finance-tracker-production-e191.up.railway.app',
+  baseURL: 'https://finance-tracker-production-e191.up.railway.app',
   headers: {
     'Content-Type': 'application/json',
   },
