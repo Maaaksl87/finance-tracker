@@ -1,4 +1,4 @@
-import { IsMongoId, IsNumber, Min } from 'class-validator';
+import { IsMongoId, IsNumber, Min } from "class-validator";
 
 export class AddFundsDto {
   @IsNumber()

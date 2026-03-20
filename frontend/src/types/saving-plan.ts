@@ -1,7 +1,7 @@
 export const SavingPlanStatus = {
-  ACTIVE: 'active',
-  COMPLETED: 'completed',
-  PAUSED: 'paused',
+  ACTIVE: "active",
+  COMPLETED: "completed",
+  PAUSED: "paused",
 } as const;
 
 export type SavingPlanStatus = (typeof SavingPlanStatus)[keyof typeof SavingPlanStatus];
@@ -22,7 +22,7 @@ export interface SavingPlan {
 }
 
 export type UpdateSavingPlanDto = Partial<
-  Omit<SavingPlan, '_id' | 'userId' | 'createdAt' | 'updatedAt'>
+  Omit<SavingPlan, "_id" | "userId" | "createdAt" | "updatedAt">
 >;
 
 export interface CreateSavingPlanDto {

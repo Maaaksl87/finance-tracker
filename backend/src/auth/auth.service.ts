@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { compare } from 'bcrypt';
+import { Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { compare } from "bcrypt";
 
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
-import { User } from 'src/users/schemas/user.schema';
+import { CreateUserDto } from "src/users/dto/create-user.dto";
+import { User } from "src/users/schemas/user.schema";
 
-import { UsersService } from '../users/users.service';
+import { UsersService } from "../users/users.service";
 
 export type AuthJwtPayload = {
   sub: string;
@@ -19,7 +19,7 @@ export type LoginUser = {
   name: string;
 };
 
-export type UserWithoutPassword = Omit<User, 'password'> & {
+export type UserWithoutPassword = Omit<User, "password"> & {
   _id: string;
 };
 

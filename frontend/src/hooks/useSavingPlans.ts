@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getSavingPlans,
   getSavingPlan,
@@ -9,20 +9,20 @@ import {
   addFunds,
   withdrawFunds,
   getSavingPlanTransactions,
-} from '@/api/savingPlans';
+} from "@/api/savingPlans";
 import type {
   SavingPlan,
   CreateSavingPlanDto,
   UpdateSavingPlanDto,
   Transaction,
-} from '@/types';
+} from "@/types";
 
 export const savingPlansKeys = {
-  all: ['saving-plans'] as const,
-  lists: () => [...savingPlansKeys.all, 'list'] as const,
-  detail: (id: string) => [...savingPlansKeys.all, 'detail', id] as const,
-  stats: () => [...savingPlansKeys.all, 'stats'] as const,
-  transactions: (id: string) => [...savingPlansKeys.detail(id), 'transactions'] as const,
+  all: ["saving-plans"] as const,
+  lists: () => [...savingPlansKeys.all, "list"] as const,
+  detail: (id: string) => [...savingPlansKeys.all, "detail", id] as const,
+  stats: () => [...savingPlansKeys.all, "stats"] as const,
+  transactions: (id: string) => [...savingPlansKeys.detail(id), "transactions"] as const,
 };
 
 export function useSavingPlans() {
@@ -63,7 +63,7 @@ export function useCreateSavingPlan() {
       });
     },
     onError: (error) => {
-      console.error('Помилка створення:', error);
+      console.error("Помилка створення:", error);
     },
   });
 }

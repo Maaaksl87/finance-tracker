@@ -1,17 +1,17 @@
-import { Outlet, useLocation } from 'react-router-dom';
-import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
-import { AppSidebar } from '@/components/app-sidebar';
-import { ModeToggle } from '@/components/mode-toggle';
-import { Separator } from './ui/separator';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbList } from './ui/breadcrumb';
-import { BackgroundGlow } from './BackgroundGlow';
+import { Outlet, useLocation } from "react-router-dom";
+import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import { ModeToggle } from "@/components/mode-toggle";
+import { Separator } from "./ui/separator";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbList } from "./ui/breadcrumb";
+import { BackgroundGlow } from "./BackgroundGlow";
 
 export default function Layout() {
   const location = useLocation();
 
   // Сторінки без скролу
   // TODO: ЗАРЕФАКТОРИТИ ТА ЗНАЙТИ ОПТИМАЛЬНИЙ СПОСІБ
-  const pagesWithoutScroll = ['/saving-plans'];
+  const pagesWithoutScroll = ["/saving-plans"];
   const shouldHaveScroll = !pagesWithoutScroll.includes(location.pathname);
 
   // const currentRoute = matches[matches.length - 1];
@@ -39,7 +39,7 @@ export default function Layout() {
           <ModeToggle />
         </header>
         <div
-          className={`flex-1 h-0 ${shouldHaveScroll ? 'overflow-y-auto px-4' : 'overflow-hidden'}`}
+          className={`flex-1 h-0 ${shouldHaveScroll ? "overflow-y-auto px-4" : "overflow-hidden"}`}
         >
           <Outlet />
         </div>

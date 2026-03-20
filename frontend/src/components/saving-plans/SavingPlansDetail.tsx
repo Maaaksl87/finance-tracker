@@ -1,11 +1,11 @@
-import { useSavingPlan } from '@/hooks/useSavingPlans';
-import { Separator } from '../ui/separator';
-import { SavingPlansTransactions } from './SavingPlansTransactions';
-import SavingPlanChart from './SavingPlanChart';
-import ProgressBar from './ProgressBar';
+import { useSavingPlan } from "@/hooks/useSavingPlans";
+import { Separator } from "../ui/separator";
+import { SavingPlansTransactions } from "./SavingPlansTransactions";
+import SavingPlanChart from "./SavingPlanChart";
+import ProgressBar from "./ProgressBar";
 
 function SavingPlansDetail({ selectedPlanId }: { selectedPlanId: string | null }) {
-  const { data: plan, isLoading } = useSavingPlan(selectedPlanId || '');
+  const { data: plan, isLoading } = useSavingPlan(selectedPlanId || "");
 
   if (isLoading) return <div>Завантаження...</div>;
 
@@ -23,7 +23,7 @@ function SavingPlansDetail({ selectedPlanId }: { selectedPlanId: string | null }
             <span className="">
               {plan?.targetAmount
                 ? ((plan?.currentAmount / plan?.targetAmount) * 100).toFixed(2)
-                : '0.00'}
+                : "0.00"}
               %
             </span>
           </p>
@@ -33,7 +33,7 @@ function SavingPlansDetail({ selectedPlanId }: { selectedPlanId: string | null }
         {/* TODO: зарефакторити блоки детальної фнформації та транзакцій. Переробити розташування*/}
         <div className="flex-1 p-4 border rounded-lg border-zinc-600">
           <h3 className="mb-2 text-lg font-semibold">Графік додавання коштів</h3>
-          <SavingPlanChart selectedPlanId={selectedPlanId || ''} />
+          <SavingPlanChart selectedPlanId={selectedPlanId || ""} />
         </div>
       </div>
 

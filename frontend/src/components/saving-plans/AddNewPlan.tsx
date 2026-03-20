@@ -34,15 +34,15 @@ export default function AddNewPlan({
   const mutation = useMutation({
     mutationFn: createSavingPlan,
     onSuccess: (data) => {
-        // оновлюємо кеш після створення плану
+      // оновлюємо кеш після створення плану
       queryClient.invalidateQueries({ queryKey: ["saving-plans", "list"] });
       setFormData({ title: "", targetAmount: "", description: "" });
-      
+
       // калбек з id нового плану
       if (data?._id) {
         onPlanCreated?.(data._id);
       }
-      
+
       onClose();
     },
     onError: (error) => {

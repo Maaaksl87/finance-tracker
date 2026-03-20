@@ -1,8 +1,8 @@
-import { useEffect, useState, useCallback } from 'react';
-import type { Transaction } from '@/types';
-import { getTransactions, deleteTransaction } from '@/api/transactions';
-import { TestCreateTransactionDialog } from '@/components/transactions/TestCreateTransactionDialog';
-import TestTransactionsTable from '@/components/transactions/TestTransactionsTable';
+import { useEffect, useState, useCallback } from "react";
+import type { Transaction } from "@/types";
+import { getTransactions, deleteTransaction } from "@/api/transactions";
+import { TestCreateTransactionDialog } from "@/components/transactions/TestCreateTransactionDialog";
+import TestTransactionsTable from "@/components/transactions/TestTransactionsTable";
 
 const TransactionsPage = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -15,7 +15,7 @@ const TransactionsPage = () => {
       const { transactions: data } = await getTransactions({ limit: 20 });
       setTransactions(data);
     } catch (error) {
-      console.error('Failed to fetch transactions', error);
+      console.error("Failed to fetch transactions", error);
     } finally {
       setIsLoading(false);
     }
@@ -27,22 +27,25 @@ const TransactionsPage = () => {
   }, []);
 
   // Видалення
-  const handleDelete = useCallback(async (id: string) => {
-    if (!confirm('Ви впевнені, що хочете видалити цей запис?')) return;
+  const handleDelete = useCallback(
+    async (id: string) => {
+      if (!confirm("Ви впевнені, що хочете видалити цей запис?")) return;
 
-    // Оптимістичне оновлення інтерфейсу
-    setTransactions((prev) => prev.filter((t) => t._id !== id));
+      // Оптимістичне оновлення інтерфейсу
+      setTransactions((prev) => prev.filter((t) => t._id !== id));
 
-    try {
-      await deleteTransaction(id);
-      // Можна викликати fetchData(), щоб переконатися, що баланси на бекенді оновилися
-      // Але поки що залишимо так для швидкості
-    } catch (error) {
-      console.error('Failed to delete', error);
-      alert('Помилка видалення');
-      fetchData(); // Відкат змін
-    }
-  }, [fetchData]);
+      try {
+        await deleteTransaction(id);
+        // Можна викликати fetchData(), щоб переконатися, що баланси на бекенді оновилися
+        // Але поки що залишимо так для швидкості
+      } catch (error) {
+        console.error("Failed to delete", error);
+        alert("Помилка видалення");
+        fetchData(); // Відкат змін
+      }
+    },
+    [fetchData],
+  );
 
   return (
     <div className="space-y-6">

@@ -1,8 +1,8 @@
-import { TransactionType } from '@/types';
-import { useSavingPlanTransactions } from '@/hooks/useSavingPlans';
-import { format } from 'date-fns';
-import { uk } from 'date-fns/locale';
-import { Badge } from '@/components/ui/badge';
+import { TransactionType } from "@/types";
+import { useSavingPlanTransactions } from "@/hooks/useSavingPlans";
+import { format } from "date-fns";
+import { uk } from "date-fns/locale";
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -10,7 +10,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 
 interface SavingPlansTransactionsProps {
   selectedPlanId: string | null;
@@ -20,7 +20,7 @@ export function SavingPlansTransactions({
   selectedPlanId,
 }: SavingPlansTransactionsProps) {
   const { data: transactions, isLoading } = useSavingPlanTransactions(
-    selectedPlanId || '',
+    selectedPlanId || "",
   );
 
   if (isLoading) {
@@ -53,7 +53,7 @@ export function SavingPlansTransactions({
   };
 
   const formatAmount = (amount: number) => {
-    return amount.toLocaleString('uk-UA', { minimumFractionDigits: 2 });
+    return amount.toLocaleString("uk-UA", { minimumFractionDigits: 2 });
   };
 
   return (
@@ -75,28 +75,28 @@ export function SavingPlansTransactions({
               className="border-zinc-700 hover:bg-zinc-800/20"
             >
               <TableCell className="text-sm text-zinc-300">
-                {format(new Date(transaction.date), 'd MMM yyyy, HH:mm', {
+                {format(new Date(transaction.date), "d MMM yyyy, HH:mm", {
                   locale: uk,
                 })}
               </TableCell>
               <TableCell>{getTypeBadge(transaction.type)}</TableCell>
               <TableCell className="text-sm text-zinc-300">
-                {transaction.description || transaction.category || '—'}
+                {transaction.description || transaction.category || "—"}
               </TableCell>
               <TableCell className="text-sm text-zinc-400">
-                {typeof transaction.sourceId === 'object'
+                {typeof transaction.sourceId === "object"
                   ? transaction.sourceId.name
-                  : 'Гаманець'}
+                  : "Гаманець"}
               </TableCell>
               <TableCell className="text-right">
                 <span
                   className={`font-medium ${
                     transaction.type === TransactionType.EXPENSE
-                      ? 'text-red-500'
-                      : 'text-green-500'
+                      ? "text-red-500"
+                      : "text-green-500"
                   }`}
                 >
-                  {transaction.type === TransactionType.EXPENSE ? '-' : '+'}
+                  {transaction.type === TransactionType.EXPENSE ? "-" : "+"}
                   {formatAmount(transaction.amount)} ₴
                 </span>
               </TableCell>

@@ -77,14 +77,9 @@ const TestSourcesPage = () => {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {sources.map((source) => (
-            <Card
-              key={source._id}
-              className="hover:shadow-md transition-shadow"
-            >
+            <Card key={source._id} className="hover:shadow-md transition-shadow">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  {source.name}
-                </CardTitle>
+                <CardTitle className="text-sm font-medium">{source.name}</CardTitle>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="h-8 w-8 p-0">

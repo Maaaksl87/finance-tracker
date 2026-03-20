@@ -1,8 +1,8 @@
-import { useMemo } from 'react';
-import { TransactionType } from '@/types';
-import type { Transaction } from '@/types';
-import { format } from 'date-fns';
-import { uk } from 'date-fns/locale';
+import { useMemo } from "react";
+import { TransactionType } from "@/types";
+import type { Transaction } from "@/types";
+import { format } from "date-fns";
+import { uk } from "date-fns/locale";
 
 interface ChartDataPoint {
   date: string;
@@ -35,7 +35,7 @@ export function buildCashFlowData(
 
       return {
         date: format(new Date(t.date), dateFormat),
-        fullDate: format(new Date(t.date), 'd MMMM yyyy', { locale: uk }),
+        fullDate: format(new Date(t.date), "d MMMM yyyy", { locale: uk }),
         balance: currentBalance,
         amount: isExpense ? -amount : amount,
         type: t.type,

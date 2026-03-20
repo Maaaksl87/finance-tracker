@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { getTransactions, getTransactionStats } from '@/api/transactions';
-import type { Transaction, TransactionStats } from '@/types';
+import { useEffect, useState } from "react";
+import { getTransactions, getTransactionStats } from "@/api/transactions";
+import type { Transaction, TransactionStats } from "@/types";
 
 export function useTransactionStats() {
   const [stats, setStats] = useState<TransactionStats | null>(null);
@@ -18,7 +18,7 @@ export function useTransactionStats() {
         setStats(statsData);
         setTransactions(transactionsData.transactions);
       } catch (error) {
-        console.error('Failed to fetch data', error);
+        console.error("Failed to fetch data", error);
       } finally {
         setIsLoading(false);
       }

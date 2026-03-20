@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer';
+import { Type } from "class-transformer";
 import {
   IsDate,
   IsEnum,
@@ -10,13 +10,13 @@ import {
   MaxLength,
   Min,
   ValidateIf,
-} from 'class-validator';
+} from "class-validator";
 
-import { TransactionType } from '../schemas/transaction.schema';
+import { TransactionType } from "../schemas/transaction.schema";
 
 export class CreateTransactionDto {
   @IsNumber()
-  @Min(0.01, { message: 'Amount must be greater than 0' })
+  @Min(0.01, { message: "Amount must be greater than 0" })
   amount: number;
 
   @IsEnum(TransactionType)
@@ -24,12 +24,12 @@ export class CreateTransactionDto {
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(15, { message: 'Категорія не може перевищувати 15 символів' })
+  @MaxLength(15, { message: "Категорія не може перевищувати 15 символів" })
   category: string;
 
   @IsString()
   @IsOptional()
-  @MaxLength(150, { message: 'Опис не може перевищувати 150 символів' })
+  @MaxLength(150, { message: "Опис не може перевищувати 150 символів" })
   description?: string;
 
   @IsOptional()
@@ -42,7 +42,7 @@ export class CreateTransactionDto {
 
   // Куди (Обов'язкове ТІЛЬКИ якщо тип = TRANSFER)
   @ValidateIf((o: CreateTransactionDto) => o.type === TransactionType.TRANSFER)
-  @IsNotEmpty({ message: 'Потрібно вказати джерело при переказі коштів' })
+  @IsNotEmpty({ message: "Потрібно вказати джерело при переказі коштів" })
   @IsMongoId()
   destinationSourceId?: string;
 

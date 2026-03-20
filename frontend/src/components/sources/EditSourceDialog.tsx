@@ -20,12 +20,7 @@ interface Props {
   onSuccess: () => void;
 }
 
-export function EditSourceDialog({
-  source,
-  open,
-  onOpenChange,
-  onSuccess,
-}: Props) {
+export function EditSourceDialog({ source, open, onOpenChange, onSuccess }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState(source.name);
   const [balance, setBalance] = useState(source.balance);
@@ -50,9 +45,7 @@ export function EditSourceDialog({
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Редагувати гаманець</DialogTitle>
-            <DialogDescription>
-              Змініть назву або скоригуйте баланс.
-            </DialogDescription>
+            <DialogDescription>Змініть назву або скоригуйте баланс.</DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-4 py-4">

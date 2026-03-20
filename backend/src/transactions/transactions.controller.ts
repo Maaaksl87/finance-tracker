@@ -8,15 +8,15 @@ import {
   Query,
   Request,
   UseGuards,
-} from '@nestjs/common';
+} from "@nestjs/common";
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import type { RequestWithUser } from '../common/interfaces/request-with-user.interface';
-import { CreateTransactionDto } from './dto/create-transaction.dto';
-import { TransactionType } from './schemas/transaction.schema';
-import { TransactionsService } from './transactions.service';
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import type { RequestWithUser } from "../common/interfaces/request-with-user.interface";
+import { CreateTransactionDto } from "./dto/create-transaction.dto";
+import { TransactionType } from "./schemas/transaction.schema";
+import { TransactionsService } from "./transactions.service";
 
-@Controller('transactions')
+@Controller("transactions")
 @UseGuards(JwtAuthGuard)
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
@@ -32,10 +32,10 @@ export class TransactionsController {
   @Get()
   findAll(
     @Request() req: RequestWithUser,
-    @Query('page') page?: string,
-    @Query('limit') limit?: string,
-    @Query('type') type?: TransactionType,
-    @Query('sourceId') sourceId?: string,
+    @Query("page") page?: string,
+    @Query("limit") limit?: string,
+    @Query("type") type?: TransactionType,
+    @Query("sourceId") sourceId?: string,
   ) {
     return this.transactionsService.findAll(
       req.user._id,
@@ -46,11 +46,11 @@ export class TransactionsController {
     );
   }
 
-  @Get('stats')
+  @Get("stats")
   getStats(
     @Request() req: RequestWithUser,
-    @Query('startDate') startDate?: string,
-    @Query('endDate') endDate?: string,
+    @Query("startDate") startDate?: string,
+    @Query("endDate") endDate?: string,
   ) {
     return this.transactionsService.getStats(
       req.user._id,
@@ -59,13 +59,13 @@ export class TransactionsController {
     );
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string, @Request() req: RequestWithUser) {
+  @Get(":id")
+  findOne(@Param("id") id: string, @Request() req: RequestWithUser) {
     return this.transactionsService.findOne(id, req.user._id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string, @Request() req: RequestWithUser) {
+  @Delete(":id")
+  remove(@Param("id") id: string, @Request() req: RequestWithUser) {
     return this.transactionsService.remove(id, req.user._id);
   }
 }

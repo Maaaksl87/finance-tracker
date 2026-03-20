@@ -1,6 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useTransactionStats } from '@/hooks/useTransactionStats';
-import { buildCashFlowData } from '@/lib/charts/buildCashFlowData';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useTransactionStats } from "@/hooks/useTransactionStats";
+import { buildCashFlowData } from "@/lib/charts/buildCashFlowData";
 
 import {
   PieChart,
@@ -14,18 +14,18 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-} from 'recharts';
+} from "recharts";
 
-const COLORS = ['#10b981', '#ef4444', '#3b82f6'];
+const COLORS = ["#10b981", "#ef4444", "#3b82f6"];
 
 function StatsPage() {
   const { stats, transactions, isLoading } = useTransactionStats();
-  const lineChartData = buildCashFlowData(transactions, 'dd.MM');
+  const lineChartData = buildCashFlowData(transactions, "dd.MM");
 
   const pieChartData = stats
     ? [
-        { name: 'Доходи', value: stats.totalIncome },
-        { name: 'Витрати', value: stats.totalExpense },
+        { name: "Доходи", value: stats.totalIncome },
+        { name: "Витрати", value: stats.totalExpense },
       ].filter((item) => item.value > 0)
     : [];
 
@@ -66,7 +66,7 @@ function StatsPage() {
           </CardHeader>
           <CardContent>
             <div
-              className={`text-2xl font-bold ${stats.totalIncome - stats.totalExpense >= 0 ? 'text-blue-600' : 'text-orange-600'}`}
+              className={`text-2xl font-bold ${stats.totalIncome - stats.totalExpense >= 0 ? "text-blue-600" : "text-orange-600"}`}
             >
               {(stats.totalIncome - stats.totalExpense).toLocaleString()} ₴
             </div>
@@ -114,9 +114,9 @@ function StatsPage() {
                   />
                   <RechartsTooltip
                     contentStyle={{
-                      borderRadius: '8px',
-                      border: 'none',
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                      borderRadius: "8px",
+                      border: "none",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                     }}
                     labelFormatter={(label, payload) => {
                       if (payload && payload.length > 0)
@@ -125,7 +125,7 @@ function StatsPage() {
                     }}
                     formatter={(value: number) => [
                       `${value.toLocaleString()} ₴`,
-                      'Баланс',
+                      "Баланс",
                     ]}
                   />
                   <Legend />

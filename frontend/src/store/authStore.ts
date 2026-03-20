@@ -23,8 +23,7 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       isAuth: false,
 
-      setToken: (token, user) =>
-        set({ token: token, user: user, isAuth: true }),
+      setToken: (token, user) => set({ token: token, user: user, isAuth: true }),
 
       logout: () => {
         // При виході чистимо все
@@ -35,6 +34,6 @@ export const useAuthStore = create<AuthState>()(
     {
       name: "auth-storage",
       partialize: (state) => ({ token: state.token, user: state.user }),
-    }
-  )
+    },
+  ),
 );

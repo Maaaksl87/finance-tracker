@@ -1,11 +1,11 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import * as bcrypt from 'bcrypt';
-import { Model } from 'mongoose';
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import * as bcrypt from "bcrypt";
+import { Model } from "mongoose";
 
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { User, UserDocument } from './schemas/user.schema';
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { User, UserDocument } from "./schemas/user.schema";
 
 @Injectable()
 export class UsersService {
@@ -14,7 +14,7 @@ export class UsersService {
   async create(createUserDto: CreateUserDto): Promise<UserDocument> {
     const existing = await this.userModel.findOne({ email: createUserDto.email }).exec();
     if (existing) {
-      throw new ConflictException('Користувач з таким email вже існує');
+      throw new ConflictException("Користувач з таким email вже існує");
     }
     const hash = await bcrypt.hash(createUserDto.password, 10);
     const createdUser = new this.userModel({
@@ -30,9 +30,9 @@ export class UsersService {
   }
 
   async findById(id: string): Promise<UserDocument> {
-    const user = await this.userModel.findById(id).select('-password').exec();
+    const user = await this.userModel.findById(id).select("-password").exec();
     if (!user) {
-      throw new NotFoundException('Користувача не знайдено');
+      throw new NotFoundException("Користувача не знайдено");
     }
     return user;
   }
@@ -44,10 +44,10 @@ export class UsersService {
     }
     const user = await this.userModel
       .findByIdAndUpdate(id, updateData, { new: true })
-      .select('-password')
+      .select("-password")
       .exec();
     if (!user) {
-      throw new NotFoundException('Користувача не знайдено');
+      throw new NotFoundException("Користувача не знайдено");
     }
     return user;
   }
@@ -55,7 +55,7 @@ export class UsersService {
   async remove(id: string): Promise<{ deleted: boolean }> {
     const result = await this.userModel.findByIdAndDelete(id).exec();
     if (!result) {
-      throw new NotFoundException('Користувача не знайдено');
+      throw new NotFoundException("Користувача не знайдено");
     }
     return { deleted: true };
   }

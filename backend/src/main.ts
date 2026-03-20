@@ -1,16 +1,16 @@
 // eslint-disable-next-line simple-import-sort/imports
-import 'reflect-metadata';
+import "reflect-metadata";
 
-import { ValidationPipe } from '@nestjs/common/pipes/validation.pipe';
-import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from "@nestjs/common/pipes/validation.pipe";
+import { NestFactory } from "@nestjs/core";
 
-import { AppModule } from './app.module';
+import { AppModule } from "./app.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: '*', // Дозволяємо доступ з будь-якого домену
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    origin: "*", // Дозволяємо доступ з будь-якого домену
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true, // Дозволяємо передавати куки та заголовки авторизації
   });
 

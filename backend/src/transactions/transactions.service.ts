@@ -1,13 +1,13 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { InjectConnection } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { ClientSession } from 'mongoose';
-import { Connection } from 'mongoose';
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { InjectConnection } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { ClientSession } from "mongoose";
+import { Connection } from "mongoose";
 
-import { SourcesService } from '../sources/sources.service';
-import { CreateTransactionDto } from './dto/create-transaction.dto';
-import { Transaction, TransactionType } from './schemas/transaction.schema';
+import { SourcesService } from "../sources/sources.service";
+import { CreateTransactionDto } from "./dto/create-transaction.dto";
+import { Transaction, TransactionType } from "./schemas/transaction.schema";
 
 @Injectable()
 export class TransactionsService {
@@ -22,11 +22,11 @@ export class TransactionsService {
 
     // Валідація
     if (amount <= 0) {
-      throw new BadRequestException('Сума повинна бути додатною');
+      throw new BadRequestException("Сума повинна бути додатною");
     }
 
     if (type === TransactionType.TRANSFER && !destinationSourceId) {
-      throw new BadRequestException('Для трансферу потрібно вказати цільове джерело');
+      throw new BadRequestException("Для трансферу потрібно вказати цільове джерело");
     }
 
     // Використовуємо MongoDB транзакції для атомарності
@@ -54,7 +54,7 @@ export class TransactionsService {
             break;
 
           default:
-            throw new BadRequestException('Невірний тип транзакції');
+            throw new BadRequestException("Невірний тип транзакції");
         }
 
         // Створюємо і зберігаємо транзакцію після успішних операцій
@@ -96,8 +96,8 @@ export class TransactionsService {
         .sort({ date: -1 })
         .skip(skip)
         .limit(limit)
-        .populate('sourceId', 'name type')
-        .populate('destinationSourceId', 'name type')
+        .populate("sourceId", "name type")
+        .populate("destinationSourceId", "name type")
         .exec(),
       this.transactionModel.countDocuments(filter),
     ]);
@@ -117,8 +117,8 @@ export class TransactionsService {
   async findOne(id: string, userId: string) {
     const transaction = await this.transactionModel
       .findOne({ _id: id, userId })
-      .populate('sourceId', 'name type')
-      .populate('destinationSourceId', 'name type')
+      .populate("sourceId", "name type")
+      .populate("destinationSourceId", "name type")
       .exec();
 
     if (!transaction) {
@@ -208,8 +208,8 @@ export class TransactionsService {
       { $match: matchStage },
       {
         $group: {
-          _id: '$type',
-          total: { $sum: '$amount' },
+          _id: "$type",
+          total: { $sum: "$amount" },
           count: { $sum: 1 },
         },
       },

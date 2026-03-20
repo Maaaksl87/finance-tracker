@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import SavingPlanStatsCards from '../components/saving-plans/SavingPlanStatsCards';
-import SavingPlansList from '@/components/saving-plans/SavingPlansList';
-import SavingPlansDetail from '@/components/saving-plans/SavingPlansDetail';
-import { useSavingPlans } from '@/hooks/useSavingPlans';
+import { useState, useEffect } from "react";
+import SavingPlanStatsCards from "../components/saving-plans/SavingPlanStatsCards";
+import SavingPlansList from "@/components/saving-plans/SavingPlansList";
+import SavingPlansDetail from "@/components/saving-plans/SavingPlansDetail";
+import { useSavingPlans } from "@/hooks/useSavingPlans";
 
 function SavingPlansPage() {
   const { data: plans, isLoading } = useSavingPlans();

@@ -3,11 +3,11 @@ import {
   CardTitle,
   CardContent,
   CardWithBackdrop,
-} from '@/components/ui/card';
-import { useAuthStore } from '@/store/authStore';
-import { PlusCircle, ArrowRightLeft, Sparkles, PiggyBank } from 'lucide-react';
+} from "@/components/ui/card";
+import { useAuthStore } from "@/store/authStore";
+import { PlusCircle, ArrowRightLeft, Sparkles, PiggyBank } from "lucide-react";
 
-import { useTransactionStats } from '@/hooks/useTransactionStats';
+import { useTransactionStats } from "@/hooks/useTransactionStats";
 
 export default function DashboardPage() {
   const { stats, isLoading } = useTransactionStats();
@@ -27,7 +27,7 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">
-              Вітаю, {user?.name || 'користувач'}!
+              Вітаю, {user?.name || "користувач"}!
             </h1>
             <p className="text-sm text-muted-foreground">
               Контролюй свої фінанси для фінансового здоров'я.
@@ -196,39 +196,39 @@ export default function DashboardPage() {
                 <div className="space-y-3">
                   {[
                     {
-                      name: 'Електрика',
-                      category: 'Платежі',
-                      date: '2028-02-01',
-                      amount: '₴296.51',
-                      status: 'Виконано',
+                      name: "Електрика",
+                      category: "Платежі",
+                      date: "2028-02-01",
+                      amount: "₴296.51",
+                      status: "Виконано",
                     },
                     {
-                      name: 'Продукти',
-                      category: 'Покупки',
-                      date: '2028-04-04',
-                      amount: '₴304.47',
-                      status: 'Завершено',
+                      name: "Продукти",
+                      category: "Покупки",
+                      date: "2028-04-04",
+                      amount: "₴304.47",
+                      status: "Завершено",
                     },
                     {
-                      name: 'Кіно',
-                      category: 'Розваги',
-                      date: '2028-02-27',
-                      amount: '₴37.84',
-                      status: 'Очікування',
+                      name: "Кіно",
+                      category: "Розваги",
+                      date: "2028-02-27",
+                      amount: "₴37.84",
+                      status: "Очікування",
                     },
                     {
-                      name: 'Медичний огляд',
+                      name: "Медичний огляд",
                       category: "Здоров'я",
-                      date: '2028-02-07',
-                      amount: '₴322.33',
-                      status: 'Очікування',
+                      date: "2028-02-07",
+                      amount: "₴322.33",
+                      status: "Очікування",
                     },
                     {
-                      name: 'Ресторан',
-                      category: 'Харчування',
-                      date: '2025-03-11',
-                      amount: '₴326.76',
-                      status: 'Очікування',
+                      name: "Ресторан",
+                      category: "Харчування",
+                      date: "2025-03-11",
+                      amount: "₴326.76",
+                      status: "Очікування",
                     },
                   ].map((tx, i) => (
                     <div
@@ -265,11 +265,11 @@ export default function DashboardPage() {
             </div>
             <div className="space-y-2 text-sm">
               {[
-                { label: 'Оренда та проживання', amount: '₴2,100' },
-                { label: 'Інвестиції', amount: '₴525' },
-                { label: 'Освіта', amount: '₴420' },
-                { label: 'Їжа та напої', amount: '₴280' },
-                { label: 'Розваги', amount: '₴175' },
+                { label: "Оренда та проживання", amount: "₴2,100" },
+                { label: "Інвестиції", amount: "₴525" },
+                { label: "Освіта", amount: "₴420" },
+                { label: "Їжа та напої", amount: "₴280" },
+                { label: "Розваги", amount: "₴175" },
               ].map((item, i) => (
                 <div key={i} className="flex items-center justify-between">
                   <span className="text-muted-foreground">{item.label}</span>
@@ -288,9 +288,9 @@ export default function DashboardPage() {
           <CardContent>
             <div className="space-y-2 text-sm">
               {[
-                { pair: 'USD / UAH', rate: '-0.533400', value: '₴82.000' },
-                { pair: 'USDT / UAH', rate: '-0.000222', value: '₴80.550' },
-                { pair: 'EUR / UAH', rate: '-6.000058', value: '₴12,534' },
+                { pair: "USD / UAH", rate: "-0.533400", value: "₴82.000" },
+                { pair: "USDT / UAH", rate: "-0.000222", value: "₴80.550" },
+                { pair: "EUR / UAH", rate: "-6.000058", value: "₴12,534" },
               ].map((item, i) => (
                 <div
                   key={i}

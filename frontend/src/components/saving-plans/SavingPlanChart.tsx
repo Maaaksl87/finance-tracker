@@ -7,17 +7,17 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-} from 'recharts';
-import { useSavingPlanTransactions } from '@/hooks/useSavingPlans';
-import { buildCashFlowData } from '@/lib/charts/buildCashFlowData';
+} from "recharts";
+import { useSavingPlanTransactions } from "@/hooks/useSavingPlans";
+import { buildCashFlowData } from "@/lib/charts/buildCashFlowData";
 
 interface SavingPlanChartProps {
   selectedPlanId: string | null;
 }
 
 export default function SavingPlanChart({ selectedPlanId }: SavingPlanChartProps) {
-  const { data: transactions } = useSavingPlanTransactions(selectedPlanId || '');
-  const chartData = buildCashFlowData(transactions || [], 'dd.MM');
+  const { data: transactions } = useSavingPlanTransactions(selectedPlanId || "");
+  const chartData = buildCashFlowData(transactions || [], "dd.MM");
 
   if (chartData.length === 0) {
     return (
@@ -37,20 +37,20 @@ export default function SavingPlanChart({ selectedPlanId }: SavingPlanChartProps
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-        <XAxis dataKey="date" stroke="#9ca3af" style={{ fontSize: '12px' }} />
+        <XAxis dataKey="date" stroke="#9ca3af" style={{ fontSize: "12px" }} />
         <YAxis
           stroke="#9ca3af"
-          style={{ fontSize: '12px' }}
+          style={{ fontSize: "12px" }}
           tickFormatter={(value) => `${value.toLocaleString()} ₴`}
         />
         <Tooltip
           contentStyle={{
-            backgroundColor: '#1f2937',
-            border: '1px solid #374151',
-            borderRadius: '8px',
-            color: '#f3f4f6',
+            backgroundColor: "#1f2937",
+            border: "1px solid #374151",
+            borderRadius: "8px",
+            color: "#f3f4f6",
           }}
-          formatter={(value: number) => `${value.toLocaleString('uk-UA')} ₴`}
+          formatter={(value: number) => `${value.toLocaleString("uk-UA")} ₴`}
           labelFormatter={(label, payload) => {
             if (payload && payload.length > 0) {
               return payload[0].payload.fullDate;
@@ -58,13 +58,13 @@ export default function SavingPlanChart({ selectedPlanId }: SavingPlanChartProps
             return label;
           }}
         />
-        <Legend wrapperStyle={{ color: '#9ca3af' }} formatter={() => 'Накопичено'} />
+        <Legend wrapperStyle={{ color: "#9ca3af" }} formatter={() => "Накопичено"} />
         <Line
           type="monotone"
           dataKey="balance"
           stroke="#10b981"
           strokeWidth={2}
-          dot={{ fill: '#10b981', r: 4 }}
+          dot={{ fill: "#10b981", r: 4 }}
           activeDot={{ r: 6 }}
           isAnimationActive={true}
         />

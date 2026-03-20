@@ -1,15 +1,15 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, Types } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { HydratedDocument, Types } from "mongoose";
 
-import { Source } from '../../sources/schemas/source.schema';
-import { User } from '../../users/schemas/user.schema';
+import { Source } from "../../sources/schemas/source.schema";
+import { User } from "../../users/schemas/user.schema";
 
 export type TransactionDocument = HydratedDocument<Transaction>;
 
 export enum TransactionType {
-  INCOME = 'income',
-  EXPENSE = 'expense',
-  TRANSFER = 'transfer',
+  INCOME = "income",
+  EXPENSE = "expense",
+  TRANSFER = "transfer",
 }
 
 @Schema({ timestamps: true })
@@ -23,7 +23,7 @@ export class Transaction {
   @Prop({ default: 0 })
   fee: number;
 
-  @Prop({ default: 'UAH' })
+  @Prop({ default: "UAH" })
   currency: string;
 
   @Prop()
@@ -56,7 +56,7 @@ export class Transaction {
   @Prop({ type: Types.ObjectId, ref: User.name, required: true })
   userId: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: 'SavingPlan', required: false })
+  @Prop({ type: Types.ObjectId, ref: "SavingPlan", required: false })
   savingPlanId?: Types.ObjectId;
 }
 

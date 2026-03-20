@@ -6,8 +6,7 @@ export const TransactionType = {
   TRANSFER: "transfer",
 } as const;
 
-export type TransactionType =
-  (typeof TransactionType)[keyof typeof TransactionType];
+export type TransactionType = (typeof TransactionType)[keyof typeof TransactionType];
 
 export interface Transaction {
   _id: string;

@@ -1,18 +1,18 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model, Types } from "mongoose";
 
 import {
   Transaction,
   TransactionDocument,
-} from '../transactions/schemas/transaction.schema';
-import { CreateSavingPlanDto } from './dto/create-saving-plan.dto';
-import { UpdateSavingPlanDto } from './dto/update-saving-plan.dto';
+} from "../transactions/schemas/transaction.schema";
+import { CreateSavingPlanDto } from "./dto/create-saving-plan.dto";
+import { UpdateSavingPlanDto } from "./dto/update-saving-plan.dto";
 import {
   SavingPlan,
   SavingPlanDocument,
   SavingPlanStatus,
-} from './schemas/saving-plan.schema';
+} from "./schemas/saving-plan.schema";
 
 @Injectable()
 export class SavingPlansService {
@@ -110,14 +110,14 @@ export class SavingPlansService {
     const savingPlan = await this.findOne(userId, id);
 
     if (savingPlan.status === SavingPlanStatus.COMPLETED) {
-      throw new BadRequestException('Цей план заощаджень вже завершено');
+      throw new BadRequestException("Цей план заощаджень вже завершено");
     }
 
     if (savingPlan.status === SavingPlanStatus.PAUSED) {
-      throw new BadRequestException('Цей план заощаджень призупинено');
+      throw new BadRequestException("Цей план заощаджень призупинено");
     }
     if (amount <= 0) {
-      throw new BadRequestException('Сума повинна бути додатною');
+      throw new BadRequestException("Сума повинна бути додатною");
     }
     const newAmount = savingPlan.currentAmount + amount;
     const isCompleted = newAmount >= savingPlan.targetAmount;
@@ -125,8 +125,8 @@ export class SavingPlansService {
     // Створюємо транзакцію поповнення
     await new this.transactionModel({
       amount,
-      type: 'income',
-      category: 'Заощадження',
+      type: "income",
+      category: "Заощадження",
       description: `Поповнення плану "${savingPlan.title}"`,
       sourceId: new Types.ObjectId(sourceId),
       savingPlanId: new Types.ObjectId(id),
@@ -146,7 +146,7 @@ export class SavingPlansService {
         },
         { new: true },
       )
-      .orFail(() => new NotFoundException('План заощаджень не знайдено'))
+      .orFail(() => new NotFoundException("План заощаджень не знайдено"))
       .exec();
   }
 
@@ -159,11 +159,11 @@ export class SavingPlansService {
     const savingPlan = await this.findOne(userId, id);
 
     if (amount > savingPlan.currentAmount) {
-      throw new BadRequestException('Недостатньо коштів у плані заощаджень');
+      throw new BadRequestException("Недостатньо коштів у плані заощаджень");
     }
 
     if (amount <= 0) {
-      throw new BadRequestException('Сума повинна бути додатною');
+      throw new BadRequestException("Сума повинна бути додатною");
     }
 
     const newAmount = savingPlan.currentAmount - amount;
@@ -171,8 +171,8 @@ export class SavingPlansService {
     // Створюємо транзакцію зняття
     await new this.transactionModel({
       amount,
-      type: 'expense',
-      category: 'Заощадження',
+      type: "expense",
+      category: "Заощадження",
       description: `Зняття з плану "${savingPlan.title}"`,
       sourceId: new Types.ObjectId(sourceId),
       savingPlanId: new Types.ObjectId(id),
@@ -194,7 +194,7 @@ export class SavingPlansService {
         },
         { new: true },
       )
-      .orFail(() => new NotFoundException('План заощаджень не знайдено'))
+      .orFail(() => new NotFoundException("План заощаджень не знайдено"))
       .exec();
   }
 
@@ -226,7 +226,7 @@ export class SavingPlansService {
       })
       .sort({ date: -1 })
       .limit(30)
-      .populate('sourceId', 'name balance')
+      .populate("sourceId", "name balance")
       .exec();
   }
 }

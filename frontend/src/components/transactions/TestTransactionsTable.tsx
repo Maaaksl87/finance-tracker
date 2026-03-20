@@ -1,8 +1,8 @@
-import type { Transaction } from '@/types';
-import { TransactionType } from '@/types';
-import { format } from 'date-fns';
-import { uk } from 'date-fns/locale';
-import { Trash2, ArrowRight } from 'lucide-react';
+import type { Transaction } from "@/types";
+import { TransactionType } from "@/types";
+import { format } from "date-fns";
+import { uk } from "date-fns/locale";
+import { Trash2, ArrowRight } from "lucide-react";
 
 import {
   Table,
@@ -11,10 +11,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { memo } from 'react';
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { memo } from "react";
 
 interface Props {
   data: Transaction[];
@@ -28,22 +28,22 @@ function TestTransactionsTable({ data, onDelete }: Props) {
     const isIncome = type === TransactionType.INCOME;
 
     // Додаємо + або - для краси
-    const prefix = isIncome ? '+' : isExpense ? '-' : '';
+    const prefix = isIncome ? "+" : isExpense ? "-" : "";
 
     return (
       <span
         className={
           isIncome
-            ? 'text-green-600 font-bold'
+            ? "text-green-600 font-bold"
             : isExpense
-              ? 'text-red-600 font-bold'
-              : 'text-blue-600 font-bold'
+              ? "text-red-600 font-bold"
+              : "text-blue-600 font-bold"
         }
       >
         {prefix}
-        {amount.toLocaleString('uk-UA', {
+        {amount.toLocaleString("uk-UA", {
           minimumFractionDigits: 2,
-        })}{' '}
+        })}{" "}
         ₴
       </span>
     );
@@ -88,7 +88,7 @@ function TestTransactionsTable({ data, onDelete }: Props) {
               <TableRow key={transaction._id}>
                 {/* 1. ДАТА */}
                 <TableCell className="font-medium">
-                  {format(new Date(transaction.date), 'd MMM yyyy, HH:mm', {
+                  {format(new Date(transaction.date), "d MMM yyyy, HH:mm", {
                     locale: uk,
                   })}
                 </TableCell>
@@ -113,9 +113,9 @@ function TestTransactionsTable({ data, onDelete }: Props) {
                   <div className="flex items-center gap-2 text-sm">
                     {/* Якщо це об'єкт (populate) - беремо name, інакше ID */}
                     <span>
-                      {typeof transaction.sourceId === 'object'
+                      {typeof transaction.sourceId === "object"
                         ? transaction.sourceId.name
-                        : 'Гаманець'}
+                        : "Гаманець"}
                     </span>
 
                     {/* Якщо це переказ, показуємо стрілочку і куди */}
@@ -124,9 +124,9 @@ function TestTransactionsTable({ data, onDelete }: Props) {
                         <>
                           <ArrowRight className="h-3 w-3 text-muted-foreground" />
                           <span>
-                            {typeof transaction.destinationSourceId === 'object'
+                            {typeof transaction.destinationSourceId === "object"
                               ? transaction.destinationSourceId.name
-                              : 'Гаманець'}
+                              : "Гаманець"}
                           </span>
                         </>
                       )}

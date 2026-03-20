@@ -8,16 +8,16 @@ import {
   Post,
   Request,
   UseGuards,
-} from '@nestjs/common';
+} from "@nestjs/common";
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import type { RequestWithUser } from '../common/interfaces/request-with-user.interface';
-import { CreateSourceDto } from './dto/create-source.dto';
-import { UpdateSourceDto } from './dto/update-source.dto';
-import { SourcesService } from './sources.service';
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import type { RequestWithUser } from "../common/interfaces/request-with-user.interface";
+import { CreateSourceDto } from "./dto/create-source.dto";
+import { UpdateSourceDto } from "./dto/update-source.dto";
+import { SourcesService } from "./sources.service";
 
 @UseGuards(JwtAuthGuard)
-@Controller('sources')
+@Controller("sources")
 export class SourcesController {
   constructor(private readonly sourcesService: SourcesService) {}
 
@@ -31,22 +31,22 @@ export class SourcesController {
     return this.sourcesService.findAll(req.user._id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string, @Request() req: RequestWithUser) {
+  @Get(":id")
+  findOne(@Param("id") id: string, @Request() req: RequestWithUser) {
     return this.sourcesService.findOne(id, req.user._id);
   }
 
-  @Patch(':id')
+  @Patch(":id")
   update(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @Body() updateSourceDto: UpdateSourceDto,
     @Request() req: RequestWithUser,
   ) {
     return this.sourcesService.update(id, updateSourceDto, req.user._id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string, @Request() req: RequestWithUser) {
+  @Delete(":id")
+  remove(@Param("id") id: string, @Request() req: RequestWithUser) {
     return this.sourcesService.remove(id, req.user._id);
   }
 }

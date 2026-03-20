@@ -1,10 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { ClientSession, Model } from 'mongoose';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { ClientSession, Model } from "mongoose";
 
-import { CreateSourceDto } from './dto/create-source.dto';
-import { UpdateSourceDto } from './dto/update-source.dto';
-import { Source } from './schemas/source.schema';
+import { CreateSourceDto } from "./dto/create-source.dto";
+import { UpdateSourceDto } from "./dto/update-source.dto";
+import { Source } from "./schemas/source.schema";
 
 @Injectable()
 export class SourcesService {
@@ -24,7 +24,7 @@ export class SourcesService {
 
   async findOne(id: string, userId: string) {
     const source = await this.sourceModel.findOne({ _id: id, userId }).exec(); // check both source ID and user ID
-    if (!source) throw new NotFoundException('Джерело не знайдено');
+    if (!source) throw new NotFoundException("Джерело не знайдено");
     return source;
   }
 
@@ -36,13 +36,13 @@ export class SourcesService {
         { new: true }, // return the updated document
       )
       .exec();
-    if (!updatedSource) throw new NotFoundException('Джерело не знайдено');
+    if (!updatedSource) throw new NotFoundException("Джерело не знайдено");
     return updatedSource;
   }
 
   async remove(id: string, userId: string) {
     const source = await this.sourceModel.findOneAndDelete({ _id: id, userId }).exec(); // ensure the source belongs to the user
-    if (!source) throw new NotFoundException('Схоже, що такого джерела не існує');
+    if (!source) throw new NotFoundException("Схоже, що такого джерела не існує");
     return source;
   }
 

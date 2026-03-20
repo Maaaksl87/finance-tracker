@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useSavingPlans } from '@/hooks/useSavingPlans';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useSavingPlans } from "@/hooks/useSavingPlans";
 
 function SavingPlanStatsCards() {
   const { data: plans } = useSavingPlans();

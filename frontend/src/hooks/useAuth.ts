@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/authStore";
-import api from "@/api/axios"; 
+import api from "@/api/axios";
 import { isAxiosError } from "axios";
 import { useState } from "react";
 
@@ -62,7 +62,7 @@ export function useAuth() {
         email: data.email,
         password: data.password,
       });
-      
+
       // автоматичний вхід після реєстрації
       const loginResponse = await api.post("/auth/login", {
         email: data.email,

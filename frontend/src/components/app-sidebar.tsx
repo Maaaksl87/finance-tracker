@@ -1,4 +1,4 @@
-import { Brain, Home, Inbox, Search, Settings, Wallet, Coins, } from "lucide-react";
+import { Brain, Home, Inbox, Search, Settings, Wallet, Coins } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import {

@@ -1,14 +1,14 @@
-import api from './axios';
+import api from "./axios";
 import type {
   SavingPlan,
   CreateSavingPlanDto,
   UpdateSavingPlanDto,
   SavingPlanStats,
   Transaction,
-} from '../types';
+} from "../types";
 
 export const getSavingPlans = async (): Promise<SavingPlan[]> => {
-  const { data } = await api.get<SavingPlan[]>('/saving-plans');
+  const { data } = await api.get<SavingPlan[]>("/saving-plans");
   return data;
 };
 
@@ -18,14 +18,14 @@ export const getSavingPlan = async (id: string): Promise<SavingPlan> => {
 };
 
 export const getSavingPlanStats = async (): Promise<SavingPlanStats> => {
-  const { data } = await api.get<SavingPlanStats>('/saving-plans/stats');
+  const { data } = await api.get<SavingPlanStats>("/saving-plans/stats");
   return data;
 };
 
 export const createSavingPlan = async (
   savingPlanData: CreateSavingPlanDto,
 ): Promise<SavingPlan> => {
-  const { data } = await api.post<SavingPlan>('/saving-plans', savingPlanData);
+  const { data } = await api.post<SavingPlan>("/saving-plans", savingPlanData);
   return data;
 };
 

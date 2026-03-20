@@ -1,18 +1,18 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, Types } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { HydratedDocument, Types } from "mongoose";
 
 export type SavingPlanDocument = HydratedDocument<SavingPlan>;
 
 export enum SavingPlanStatus {
-  ACTIVE = 'active',
-  COMPLETED = 'completed',
-  PAUSED = 'paused',
+  ACTIVE = "active",
+  COMPLETED = "completed",
+  PAUSED = "paused",
 }
 
-@Schema({ timestamps: true, collection: 'saving-plans' })
+@Schema({ timestamps: true, collection: "saving-plans" })
 export class SavingPlan {
   // конкретний користувач, якому належить цей план заощаджень
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  @Prop({ type: Types.ObjectId, ref: "User", required: true })
   userId: Types.ObjectId;
 
   @Prop({ required: true })

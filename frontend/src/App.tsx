@@ -27,11 +27,7 @@ function App() {
           //TODO: переглянути всі компоненти та за потреби оптимізувати
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>
-              <Route
-                path="/"
-                element={<DashboardPage />}
-                handle={{ title: "Головна" }}
-              />
+              <Route path="/" element={<DashboardPage />} handle={{ title: "Головна" }} />
               <Route
                 path="/transactions"
                 element={<Transactions />}

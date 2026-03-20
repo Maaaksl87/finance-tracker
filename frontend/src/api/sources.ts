@@ -6,9 +6,7 @@ export const getSources = async (): Promise<Source[]> => {
   return data;
 };
 
-export const createSource = async (
-  sourceData: CreateSourceDto
-): Promise<Source> => {
+export const createSource = async (sourceData: CreateSourceDto): Promise<Source> => {
   const { data } = await api.post<Source>("/sources", sourceData);
   return data;
 };
@@ -19,7 +17,7 @@ export const deleteSource = async (id: string): Promise<void> => {
 
 export const updateSource = async (
   id: string,
-  sourceData: Partial<UpdateSourceDto>
+  sourceData: Partial<UpdateSourceDto>,
 ): Promise<Source> => {
   const { data } = await api.patch<Source>(`/sources/${id}`, sourceData);
   return data;

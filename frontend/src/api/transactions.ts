@@ -23,7 +23,7 @@ export const getTransaction = async (id: string): Promise<Transaction> => {
 };
 
 export const createTransaction = async (
-  data: CreateTransactionDto
+  data: CreateTransactionDto,
 ): Promise<Transaction> => {
   const { data: response } = await api.post("/transactions", data);
   return response;

@@ -1,7 +1,7 @@
 function ProgressBar({
   currentAmount,
   targetAmount,
-  className = '',
+  className = "",
 }: {
   currentAmount?: number;
   targetAmount?: number;

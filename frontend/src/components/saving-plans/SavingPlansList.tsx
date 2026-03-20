@@ -1,8 +1,8 @@
-import type { SavingPlan } from '@/types';
-import { Button } from '../ui/button';
-import AddNewPlan from './AddNewPlan';
-import { useState } from 'react';
-import ProgressBar from './ProgressBar';
+import type { SavingPlan } from "@/types";
+import { Button } from "../ui/button";
+import AddNewPlan from "./AddNewPlan";
+import { useState } from "react";
+import ProgressBar from "./ProgressBar";
 
 function SavingPlansList({
   plans,
@@ -36,12 +36,15 @@ function SavingPlansList({
             <p>
               $ {plan.currentAmount} / $ {plan.targetAmount}
             </p>
-            <ProgressBar currentAmount={plan.currentAmount} targetAmount={plan.targetAmount} />
+            <ProgressBar
+              currentAmount={plan.currentAmount}
+              targetAmount={plan.targetAmount}
+            />
 
             <span className="absolute flex items-center justify-end text-sm text-zinc-500 top-4 right-5">
               {plan.targetAmount
                 ? ((plan.currentAmount / plan.targetAmount) * 100).toFixed(2)
-                : '0.00'}
+                : "0.00"}
               %
             </span>
           </div>
