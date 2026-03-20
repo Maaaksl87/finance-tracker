@@ -16,6 +16,8 @@ import { cn, glassStyle } from "@/lib/utils";
 import { Field, FieldGroup, FieldLabel, FieldSeparator } from "@/components/ui/field";
 import AppleIcon from "@/assets/icons/AppleIcon";
 import GoogleIcon from "@/assets/icons/GoogleIcon";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
 const registerSchema = z
   .object({
@@ -33,6 +35,8 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 
 export function RegisterForm() {
   const { register: registerUser, isLoading, error } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
@@ -119,14 +123,30 @@ export function RegisterForm() {
 
               <Field className="gap-1">
                 <FieldLabel htmlFor="password">Пароль</FieldLabel>
-                <Input
-                  id="password"
-                  type="password"
-                  className={cn(glassStyle, "rounded-md ")}
-                  placeholder="Мінімум 6 символів"
-                  {...register("password")}
-                  disabled={isLoading}
-                />
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Введіть пароль"
+                    className={cn(glassStyle, "rounded-md")}
+                    required
+                    {...register("password")}
+                    disabled={isLoading}
+                  />
+                  <Button
+                    className="absolute top-0 right-0 h-full px-3 hover:bg-transparent"
+                    type="button"
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4 text-muted-foreground" />
+                    ) : (
+                      <Eye className="h-4 w-4 text-muted-foreground" />
+                    )}
+                  </Button>
+                </div>
                 {errors.password && (
                   <div className="text-sm text-red-500">{errors.password.message}</div>
                 )}
@@ -134,14 +154,29 @@ export function RegisterForm() {
 
               <Field className="gap-1">
                 <FieldLabel htmlFor="confirmPassword">Підтвердіть пароль</FieldLabel>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  className={cn(glassStyle, "rounded-md ")}
-                  placeholder="Повторіть пароль"
-                  {...register("confirmPassword")}
-                  disabled={isLoading}
-                />
+                <div className="relative">
+                  <Input
+                    id="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    className={cn(glassStyle, "rounded-md ")}
+                    placeholder="Повторіть пароль"
+                    {...register("confirmPassword")}
+                    disabled={isLoading}
+                  />
+                  <Button
+                    className="absolute top-0 right-0 h-full px-3 hover:bg-transparent"
+                    type="button"
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-4 w-4 text-muted-foreground" />
+                    ) : (
+                      <Eye className="h-4 w-4 text-muted-foreground" />
+                    )}
+                  </Button>
+                </div>
                 {errors.confirmPassword && (
                   <div className="text-sm text-red-500">
                     {errors.confirmPassword.message}

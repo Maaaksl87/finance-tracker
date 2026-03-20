@@ -87,7 +87,9 @@ export function LoginForm() {
                 {...register("email")}
                 disabled={isLoading}
               />
-              {errors.email && <div className="text-red-500">{errors.email.message}</div>}
+              {errors.email && (
+                <div className="text-red-500 text-sm">{errors.email.message}</div>
+              )}
             </Field>
 
             <Field className="gap-1">
@@ -117,14 +119,16 @@ export function LoginForm() {
                 </Button>
               </div>
               {errors.password && (
-                <div className="text-red-500">{errors.password.message}</div>
+                <div className="text-sm text-red-500">{errors.password.message}</div>
               )}
             </Field>
             <Field>
               <Button disabled={isLoading} type="submit">
                 {isLoading ? "Завантаження..." : "Увійти"}
               </Button>
-              {errors.root && <div className="text-red-500">{errors.root.message}</div>}
+              {errors.root && (
+                <div className="text-red-500 text-sm">{errors.root.message}</div>
+              )}
             </Field>
           </FieldGroup>
         </form>
