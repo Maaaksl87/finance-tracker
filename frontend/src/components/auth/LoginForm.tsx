@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import {
-  CardWithBackdrop,
+  Card,
   CardContent,
   CardDescription,
   CardHeader,
@@ -55,7 +55,7 @@ export function LoginForm() {
   };
 
   return (
-    <CardWithBackdrop>
+    <Card>
       <CardHeader className="text-center">
         <CardTitle className="text-xl">Вхід</CardTitle>
         <CardDescription>Введіть свої дані для входу в систему</CardDescription>
@@ -88,7 +88,7 @@ export function LoginForm() {
                 disabled={isLoading}
               />
               {errors.email && (
-                <div className="text-red-500 text-sm">{errors.email.message}</div>
+                <div className="text-sm text-status-negative">{errors.email.message}</div>
               )}
             </Field>
 
@@ -112,14 +112,16 @@ export function LoginForm() {
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-4 w-4 text-muted-foreground" />
+                    <EyeOff className="w-4 h-4 text-foreground-muted" />
                   ) : (
-                    <Eye className="h-4 w-4 text-muted-foreground" />
+                    <Eye className="w-4 h-4 text-foreground-muted" />
                   )}
                 </Button>
               </div>
               {errors.password && (
-                <div className="text-sm text-red-500">{errors.password.message}</div>
+                <div className="text-sm text-status-negative">
+                  {errors.password.message}
+                </div>
               )}
             </Field>
             <Field>
@@ -127,12 +129,12 @@ export function LoginForm() {
                 {isLoading ? "Завантаження..." : "Увійти"}
               </Button>
               {errors.root && (
-                <div className="text-red-500 text-sm">{errors.root.message}</div>
+                <div className="text-sm text-status-negative">{errors.root.message}</div>
               )}
             </Field>
           </FieldGroup>
         </form>
       </CardContent>
-    </CardWithBackdrop>
+    </Card>
   );
 }

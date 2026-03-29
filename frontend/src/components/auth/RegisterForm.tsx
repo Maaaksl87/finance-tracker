@@ -3,11 +3,11 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/hooks/useAuth";
 import {
+  Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-  CardWithBackdrop,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -61,7 +61,7 @@ export function RegisterForm() {
 
   return (
     <div className={cn("flex flex-col gap-6")}>
-      <CardWithBackdrop>
+      <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Реєстрація</CardTitle>
           <CardDescription>Введіть свої дані для реєстрації в системі</CardDescription>
@@ -85,7 +85,7 @@ export function RegisterForm() {
               </FieldSeparator>
 
               {error && (
-                <div className="p-3 text-sm text-center text-red-500 rounded bg-red-50">
+                <div className="p-3 text-sm text-center rounded text-status-negative bg-status-negative-bg">
                   {error}
                 </div>
               )}
@@ -102,7 +102,9 @@ export function RegisterForm() {
                 />
 
                 {errors.name && (
-                  <div className="text-sm text-red-500">{errors.name.message}</div>
+                  <div className="text-sm text-status-negative">
+                    {errors.name.message}
+                  </div>
                 )}
               </Field>
 
@@ -117,7 +119,9 @@ export function RegisterForm() {
                   disabled={isLoading}
                 />
                 {errors.email && (
-                  <div className="text-sm text-red-500">{errors.email.message}</div>
+                  <div className="text-sm text-status-negative">
+                    {errors.email.message}
+                  </div>
                 )}
               </Field>
 
@@ -141,14 +145,16 @@ export function RegisterForm() {
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-muted-foreground" />
+                      <EyeOff className="w-4 h-4 text-foreground-muted" />
                     ) : (
-                      <Eye className="h-4 w-4 text-muted-foreground" />
+                      <Eye className="w-4 h-4 text-foreground-muted" />
                     )}
                   </Button>
                 </div>
                 {errors.password && (
-                  <div className="text-sm text-red-500">{errors.password.message}</div>
+                  <div className="text-sm text-status-negative">
+                    {errors.password.message}
+                  </div>
                 )}
               </Field>
 
@@ -171,14 +177,14 @@ export function RegisterForm() {
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? (
-                      <EyeOff className="h-4 w-4 text-muted-foreground" />
+                      <EyeOff className="w-4 h-4 text-foreground-muted" />
                     ) : (
-                      <Eye className="h-4 w-4 text-muted-foreground" />
+                      <Eye className="w-4 h-4 text-foreground-muted" />
                     )}
                   </Button>
                 </div>
                 {errors.confirmPassword && (
-                  <div className="text-sm text-red-500">
+                  <div className="text-sm text-status-negative">
                     {errors.confirmPassword.message}
                   </div>
                 )}
@@ -192,7 +198,7 @@ export function RegisterForm() {
             </FieldGroup>
           </form>
         </CardContent>
-      </CardWithBackdrop>
+      </Card>
     </div>
   );
 }
