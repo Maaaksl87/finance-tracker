@@ -11,7 +11,7 @@ function SavingPlanStatsCards() {
           <CardTitle className="font-normal">Зібрано всього</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-2xl font-bold">
+          <p className="text-2xl font-bold font-heading">
             ${plans?.reduce((sum, plan) => sum + plan.currentAmount, 0) || 0}
           </p>
         </CardContent>
@@ -21,7 +21,7 @@ function SavingPlanStatsCards() {
           <CardTitle className="font-normal">Цільова сума</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-2xl font-bold">
+          <p className="text-2xl font-bold font-heading">
             ${plans?.reduce((sum, plan) => sum + plan.targetAmount, 0) || 0}
           </p>
         </CardContent>

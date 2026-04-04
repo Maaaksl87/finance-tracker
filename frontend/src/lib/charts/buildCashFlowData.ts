@@ -16,6 +16,7 @@ export function buildCashFlowData(
   transactions: Transaction[],
   dateFormat: string,
 ): ChartDataPoint[] {
+  // TODO: подивитись варіант оптиміззації (виправити useMemo(він використовується в хуках))
   return useMemo(() => {
     if (!transactions || transactions.length === 0) return [];
     // Сортуємо транзакції від найстарішої до найновішої для коректного розрахунку балансу
@@ -24,8 +25,9 @@ export function buildCashFlowData(
     );
 
     let currentBalance = 0;
+    const dailyData: Record<string, ChartDataPoint> = {};
 
-    return sorted.map((t) => {
+    sorted.forEach((t) => {
       const amount = t.amount;
       const isExpense = t.type === TransactionType.EXPENSE;
       const isIncome = t.type === TransactionType.INCOME;
@@ -33,13 +35,17 @@ export function buildCashFlowData(
       if (isIncome) currentBalance += amount;
       if (isExpense) currentBalance -= amount;
 
-      return {
-        date: format(new Date(t.date), dateFormat),
+      const dateKey = format(new Date(t.date), dateFormat);
+
+      dailyData[dateKey] = {
+        date: dateKey,
         fullDate: format(new Date(t.date), "d MMMM yyyy", { locale: uk }),
         balance: currentBalance,
         amount: isExpense ? -amount : amount,
         type: t.type,
       };
     });
+
+    return Object.values(dailyData);
   }, [transactions, dateFormat]);
 }

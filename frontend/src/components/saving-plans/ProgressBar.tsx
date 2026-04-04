@@ -13,9 +13,11 @@ function ProgressBar({
   const percentage = `${clampedPercentage}%`;
 
   return (
-    <div className={`w-full h-1 bg-gray-400 rounded-full overflow-hidden ${className}`}>
+    <div
+      className={`w-full h-1 bg-progress-track rounded-full overflow-hidden ${className}`}
+    >
       <div
-        className="h-full bg-blue-500"
+        className="h-full bg-progress-fill-blue"
         style={{
           width: percentage,
         }}

@@ -1,22 +1,25 @@
 import * as React from "react";
 
-import { cn, glassStyle } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 // todo: переглянути можливість переписати на окремий компонент, який буде використовуватись для створення карток з бекдропом, а не додавати нові стилі до існуючого Card
-function CardWithBackdrop({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-with-backdrop"
-      className={cn(glassStyle, "flex flex-col gap-4", className)}
-      {...props}
-    />
-  );
-}
+// function CardWithBackdrop({ className, ...props }: React.ComponentProps<"div">) {
+//   return (
+//     <div
+//       data-slot="card-with-backdrop"
+//       className={cn(glassStyle, "flex flex-col gap-4", className)}
+//       {...props}
+//     />
+//   );
+// }
 
 function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card"
-      className={cn(" flex flex-col rounded-xl border py-3", className)}
+      className={cn(
+        "flex bg-card border-card-border flex-col rounded-xl border py-3 shadow-card hover:shadow-card-hover transition-shadow",
+        className,
+      )}
       {...props}
     />
   );
@@ -39,7 +42,10 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-title"
-      className={cn("leading-none font-semibold", className)}
+      className={cn(
+        "leading-none font-semibold text-card-foreground font-heading",
+        className,
+      )}
       {...props}
     />
   );
@@ -90,5 +96,5 @@ export {
   CardAction,
   CardDescription,
   CardContent,
-  CardWithBackdrop,
+  // CardWithBackdrop,
 };

@@ -10,9 +10,9 @@ function SavingPlansDetail({ selectedPlanId }: { selectedPlanId: string | null }
   if (isLoading) return <div>Завантаження...</div>;
 
   return (
-    <div className="flex flex-col h-full gap-4 p-4 overflow-y-auto border flex-3 border-zinc-600 rounded-xl">
+    <div className="flex flex-col h-full gap-4 p-4 overflow-y-auto border flex-3 border-border rounded-xl">
       <div className="flex gap-4 h-1/3">
-        <div className="flex-1 p-4 border rounded-lg border-zinc-600">
+        <div className="flex-1 p-4 border rounded-lg border-border">
           <h2 className="mb-2 text-xl font-bold">{plan?.title}</h2>
           <p className="mb-2 text-lg">
             {plan?.currentAmount}/{plan?.targetAmount}
@@ -28,16 +28,16 @@ function SavingPlansDetail({ selectedPlanId }: { selectedPlanId: string | null }
             </span>
           </p>
           <Separator className="my-2" />
-          <p className="text-sm text-muted-foreground">{plan?.description}</p>
+          <p className="text-sm text-foreground-muted">{plan?.description}</p>
         </div>
         {/* TODO: зарефакторити блоки детальної фнформації та транзакцій. Переробити розташування*/}
-        <div className="flex-1 p-4 border rounded-lg border-zinc-600">
+        <div className="flex-1 p-4 border rounded-lg border-border">
           <h3 className="mb-2 text-lg font-semibold">Графік додавання коштів</h3>
           <SavingPlanChart selectedPlanId={selectedPlanId || ""} />
         </div>
       </div>
 
-      <div className="flex-1 p-4 overflow-y-auto border rounded-lg border-zinc-600">
+      <div className="flex-1 p-4 overflow-y-auto border rounded-lg border-border">
         <h3 className="mb-2 text-lg font-semibold">Транзакції</h3>
         <SavingPlansTransactions selectedPlanId={selectedPlanId || null} />
       </div>

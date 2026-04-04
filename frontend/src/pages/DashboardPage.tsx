@@ -1,16 +1,16 @@
-import {
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardWithBackdrop,
-} from "@/components/ui/card";
+import { CardHeader, CardTitle, CardContent, Card } from "@/components/ui/card";
 import { useAuthStore } from "@/store/authStore";
 import { PlusCircle, ArrowRightLeft, Sparkles, PiggyBank } from "lucide-react";
+import SavingPlansList from "@/components/saving-plans/SavingPlansList";
 
 import { useTransactionStats } from "@/hooks/useTransactionStats";
+import { useSavingPlans } from "@/hooks/useSavingPlans";
+import StatsCards from "@/components/stats/StatsCards";
+import ChartAreaGradient from "@/components/stats/StatsChart";
 
 export default function DashboardPage() {
-  const { stats, isLoading } = useTransactionStats();
+  const { stats, transactions, isLoading } = useTransactionStats();
+  const { data: plans } = useSavingPlans();
   const user = useAuthStore((state) => state.user);
 
   if (isLoading) {
@@ -21,174 +21,98 @@ export default function DashboardPage() {
   const totalExpense = stats?.totalExpense || 0;
 
   return (
-    <div className="grid grid-cols-12 gap-4">
+    <div className="grid h-full min-h-0 grid-cols-12 gap-4">
       {/* ===== Left area (9 cols) ===== */}
-      <div className="col-span-12 space-y-4 xl:col-span-9">
+      <div className="h-full min-h-0 col-span-12 space-y-4 xl:col-span-9">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">
+            <h1 className="text-2xl font-bold font-heading text-foreground">
+              {/*TODO: при переході на інший аккаунт показує імя старого аккаунта, виправити це */}
               Вітаю, {user?.name || "користувач"}!
             </h1>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-foreground-muted">
               Контролюй свої фінанси для фінансового здоров'я.
             </p>
           </div>
           <div className="text-right">
             <p className="text-sm text-muted-foreground">Загальний баланс:</p>
-            <p className="text-3xl font-bold">
+            <p className="text-3xl font-bold font-heading">
               {(totalIncome - totalExpense).toLocaleString()} ₴
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-12 gap-4">
-          <div className="col-span-12 space-y-4 md:col-span-5 xl:col-span-4">
-            <CardWithBackdrop className="mb-0 rounded-b-none">
+        <div className="grid h-full min-h-0 grid-cols-12 gap-4">
+          <div className="flex flex-col h-full min-h-0 col-span-12 space-y-4 md:col-span-5 xl:col-span-4">
+            <Card className="mb-0 rounded-b-none bg-card">
               <CardHeader>
-                <CardTitle>Баланс аккаунта</CardTitle>
+                <CardTitle className="font-heading">Баланс аккаунта</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-2xl font-bold">
+                <p className="font-sans text-4xl font-bold tracking-tight">
                   {(totalIncome - totalExpense).toLocaleString()} ₴
                 </p>
               </CardContent>
-            </CardWithBackdrop>
-            <CardWithBackdrop className="mt-0 border-t-0 rounded-t-none [mask-image:linear-gradient(to_top,black_90%,transparent)]">
+            </Card>
+            <Card className="mt-0 border-t-0 rounded-t-none [mask-image:linear-gradient(to_top,black_90%,transparent)]">
               <CardContent>
-                <div className="grid grid-cols-4 gap-2 text-xs text-center text-muted-foreground">
+                <div className="grid grid-cols-4 gap-2 text-xs text-center text-foreground-muted">
                   <div className="flex flex-col items-center gap-1">
-                    <button className="flex items-center justify-center w-10 h-10 rounded-full bg-muted hover:bg-muted/80">
-                      <PlusCircle className="w-10 h-10 rounded-full bg-muted" />
+                    <button className="flex items-center justify-center w-10 h-10 rounded-full bg-icon-bg hover:bg-card-hover">
+                      <PlusCircle className="w-10 h-10 rounded-full bg-icon-bg text-icon-fg" />
                     </button>
                     <span>Поповнити</span>
                   </div>
                   <div className="flex flex-col items-center gap-1">
-                    <ArrowRightLeft className="w-10 h-10 rounded-full bg-muted" />
+                    <ArrowRightLeft className="w-10 h-10 rounded-full bg-icon-bg text-icon-fg" />
                     <span>Переказ</span>
                   </div>
                   <div className="flex flex-col items-center gap-1">
-                    <PiggyBank className="w-10 h-10 rounded-full bg-muted" />
+                    <PiggyBank className="w-10 h-10 rounded-full bg-icon-bg text-icon-fg" />
                     <span>Відкласти</span>
                   </div>
                   <div className="flex flex-col items-center gap-1">
-                    <Sparkles className="w-10 h-10 rounded-full bg-muted" />
+                    <Sparkles className="w-10 h-10 rounded-full bg-icon-bg text-icon-fg" />
                     <span>AI чат</span>
                   </div>
                 </div>
               </CardContent>
-            </CardWithBackdrop>
+            </Card>
 
             {/* Daily Limit */}
-            <CardWithBackdrop>
+            <Card>
               <CardHeader>
                 <CardTitle>Денний ліміт</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">₴2,500.00 з ₴330.00</p>
-                <div className="w-full h-2 mt-2 rounded-full bg-muted">
-                  <div className="h-2 rounded-full w-1/8 bg-primary" />
+                <p className="text-sm text-foreground-muted">₴2,500.00 з ₴330.00</p>
+                <div className="w-full h-2 mt-2 rounded-full bg-limit-bar-track">
+                  <div className="h-2 rounded-full w-1/8 bg-limit-bar-fill" />
                 </div>
               </CardContent>
-            </CardWithBackdrop>
+            </Card>
 
             {/* Savings & Goals */}
-            <CardWithBackdrop>
-              <CardHeader>
-                <CardTitle>Збереження та цілі</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <p className="text-sm text-muted-foreground">Загальні збереження</p>
-                <p className="text-2xl font-bold">₴84,500</p>
-
-                <div className="pt-2 space-y-2">
-                  {/* Emergency Fund */}
-                  <div className="p-3 border rounded-lg">
-                    <p className="text-sm font-medium">Екстрений фонд</p>
-                    <p className="text-xs text-muted-foreground">₴6,000 · Ціль: ₴4,000</p>
-                    <div className="mt-1 h-1.5 w-full rounded-full bg-muted">
-                      <div className="h-1.5 w-full rounded-full bg-green-500" />
-                    </div>
-                  </div>
-
-                  {/* Vacation Fund */}
-                  <div className="p-3 border rounded-lg">
-                    <p className="text-sm font-medium">Фонд відпустки</p>
-                    <p className="text-xs text-muted-foreground">₴5,600 · Ціль: ₴5,300</p>
-                    <div className="mt-1 h-1.5 w-full rounded-full bg-muted">
-                      <div className="h-1.5 w-[95%] rounded-full bg-blue-500" />
-                    </div>
-                  </div>
-
-                  {/* Home Down Payment */}
-                  <div className="p-3 border rounded-lg">
-                    <p className="text-sm font-medium">Перший внесок за житло</p>
-                    <p className="text-xs text-muted-foreground">
-                      ₴7,260 · Ціль: ₴30,000
-                    </p>
-                    <div className="mt-1 h-1.5 w-full rounded-full bg-muted">
-                      <div className="h-1.5 w-1/4 rounded-full bg-orange-500" />
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </CardWithBackdrop>
+            <SavingPlansList plans={plans} setSelectedPlanId={() => {}} />
           </div>
 
           {/* Center column */}
           <div className="col-span-12 space-y-4 md:col-span-7 xl:col-span-8">
-            <div className="grid grid-cols-3 gap-4">
-              {/* Total Income */}
-              <CardWithBackdrop>
-                <CardHeader>
-                  <CardTitle>Загальні надходження</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-green-600">
-                    +{totalIncome.toLocaleString()} ₴
-                  </div>
-                </CardContent>
-              </CardWithBackdrop>
+            {stats ? <StatsCards stats={stats} /> : null}
 
-              {/* Total Expenses */}
-              <CardWithBackdrop>
-                <CardHeader>
-                  <CardTitle>Загальні витрати</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-red-600">
-                    -{totalExpense.toLocaleString()} ₴
-                  </div>
-                </CardContent>
-              </CardWithBackdrop>
-
-              {/* Total Savings */}
-              <CardWithBackdrop>
-                <CardHeader>
-                  <CardTitle>Загальні збереження</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="">—</p>
-                </CardContent>
-              </CardWithBackdrop>
-            </div>
             {/* Overview & Cashflow */}
-            <CardWithBackdrop>
+            <Card>
               <CardHeader>
                 <CardTitle>Огляд та грошовий потік</CardTitle>
+                <p className="mb-4 text-2xl font-bold font-heading">₴562,000</p>
               </CardHeader>
               <CardContent>
-                <p className="mb-2 text-sm text-muted-foreground">Загальний баланс</p>
-                <p className="mb-4 text-2xl font-bold">₴562,000</p>
-                <div className="flex items-center justify-center w-full h-48 rounded-lg bg-muted">
-                  <p className="text-sm text-muted-foreground">
-                    Графік доходів та витрат
-                  </p>
-                </div>
+                <ChartAreaGradient />
               </CardContent>
-            </CardWithBackdrop>
+            </Card>
 
             {/* Recent Transactions & Activity */}
-            <CardWithBackdrop>
+            <Card>
               <CardHeader>
                 <CardTitle>Останні транзакції та активність</CardTitle>
               </CardHeader>
@@ -233,35 +157,34 @@ export default function DashboardPage() {
                   ].map((tx, i) => (
                     <div
                       key={i}
-                      className="flex items-center justify-between pb-2 text-sm border-b last:border-0"
+                      className="flex items-center justify-between pb-2 text-sm border-b last:border-0 border-table-border"
                     >
                       <div>
                         <p className="font-medium">{tx.name}</p>
-                        <p className="text-xs text-muted-foreground">{tx.category}</p>
+                        <p className="text-xs text-table-muted">{tx.category}</p>
                       </div>
                       <div className="text-right">
                         <p>{tx.amount}</p>
-                        <p className="text-xs text-muted-foreground">{tx.status}</p>
+                        <p className="text-xs text-table-muted">{tx.status}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               </CardContent>
-            </CardWithBackdrop>
+            </Card>
           </div>
         </div>
       </div>
 
-      {/* ===== Right column — full height ===== */}
       <div className="col-span-12 space-y-4 xl:col-span-3 xl:col-start-10 xl:row-span-full xl:row-start-1">
         {/* Statistic */}
-        <CardWithBackdrop>
+        <Card>
           <CardHeader>
             <CardTitle>Статистика</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-center h-40">
-              <p className="text-sm text-muted-foreground">Діаграма витрат</p>
+              <p className="text-sm text-foreground-muted">Діаграма витрат</p>
             </div>
             <div className="space-y-2 text-sm">
               {[
@@ -272,16 +195,16 @@ export default function DashboardPage() {
                 { label: "Розваги", amount: "₴175" },
               ].map((item, i) => (
                 <div key={i} className="flex items-center justify-between">
-                  <span className="text-muted-foreground">{item.label}</span>
+                  <span className="text-foreground-muted">{item.label}</span>
                   <span className="font-medium">{item.amount}</span>
                 </div>
               ))}
             </div>
           </CardContent>
-        </CardWithBackdrop>
+        </Card>
 
         {/* Currency Exchange Rates */}
-        <CardWithBackdrop>
+        <Card>
           <CardHeader>
             <CardTitle>Курси валют</CardTitle>
           </CardHeader>
@@ -294,26 +217,26 @@ export default function DashboardPage() {
               ].map((item, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between pb-2 border-b last:border-0"
+                  className="flex items-center justify-between pb-2 border-b last:border-0 border-border"
                 >
                   <span className="font-medium">{item.pair}</span>
                   <div className="text-right">
-                    <p className="text-red-500">{item.rate}</p>
-                    <p className="text-xs text-muted-foreground">{item.value}</p>
+                    <p className="text-currency-negative">{item.rate}</p>
+                    <p className="text-xs text-foreground-muted">{item.value}</p>
                   </div>
                 </div>
               ))}
             </div>
           </CardContent>
-        </CardWithBackdrop>
+        </Card>
 
         {/* Financial Tips */}
-        <CardWithBackdrop>
+        <Card>
           <CardHeader>
             <CardTitle>Фінансові поради</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3 text-sm text-muted-foreground">
+            <div className="space-y-3 text-sm text-foreground-muted">
               <p>
                 💡 Фінансова грамотність допомагає уникнути непотрібних витрат та
                 інвестувати розумно.
@@ -321,7 +244,7 @@ export default function DashboardPage() {
               <p>💰 Розгляньте можливість відкладати щонайменше 20% доходу щомісяця.</p>
             </div>
           </CardContent>
-        </CardWithBackdrop>
+        </Card>
       </div>
     </div>
   );

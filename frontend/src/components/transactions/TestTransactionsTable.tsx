@@ -21,6 +21,8 @@ interface Props {
   onDelete: (id: string) => void;
 }
 
+// TODO: перевірти логвку додавання, видалення, редагування транзакцій
+
 function TestTransactionsTable({ data, onDelete }: Props) {
   // Хелпер для форматування грошей
   const formatAmount = (amount: number, type: TransactionType) => {
@@ -34,10 +36,10 @@ function TestTransactionsTable({ data, onDelete }: Props) {
       <span
         className={
           isIncome
-            ? "text-green-600 font-bold"
+            ? "text-status-positive font-bold font-heading"
             : isExpense
-              ? "text-red-600 font-bold"
-              : "text-blue-600 font-bold"
+              ? "text-status-negative font-bold font-heading"
+              : "text-primary font-bold font-heading"
         }
       >
         {prefix}
@@ -53,11 +55,17 @@ function TestTransactionsTable({ data, onDelete }: Props) {
   const getTypeBadge = (type: TransactionType) => {
     switch (type) {
       case TransactionType.INCOME:
-        return <Badge className="bg-green-500 hover:bg-green-600">Дохід</Badge>;
+        return (
+          <Badge className="bg-status-positive hover:bg-status-positive/90 text-white">
+            Дохід
+          </Badge>
+        );
       case TransactionType.EXPENSE:
         return <Badge variant="destructive">Витрата</Badge>; // destructive - це червоний у shadcn
       case TransactionType.TRANSFER:
-        return <Badge className="bg-blue-500 hover:bg-blue-600">Переказ</Badge>;
+        return (
+          <Badge className="bg-primary hover:bg-primary/90 text-white">Переказ</Badge>
+        );
       default:
         return <Badge variant="outline">{type}</Badge>;
     }

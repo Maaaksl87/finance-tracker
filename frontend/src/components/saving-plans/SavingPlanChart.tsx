@@ -21,7 +21,7 @@ export default function SavingPlanChart({ selectedPlanId }: SavingPlanChartProps
 
   if (chartData.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
+      <div className="flex items-center justify-center h-full text-sm text-foreground-muted">
         Немає даних для графіка
       </div>
     );
@@ -32,23 +32,31 @@ export default function SavingPlanChart({ selectedPlanId }: SavingPlanChartProps
       <LineChart data={chartData} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
         <defs>
           <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+            <stop offset="5%" stopColor="hsl(var(--color-secondary))" stopOpacity={0.8} />
+            <stop offset="95%" stopColor="hsl(var(--color-secondary))" stopOpacity={0} />
           </linearGradient>
         </defs>
-        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-        <XAxis dataKey="date" stroke="#9ca3af" style={{ fontSize: "12px" }} />
+        <CartesianGrid
+          strokeDasharray="3 3"
+          stroke="hsl(var(--color-chart-grid))"
+          opacity={0.3}
+        />
+        <XAxis
+          dataKey="date"
+          stroke="hsl(var(--color-foreground-muted))"
+          style={{ fontSize: "12px" }}
+        />
         <YAxis
-          stroke="#9ca3af"
+          stroke="hsl(var(--color-foreground-muted))"
           style={{ fontSize: "12px" }}
           tickFormatter={(value) => `${value.toLocaleString()} ₴`}
         />
         <Tooltip
           contentStyle={{
-            backgroundColor: "#1f2937",
-            border: "1px solid #374151",
+            backgroundColor: "hsl(var(--color-chart-tooltip-bg))",
+            border: "1px solid hsl(var(--color-chart-tooltip-border))",
             borderRadius: "8px",
-            color: "#f3f4f6",
+            color: "hsl(var(--color-foreground))",
           }}
           formatter={(value: number) => `${value.toLocaleString("uk-UA")} ₴`}
           labelFormatter={(label, payload) => {
@@ -58,13 +66,16 @@ export default function SavingPlanChart({ selectedPlanId }: SavingPlanChartProps
             return label;
           }}
         />
-        <Legend wrapperStyle={{ color: "#9ca3af" }} formatter={() => "Накопичено"} />
+        <Legend
+          wrapperStyle={{ color: "hsl(var(--color-foreground-muted))" }}
+          formatter={() => "Накопичено"}
+        />
         <Line
           type="monotone"
           dataKey="balance"
-          stroke="#10b981"
+          stroke="hsl(var(--color-secondary))"
           strokeWidth={2}
-          dot={{ fill: "#10b981", r: 4 }}
+          dot={{ fill: "hsl(var(--color-secondary))", r: 4 }}
           activeDot={{ r: 6 }}
           isAnimationActive={true}
         />

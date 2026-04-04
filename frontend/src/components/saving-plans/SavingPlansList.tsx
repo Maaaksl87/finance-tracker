@@ -18,19 +18,19 @@ function SavingPlansList({
   };
 
   return (
-    <div className="flex flex-col flex-1 h-full overflow-hidden border border-zinc-600 rounded-xl">
+    <div className="flex flex-col flex-1 h-full overflow-hidden border bg-card border-card-border rounded-xl shadow-card hover:shadow-card-hover">
       <div className="flex items-center justify-between p-4 font-medium">
         Saving Plans
         <span className="text-sm text-zinc-400">Всього: {plans?.length || 0}</span>
         <button className="button">***</button>
       </div>
 
-      <div className="flex-1 p-4 space-y-2 overflow-y-auto">
+      <div className="flex-1 p-4 pt-2 space-y-2 overflow-y-auto">
         {plans?.map((plan) => (
           <div
             onClick={() => setSelectedPlanId(plan._id)}
             key={plan._id}
-            className="relative p-4 transition-colors border cursor-pointer border-zinc-600 rounded-xl hover:bg-zinc-800/50"
+            className="relative p-4 transition-colors border cursor-pointer bg-card-list border-card-border rounded-xl hover:bg-card-hover"
           >
             <h3>{plan.title}</h3>
             <p>
