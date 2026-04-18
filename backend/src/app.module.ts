@@ -1,10 +1,12 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
+import { ScheduleModule } from "@nestjs/schedule";
 
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
+import { CurrenciesModule } from "./currencies/currencies.module";
 import { SavingPlansModule } from "./saving-plans/saving-palns.module";
 import { SourcesModule } from "./sources/sources.module";
 import { TransactionsModule } from "./transactions/transactions.module";
@@ -27,6 +29,8 @@ import { UsersModule } from "./users/users.module";
     SourcesModule,
     TransactionsModule,
     SavingPlansModule,
+    ScheduleModule.forRoot(),
+    CurrenciesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
