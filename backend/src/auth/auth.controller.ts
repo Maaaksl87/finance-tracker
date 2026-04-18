@@ -21,8 +21,8 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @UseGuards(LocalGuard)
-  @Post("login")
   @HttpCode(HttpStatus.OK)
+  @Post("login")
   login(@Req() req: RequestWithUser) {
     return this.authService.login(req.user);
   }

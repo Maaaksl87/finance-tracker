@@ -28,8 +28,6 @@ export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    // private readonly JWT_ACCESS_TOKEN_TTL: string,
-    // private readonly JWT_REFRESH_TOKEN_TTL: string,
   ) {}
 
   async validateUser(
