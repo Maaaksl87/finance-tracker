@@ -33,7 +33,7 @@ export default function ChartAreaGradient() {
   return (
     <div className="w-full h-auto">
       {/*TODO: змінити висоту графіка використовуючі плаваючі величини: aspect-[16/9] і так далі */}
-      <ChartContainer config={chartConfig} className="h-[250px] w-full aspect-video">
+      <ChartContainer config={chartConfig} className="h-[150px] w-full aspect-video">
         <AreaChart
           accessibilityLayer
           data={chartData}

@@ -125,296 +125,120 @@
 }
 
 :root {
-  --radius: 0.625rem; /* базовий радіус заокруглення для всіх елементів */
+  --radius: 0.625rem;
 
-  /* --- Загальний фон та текст --- */
   --background: rgb(186, 230, 253);
-  /* задній фон для root (body, sidebar) — світло-блакитний */
-
   --background-main: rgba(147, 210, 240, 0.25);
-  /* задній фон для main (контентна область) — напівпрозорий блакитний */
-
   --background-gradient-from: rgb(186, 230, 253);
-  /* початок градієнту фону — sky-200 */
   --background-gradient-to: rgb(209, 242, 255);
-  /* кінець градієнту фону — майже білий блакитний */
 
   --foreground: rgb(28, 41, 79);
-  /* основний колір тексту по всьому сайту — темно-синій */
-
   --foreground-muted: rgb(100, 120, 155);
-  /* приглушений текст (підзаголовки, мітки) — сіро-синій */
-
   --foreground-subtle: rgb(150, 170, 200);
-  /* дуже тихий текст (плейсхолдери, дати) */
 
-  /* --- Картки (Card) --- */
   --card: rgba(255, 255, 255, 0.45);
-  /* фон карток — напівпрозорий білий (glassmorphism) */
-
   --card-hover: rgba(255, 255, 255, 0.65);
-  /* фон карток при hover */
-
   --card-list: rgba(255, 255, 255, 0.65);
-  /* фон карток списку планів збереження */
-
   --card-foreground: rgb(28, 41, 79);
-  /* текст всередині карток */
-
   --card-border: rgb(229, 230, 229);
-  /* бордер карток — білий напівпрозорий */
 
-  /* --- Sidebar / Navigation --- */
   --sidebar: rgba(255, 255, 255, 0.35);
-  /* фон бічної панелі навігації */
-
   --sidebar-foreground: rgb(28, 41, 79);
-  /* текст пунктів меню */
-
   --sidebar-muted: rgb(100, 130, 165);
-  /* текст груп меню (MAIN MENU, FEATURES) */
-
   --sidebar-active-bg: rgba(255, 255, 255, 0.7);
-  /* фон активного пункту меню (Dashboard) — насичений блакитний */
-
   --sidebar-active-fg: rgb(255, 255, 255);
-  /* текст активного пункту меню */
-
   --sidebar-badge: rgb(56, 155, 220);
-  /* бейдж з числом (20, 16) на пунктах меню */
-
   --sidebar-badge-fg: rgb(255, 255, 255);
-  /* текст бейджа */
 
-  /* --- Popover / Dropdown --- */
   --popover: rgb(255, 255, 255);
-  /* фон спливаючих меню і dropdown */
-
   --popover-foreground: rgb(28, 41, 79);
-  /* текст у popover та dropdown */
 
-  /* --- Основна дія (Primary / CTA) --- */
   --primary: rgb(56, 155, 220);
-  /* головний акцентний колір (кнопки, активні стани) */
-
   --primary-dark: rgb(30, 120, 190);
-  /* темніший відтінок primary для hover */
-
   --primary-light: rgba(56, 155, 220, 0.15);
-  /* дуже світлий primary для фонів значків */
-
   --primary-foreground: rgb(255, 255, 255);
-  /* текст на кнопках primary */
 
-  /* --- Вторинна дія (Secondary / Income / Positive) --- */
   --secondary: rgb(110, 210, 140);
-  /* вторинний акцент — зелений (income, позитивні зміни) */
-
   --secondary-dark: rgb(72, 175, 100);
-  /* темніший зелений для hover та активних елементів */
-
   --secondary-light: rgba(110, 210, 140, 0.15);
-  /* світлий зелений для фонів */
-
   --secondary-foreground: rgb(28, 65, 40);
-  /* текст на вторинних елементах */
 
-  /* --- Фінансові статуси --- */
   --status-positive: rgb(34, 197, 94);
-  /* позитивна зміна +% — зелений */
-
   --status-positive-bg: rgba(34, 197, 94, 0.12);
-  /* фон для позитивних бейджів */
-
   --status-negative: rgb(239, 68, 68);
-  /* негативна зміна -% — червоний */
-
   --status-negative-bg: rgba(239, 68, 68, 0.12);
-  /* фон для негативних бейджів */
-
   --status-pending: rgb(234, 179, 8);
-  /* статус "Pending" — жовтий */
-
   --status-pending-bg: rgba(234, 179, 8, 0.12);
-  /* фон pending бейджа */
-
   --status-completed: rgb(56, 155, 220);
-  /* статус "Completed" — блакитний */
-
   --status-completed-bg: rgba(56, 155, 220, 0.12);
-  /* фон completed бейджа */
-
   --status-failed: rgb(239, 68, 68);
-  /* статус "Failed" — червоний */
-
   --status-failed-bg: rgba(239, 68, 68, 0.15);
-  /* фон failed бейджа */
 
-  /* --- Графіки (Charts) --- */
   --chart-income: rgb(56, 155, 220);
-  /* лінія/область доходу на графіку — блакитний */
-
   --chart-income-fill: rgba(56, 155, 220, 0.2);
-  /* заливка області доходу */
-
   --chart-expense: rgb(110, 210, 140);
-  /* лінія/область витрат на графіку — зелений */
-
   --chart-expense-fill: rgba(110, 210, 140, 0.2);
-  /* заливка області витрат */
-
   --chart-grid: rgba(150, 180, 210, 0.3);
-  /* сітка графіку */
-
   --chart-tooltip-bg: rgb(255, 255, 255);
-  /* фон tooltip на графіку */
-
   --chart-tooltip-border: rgba(200, 220, 240, 0.8);
-  /* бордер tooltip */
 
-  /* --- Кільцева діаграма (Donut / Pie) --- */
   --donut-primary: rgb(56, 155, 220);
-  /* основний сектор кільця — блакитний */
-
   --donut-secondary: rgb(110, 210, 140);
-  /* другий сектор кільця — зелений */
-
   --donut-tertiary: rgba(200, 230, 250, 0.6);
-  /* решта (незаповнена частина) */
 
-  /* --- Категорії витрат (іконки та кольори) --- */
   --category-rent: rgb(255, 180, 90);
-  /* Rent & Living — помаранчевий */
-
   --category-rent-bg: rgba(255, 180, 90, 0.15);
-
   --category-investment: rgb(56, 155, 220);
-  /* Investment — блакитний */
-
   --category-investment-bg: rgba(56, 155, 220, 0.15);
-
   --category-education: rgb(130, 100, 230);
-  /* Education — фіолетовий */
-
   --category-education-bg: rgba(130, 100, 230, 0.15);
-
   --category-food: rgb(110, 210, 140);
-  /* Food & Drink — зелений */
-
   --category-food-bg: rgba(110, 210, 140, 0.15);
-
   --category-entertainment: rgb(200, 200, 210);
-  /* Entertainment — сірий */
-
   --category-entertainment-bg: rgba(200, 200, 210, 0.2);
 
-  /* --- Прогрес-бари (Savings Goals) --- */
   --progress-track: rgba(200, 225, 245, 0.5);
-  /* фон треку прогресу */
-
   --progress-fill-blue: rgb(56, 155, 220);
-  /* заповнена частина — блакитний (Emergency Fund) */
-
   --progress-fill-green: rgb(110, 210, 140);
-  /* заповнена частина — зелений (Vacation Fund, Home) */
-
   --progress-fill-orange: rgb(255, 160, 70);
-  /* альтернативний прогрес — помаранчевий */
 
-  /* --- Daily Limit --- */
   --limit-bar-track: rgba(200, 225, 245, 0.4);
-  /* фон треку ліміту */
-
   --limit-bar-fill: rgb(56, 155, 220);
-  /* заповнення ліміту */
-
   --limit-percentage: rgb(28, 41, 79);
-  /* текст відсотку ліміту */
 
-  /* --- Валютні значки --- */
   --currency-usd: rgb(56, 155, 220);
-  /* USD — блакитний */
-
   --currency-usdt: rgb(72, 175, 100);
-  /* USDT — зелений */
-
   --currency-dar: rgb(255, 150, 60);
-  /* DAR — помаранчевий */
-
   --currency-negative: rgb(239, 68, 68);
-  /* від'ємна зміна курсу */
 
-  /* --- Таблиця транзакцій --- */
   --table-header: rgba(150, 190, 220, 0.2);
-  /* фон заголовку таблиці */
-
   --table-row-hover: rgba(255, 255, 255, 0.4);
-  /* фон рядка при hover */
-
   --table-border: rgba(200, 220, 240, 0.35);
-  /* бордер між рядками */
-
   --table-foreground: rgb(28, 41, 79);
-  /* основний текст таблиці */
-
   --table-muted: rgb(120, 145, 180);
-  /* підтекст у таблиці (категорія, дата) */
 
-  /* --- Sidebar нижній блок (upgrade / CTA) --- */
   --upgrade-bg: rgba(56, 155, 220, 0.85);
-  /* фон нижнього блоку в сайдбарі */
-
   --upgrade-fg: rgb(255, 255, 255);
-  /* текст у блоці апгрейду */
-
   --upgrade-icon-bg: rgba(255, 255, 255, 0.25);
-  /* фон іконки у блоці */
 
-  /* --- Бордери та розділювачі --- */
   --border: rgba(200, 225, 245, 0.45);
-  /* загальний бордер */
-
   --border-strong: rgba(150, 190, 220, 0.6);
-  /* більш помітний бордер */
-
   --divider: rgba(200, 220, 240, 0.3);
-  /* розділювач між секціями */
 
-  /* --- Тіні --- */
   --shadow-card: 0 4px 24px rgba(56, 120, 180, 0.1);
-  /* тінь картки */
-
   --shadow-card-hover: 0 8px 32px rgba(56, 120, 180, 0.18);
-  /* тінь при hover */
-
   --shadow-sidebar: 2px 0 16px rgba(56, 120, 180, 0.08);
-  /* тінь сайдбару */
 
-  /* --- Radius --- */
-  --radius: 0.625rem;
-  /* базовий радіус заокруглення */
-
-  /* --- Іконки / Quick Actions --- */
   --icon-bg: rgba(255, 255, 255, 0.5);
-  /* фон іконок швидких дій (Top Up, Transfer...) */
-
   --icon-fg: rgb(56, 155, 220);
-  /* колір іконок */
 
-  /* --- Financial Tips --- */
   --tips-bg: rgba(255, 255, 255, 0.35);
-  /* фон блоку порад */
-
   --tips-icon: rgb(255, 180, 60);
-  /* іконка лампочки — жовтий */
-
   --tips-icon-secondary: rgb(56, 155, 220);
-  /* другорядна іконка поради */
 
-  /* --- Рамки та поля вводу --- */
-  --border: oklch(0.922 0 0); /* рамки карток, таблиць, роздільників */
-  --input: oklch(0.922 0 0); /* рамка полів вводу (input, select) */
-  --ring: oklch(88% 0.0001 271.152); /* обведення фокусу на полях вводу і кнопках */
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(88% 0.0001 271.152);
 
   /* prettier-ignore */
   --bg-gradient: 
@@ -426,265 +250,191 @@
     linear-gradient(180deg, #fffde6 0%, #eaf8ff 100%);
 }
 
+.glass {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 4px 24px rgba(56, 120, 180, 0.1);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.55), transparent 60%);
+  opacity: 0.4;
+}
+
 .dark {
-  /* --- Загальний фон та текст --- */
-  --background: rgb(12, 18, 35);
-  /* задній фон — темно-синій (сайдбар, root) */
-
-  --background-main: rgba(18, 25, 45, 0.45);
-  /* фон контентної зони — темно-синій з легким зеленуватим відтінком */
-
-  --background-gradient-from: #15295c;
-  /* початок градієнту — темно-синій */
-
-  --background-gradient-to: #000926;
-  /* кінець градієнту */
-
-  --foreground: rgb(230, 240, 255);
-  /* основний текст — яскравий білий з холодним відтінком */
-
-  --foreground-muted: rgb(140, 165, 200);
-  /* приглушений текст (мітки, підзаголовки) */
-
-  --foreground-subtle: rgb(90, 115, 160);
-  /* дуже тихий текст (дати, плейсхолдери) */
-
-  /* --- Картки (Card) --- */
-  --card: rgba(30, 45, 75, 0.7);
-  /* фон карток — темно-синій напівпрозорий, трохи світліший */
-
-  --card-hover: rgba(35, 52, 88, 0.85);
-  /* фон картки при hover */
-
-  --card-foreground: rgb(230, 240, 255);
-  /* текст всередині карток */
-
-  --card-border: rgba(60, 85, 140, 0.4);
-  /* бордер карток — приглушений синій */
-
-  /* --- Sidebar / Navigation --- */
-  --sidebar: rgba(20, 41, 84, 0.5);
-  /* фон сайдбару — глибокий темно-синій */
-  --sidebar-foreground: rgb(200, 215, 245);
-  /* текст пунктів меню */
-
-  --sidebar-muted: rgb(90, 115, 165);
-  /* текст груп (MAIN MENU, FEATURES, GENERAL) */
-
-  --sidebar-active-bg: rgba(0, 210, 190, 0.15);
-  /* фон активного пункту — бірюзовий з прозорістю */
-
-  --sidebar-active-fg: rgb(0, 210, 190);
-  /* текст активного пункту — бірюзовий */
-
-  --sidebar-badge: rgb(0, 210, 190);
-  /* бейдж з числом — бірюзовий акцент */
-
-  --sidebar-badge-fg: rgb(11, 17, 32);
-  /* текст бейджа */
-
-  /* --- Popover / Dropdown --- */
-  --popover: rgb(22, 35, 65);
-  /* фон спливаючих меню — темно-синій */
-
-  --popover-foreground: rgb(220, 235, 255);
-  /* текст у popover */
-
-  /* --- Основна дія (Primary / CTA) --- */
-  --primary: rgb(0, 210, 190);
-  /* головний акцент — яскравий бірюзовий (Income, кнопки) */
-
-  --primary-dark: rgb(0, 180, 165);
-  /* темніший primary для hover */
-
-  --primary-light: rgba(0, 210, 190, 0.15);
-  /* світлий primary для фонів */
-
-  --primary-foreground: rgb(11, 17, 32);
-  /* текст на кнопках primary */
-
-  /* --- Вторинна дія (Secondary / Expense line) --- */
-  --secondary: rgb(104, 255, 54);
-  /* вторинний акцент — яскравий лаймовий зелений (Expense лінія) */
-
-  --secondary-dark: rgb(100, 220, 70);
-  /* темніший зелений */
-
-  --secondary-light: rgb(245, 250, 243);
-  /* світлий фон для зелених елементів */
-
-  --secondary-foreground: rgb(11, 17, 32);
-  /* текст на secondary елементах */
-
-  /* --- Фінансові статуси --- */
-  --status-positive: rgb(130, 255, 90);
-  /* +% — яскравий лаймовий зелений */
-
-  --status-positive-bg: rgba(130, 255, 90, 0.12);
-
-  --status-negative: rgb(255, 90, 130);
-  /* -% — яскраво-рожевий/magenta */
-
-  --status-negative-bg: rgba(255, 90, 130, 0.12);
-
-  --status-pending: rgb(255, 200, 80);
-  /* Pending — яскраво-жовтий */
-
-  --status-pending-bg: rgba(255, 200, 80, 0.12);
-
-  --status-completed: rgb(0, 210, 190);
-  /* Completed — бірюзовий */
-
-  --status-completed-bg: rgba(0, 210, 190, 0.12);
-
-  --status-failed: rgb(255, 90, 130);
-  /* Failed — яскраво-рожевий */
-
-  --status-failed-bg: rgba(255, 90, 130, 0.15);
-
-  /* --- Графіки (Charts) --- */
-  --chart-income: rgb(0, 210, 190);
-  /* лінія доходу — бірюзовий */
-
-  --chart-income-fill: rgba(0, 210, 190, 0.2);
-  /* заливка доходу */
-
-  --chart-expense: rgb(130, 255, 90);
-  /* лінія витрат — яскравий лаймовий зелений */
-
-  --chart-expense-fill: rgba(130, 255, 90, 0.15);
-  /* заливка витрат */
-
-  --chart-grid: rgba(60, 85, 130, 0.3);
-  /* сітка графіку */
-
-  --chart-tooltip-bg: rgb(25, 38, 68);
-  /* фон tooltip — темно-синій */
-
-  --chart-tooltip-border: rgba(60, 90, 150, 0.6);
-  /* бордер tooltip */
-
-  /* --- Кільцева діаграма (Donut / Pie) --- */
-  --donut-primary: rgb(0, 210, 190);
-  /* основний сектор — бірюзовий */
-
-  --donut-secondary: rgb(130, 255, 90);
-  /* другий сектор — лаймовий зелений */
-
-  --donut-tertiary: rgba(40, 60, 100, 0.5);
-  /* незаповнена частина — темна */
-
-  /* --- Категорії витрат --- */
-  --category-rent: rgb(255, 160, 100);
-  /* Rent & Living — помаранчевий */
-
-  --category-rent-bg: rgba(255, 160, 100, 0.15);
-
-  --category-investment: rgb(100, 150, 255);
-  /* Investment — яскраво-синій */
-
-  --category-investment-bg: rgba(100, 150, 255, 0.15);
-
-  --category-education: rgb(180, 130, 255);
-  /* Education — фіолетовий */
-
-  --category-education-bg: rgba(180, 130, 255, 0.15);
-
-  --category-food: rgb(130, 255, 90);
-  /* Food & Drink — лаймовий зелений */
-
-  --category-food-bg: rgba(130, 255, 90, 0.12);
-
-  --category-entertainment: rgb(255, 120, 200);
-  /* Entertainment — рожевий */
-
-  --category-entertainment-bg: rgba(255, 120, 200, 0.2);
-
-  /* --- Прогрес-бари (Savings Goals) --- */
-  --progress-track: rgba(40, 60, 100, 0.5);
-  /* фон треку */
-
-  --progress-fill-blue: rgb(0, 210, 190);
-  /* заповнення — бірюзовий */
-
-  --progress-fill-green: rgb(130, 255, 90);
-  /* заповнення — лаймовий зелений */
-
-  --progress-fill-orange: rgb(255, 170, 100);
-  /* заповнення — помаранчевий */
-
-  /* --- Daily Limit --- */
-  --limit-bar-track: rgba(40, 60, 100, 0.5);
-  --limit-bar-fill: rgb(0, 210, 190);
-  --limit-percentage: rgb(200, 220, 255);
-
-  /* --- Валютні значки --- */
-  --currency-usd: rgb(0, 210, 190);
-  /* USD — бірюзовий */
-
-  --currency-usdt: rgb(130, 255, 90);
-  /* USDT — лаймовий зелений */
-
-  --currency-dar: rgb(255, 170, 100);
-  /* DAR — помаранчевий */
-
-  --currency-negative: rgb(255, 90, 130);
-
-  /* --- Таблиця транзакцій --- */
-  --table-header: rgba(40, 58, 100, 0.4);
-  /* фон заголовку таблиці */
-
-  --table-row-hover: rgba(40, 60, 105, 0.35);
-  /* фон рядка при hover */
-
-  --table-border: rgba(50, 75, 125, 0.35);
-  /* бордер між рядками */
-
-  --table-foreground: rgb(220, 235, 255);
-  /* основний текст */
-
-  --table-muted: rgb(110, 140, 190);
-  /* підтекст (категорія, дата) */
-
-  /* --- Sidebar нижній блок (upgrade / CTA) --- */
-  --upgrade-bg: rgb(22, 38, 70);
-  /* фон нижнього блоку */
-
-  --upgrade-fg: rgb(200, 220, 255);
-  /* текст у блоці */
-
-  --upgrade-icon-bg: rgba(0, 210, 190, 0.2);
-  /* фон іконки — бірюзовий */
-
-  /* --- Бордери та розділювачі --- */
-  --border: rgba(50, 75, 125, 0.4);
-  --border-strong: rgba(65, 95, 155, 0.6);
-  --divider: rgba(40, 65, 110, 0.35);
-
-  /* --- Тіні --- */
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
-  --shadow-card-hover: 0 8px 32px rgba(0, 0, 0, 0.55);
+  --background: #080d1a;
+  --background-main: #0a1020;
+  --background-gradient-from: #080d1a;
+  --background-gradient-to: #0c1428;
+
+  /* prettier-ignore */
+  --bg-gradient:
+    radial-gradient(ellipse 70% 55% at 12% 18%, rgba(6, 182, 212, 0.13), transparent 55%),
+    radial-gradient(ellipse 60% 50% at 82% 14%, rgba(37, 99, 235, 0.15), transparent 55%),
+    radial-gradient(ellipse 65% 50% at 8% 82%, rgba(34, 197, 94, 0.09), transparent 55%),
+    radial-gradient(ellipse 55% 45% at 88% 80%, rgba(6, 182, 212, 0.10), transparent 55%),
+    linear-gradient(180deg, #080d1a 0%, #0c1428 100%);
+
+  --glass-bg: rgba(14, 24, 50, 0.58);
+  --glass-bg-strong: rgba(14, 24, 50, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.07);
+  --glass-highlight: rgba(255, 255, 255, 0.05);
+  --glass-blur: blur(20px);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
+
+  --foreground: #f1f5f9;
+  --foreground-muted: #94a3b8;
+  --foreground-subtle: #475569;
+
+  --card: rgba(14, 24, 50, 0.58);
+  --card-hover: rgba(20, 34, 66, 0.72);
+  --card-list: rgba(14, 24, 50, 0.68);
+  --card-foreground: #f1f5f9;
+  --card-border: rgba(255, 255, 255, 0.07);
+
+  --popover: #0e1830;
+  --popover-foreground: #f1f5f9;
+
+  --primary: #06b6d4;
+  --primary-dark: #0891b2;
+  --primary-light: rgba(6, 182, 212, 0.15);
+  --primary-foreground: #ffffff;
+
+  --secondary: #22c55e;
+  --secondary-dark: #16a34a;
+  --secondary-light: rgba(34, 197, 94, 0.15);
+  --secondary-foreground: #ffffff;
+
+  --accent: rgba(6, 182, 212, 0.12);
+  --accent-foreground: #06b6d4;
+
+  --muted: rgba(30, 41, 59, 0.5);
+  --muted-foreground: #64748b;
+
+  --destructive: #ef4444;
+
+  --status-positive: #22c55e;
+  --status-positive-bg: rgba(34, 197, 94, 0.15);
+  --status-negative: #ef4444;
+  --status-negative-bg: rgba(239, 68, 68, 0.15);
+  --status-pending: #f59e0b;
+  --status-pending-bg: rgba(245, 158, 11, 0.15);
+  --status-completed: #06b6d4;
+  --status-completed-bg: rgba(6, 182, 212, 0.15);
+  --status-failed: #ef4444;
+  --status-failed-bg: rgba(239, 68, 68, 0.15);
+
+  --sidebar: #060b16;
+  --sidebar-foreground: #cbd5e1;
+  --sidebar-muted: #475569;
+  --sidebar-active-bg: rgba(6, 182, 212, 0.12);
+  --sidebar-active-fg: #06b6d4;
+  --sidebar-badge: #06b6d4;
+  --sidebar-badge-fg: #ffffff;
+  --sidebar-primary: #06b6d4;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(6, 182, 212, 0.1);
+  --sidebar-accent-foreground: #06b6d4;
+  --sidebar-ring: rgba(6, 182, 212, 0.3);
+
+  --icon-bg: rgba(6, 182, 212, 0.13);
+  --icon-fg: #06b6d4;
+
+  --table-header: rgba(255, 255, 255, 0.04);
+  --table-row-hover: rgba(255, 255, 255, 0.04);
+  --table-border: rgba(255, 255, 255, 0.07);
+  --table-foreground: #f1f5f9;
+  --table-muted: #64748b;
+
+  --chart-income: #06b6d4;
+  --chart-income-fill: rgba(6, 182, 212, 0.22);
+  --chart-expense: #22c55e;
+  --chart-expense-fill: rgba(34, 197, 94, 0.18);
+  --chart-grid: rgba(255, 255, 255, 0.06);
+  --chart-tooltip-bg: rgba(14, 24, 50, 0.96);
+  --chart-tooltip-border: rgba(255, 255, 255, 0.1);
+
+  --chart-1: #06b6d4;
+  --chart-2: #22c55e;
+  --chart-3: #f59e0b;
+  --chart-4: #a855f7;
+  --chart-5: #ef4444;
+
+  --donut-primary: #06b6d4;
+  --donut-secondary: #22c55e;
+  --donut-tertiary: rgba(255, 255, 255, 0.08);
+
+  --category-rent: #f59e0b;
+  --category-rent-bg: rgba(245, 158, 11, 0.15);
+  --category-investment: #06b6d4;
+  --category-investment-bg: rgba(6, 182, 212, 0.15);
+  --category-education: #a855f7;
+  --category-education-bg: rgba(168, 85, 247, 0.15);
+  --category-food: #22c55e;
+  --category-food-bg: rgba(34, 197, 94, 0.15);
+  --category-entertainment: #94a3b8;
+  --category-entertainment-bg: rgba(148, 163, 184, 0.12);
+
+  --progress-track: rgba(255, 255, 255, 0.07);
+  --progress-fill-blue: #06b6d4;
+  --progress-fill-green: #22c55e;
+  --progress-fill-orange: #f59e0b;
+
+  --limit-bar-track: rgba(255, 255, 255, 0.07);
+  --limit-bar-fill: #06b6d4;
+  --limit-percentage: #f1f5f9;
+
+  --currency-usd: #06b6d4;
+  --currency-usdt: #22c55e;
+  --currency-dar: #f59e0b;
+  --currency-negative: #ef4444;
+
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.13);
+  --divider: rgba(255, 255, 255, 0.05);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: rgba(6, 182, 212, 0.4);
+
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.6);
   --shadow-sidebar: 2px 0 20px rgba(0, 0, 0, 0.45);
 
-  /* --- Radius --- */
-  --radius: 0.625rem;
+  --tips-bg: rgba(14, 24, 50, 0.58);
+  --tips-icon: #f59e0b;
+  --tips-icon-secondary: #06b6d4;
 
-  /* --- Іконки / Quick Actions --- */
-  --icon-bg: rgba(35, 55, 95, 0.6);
-  /* фон іконок — темний синій */
+  --upgrade-bg: rgba(6, 182, 212, 0.85);
+  --upgrade-fg: #ffffff;
+  --upgrade-icon-bg: rgba(255, 255, 255, 0.2);
+}
 
-  --icon-fg: rgb(0, 210, 190);
-  /* колір іконок — бірюзовий */
+.dark .glass {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: linear-gradient(135deg, rgba(14, 28, 58, 0.62), rgba(8, 16, 38, 0.52));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+}
 
-  /* --- Financial Tips --- */
-  --tips-bg: rgba(25, 40, 72, 0.7);
-  /* фон блоку порад */
-
-  --tips-icon: rgb(255, 200, 80);
-  /* іконка лампочки — золотистий */
-
-  --tips-icon-secondary: rgb(0, 210, 190);
-  /* другорядна іконка — бірюзовий */
+.dark .glass-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 55%);
+  opacity: 0.6;
 }
 
 @layer base {
@@ -713,15 +463,12 @@
     font-family: var(--font-sans);
   }
 }
-/* Input number */
-/* Chrome, Safari, Edge */
+
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
-/* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
 }
@@ -734,13 +481,11 @@ button:not([disabled]),
 *::-webkit-scrollbar {
   width: 5px;
 }
-
 *::-webkit-scrollbar-thumb {
   background: rgb(200, 220, 240);
 }
-
 .dark *::-webkit-scrollbar-thumb {
-  background: rgb(60, 90, 140);
+  background: rgb(40, 70, 120);
 }
 
 @keyframes float {

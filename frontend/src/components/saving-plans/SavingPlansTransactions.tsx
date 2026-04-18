@@ -61,11 +61,11 @@ export function SavingPlansTransactions({
       <Table>
         <TableHeader>
           <TableRow className="border-zinc-700">
-            <TableHead className="text-zinc-400">Дата</TableHead>
-            <TableHead className="text-zinc-400">Тип</TableHead>
-            <TableHead className="text-zinc-400">Опис</TableHead>
-            <TableHead className="text-zinc-400">Джерело</TableHead>
-            <TableHead className="text-right text-zinc-400">Сума</TableHead>
+            <TableHead className="text-foreground">Дата</TableHead>
+            <TableHead className="text-foreground">Тип</TableHead>
+            <TableHead className="text-foreground">Опис</TableHead>
+            <TableHead className="text-foreground">Джерело</TableHead>
+            <TableHead className="text-right text-foreground">Сума</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -83,7 +83,7 @@ export function SavingPlansTransactions({
               <TableCell className="text-sm text-zinc-300">
                 {transaction.description || transaction.category || "—"}
               </TableCell>
-              <TableCell className="text-sm text-zinc-400">
+              <TableCell className="text-sm text-foreground">
                 {typeof transaction.sourceId === "object"
                   ? transaction.sourceId.name
                   : "Гаманець"}

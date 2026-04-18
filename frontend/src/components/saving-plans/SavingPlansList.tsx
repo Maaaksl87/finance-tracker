@@ -18,30 +18,38 @@ function SavingPlansList({
   };
 
   return (
-    <div className="flex flex-col flex-1 h-full overflow-hidden border bg-card border-card-border rounded-xl shadow-card hover:shadow-card-hover">
-      <div className="flex items-center justify-between p-4 font-medium">
-        Saving Plans
-        <span className="text-sm text-zinc-400">Всього: {plans?.length || 0}</span>
-        <button className="button">***</button>
+    <div className="flex flex-col flex-1 h-full min-h-0 overflow-hidden border bg-card border-card-border rounded-xl shadow-card dark:glass">
+      <div className="dark:glass-overlay" />
+
+      <div className="relative z-10 flex items-center justify-between p-4 font-medium">
+        <span className="text-foreground">Saving Plans</span>
+
+        <span className="text-sm text-foreground-muted">
+          Всього: {plans?.length || 0}
+        </span>
+
+        <button className="text-foreground-muted hover:text-foreground">***</button>
       </div>
 
-      <div className="flex-1 p-4 pt-2 space-y-2 overflow-y-auto">
+      <div className="relative z-10 flex-1 min-h-0 p-4 pt-2 space-y-2 overflow-y-auto">
         {plans?.map((plan) => (
           <div
-            onClick={() => setSelectedPlanId(plan._id)}
             key={plan._id}
-            className="relative p-4 transition-colors border cursor-pointer bg-card-list border-card-border rounded-xl hover:bg-card-hover"
+            onClick={() => setSelectedPlanId(plan._id)}
+            className="relative p-4 transition-all border cursor-pointer rounded-xl border-card-border bg-card-list hover:bg-card-hover"
           >
-            <h3>{plan.title}</h3>
-            <p>
+            <h3 className="text-foreground">{plan.title}</h3>
+
+            <p className="text-sm text-foreground-muted">
               $ {plan.currentAmount} / $ {plan.targetAmount}
             </p>
+
             <ProgressBar
               currentAmount={plan.currentAmount}
               targetAmount={plan.targetAmount}
             />
 
-            <span className="absolute flex items-center justify-end text-sm text-zinc-500 top-4 right-5">
+            <span className="absolute text-sm text-foreground-muted top-4 right-5">
               {plan.targetAmount
                 ? ((plan.currentAmount / plan.targetAmount) * 100).toFixed(2)
                 : "0.00"}
@@ -51,9 +59,10 @@ function SavingPlansList({
         ))}
       </div>
 
-      <Button className="m-4" onClick={() => setOpen(true)}>
+      <Button className="relative z-10 m-4" onClick={() => setOpen(true)}>
         Додати новий план
       </Button>
+
       {open && (
         <AddNewPlan
           isOpen={open}
