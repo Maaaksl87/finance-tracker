@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { TransactionType } from "@/types";
 import type { Transaction } from "@/types";
 import { format } from "date-fns";
@@ -16,36 +15,33 @@ export function buildCashFlowData(
   transactions: Transaction[],
   dateFormat: string,
 ): ChartDataPoint[] {
-  // TODO: подивитись варіант оптиміззації (виправити useMemo(він використовується в хуках))
-  return useMemo(() => {
-    if (!transactions || transactions.length === 0) return [];
-    // Сортуємо транзакції від найстарішої до найновішої для коректного розрахунку балансу
-    const sorted = [...transactions].sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-    );
+  if (!transactions || transactions.length === 0) return [];
+  // Сортуємо транзакції від найстарішої до найновішої для коректного розрахунку балансу
+  const sorted = [...transactions].sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+  );
 
-    let currentBalance = 0;
-    const dailyData: Record<string, ChartDataPoint> = {};
+  let currentBalance = 0;
+  const dailyData: Record<string, ChartDataPoint> = {};
 
-    sorted.forEach((t) => {
-      const amount = t.amount;
-      const isExpense = t.type === TransactionType.EXPENSE;
-      const isIncome = t.type === TransactionType.INCOME;
+  sorted.forEach((t) => {
+    const amount = t.amount;
+    const isExpense = t.type === TransactionType.EXPENSE;
+    const isIncome = t.type === TransactionType.INCOME;
 
-      if (isIncome) currentBalance += amount;
-      if (isExpense) currentBalance -= amount;
+    if (isIncome) currentBalance += amount;
+    if (isExpense) currentBalance -= amount;
 
-      const dateKey = format(new Date(t.date), dateFormat);
+    const dateKey = format(new Date(t.date), dateFormat);
 
-      dailyData[dateKey] = {
-        date: dateKey,
-        fullDate: format(new Date(t.date), "d MMMM yyyy", { locale: uk }),
-        balance: currentBalance,
-        amount: isExpense ? -amount : amount,
-        type: t.type,
-      };
-    });
+    dailyData[dateKey] = {
+      date: dateKey,
+      fullDate: format(new Date(t.date), "d MMMM yyyy", { locale: uk }),
+      balance: currentBalance,
+      amount: isExpense ? -amount : amount,
+      type: t.type,
+    };
+  });
 
-    return Object.values(dailyData);
-  }, [transactions, dateFormat]);
+  return Object.values(dailyData);
 }
