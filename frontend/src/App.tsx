@@ -2,7 +2,7 @@ import "./index.css";
 //pages and components
 import Layout from "./components/Layout";
 import DashboardPage from "./pages/DashboardPage";
-import Transactions from "./pages/Transactions";
+import Transactions from "./pages/TransactionsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import TestSourcesPage from "./pages/TestSourcePage";
 import StatsPage from "./pages/StatsPage";
