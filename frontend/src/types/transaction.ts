@@ -15,7 +15,7 @@ export interface Transaction {
   category: string;
   description?: string;
   date: string;
-  sourceId: Source | string;
+  sourceId: Source;
   destinationSourceId?: Source | string;
   savingPlanId?: string;
   userId: string;
