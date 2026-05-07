@@ -8,7 +8,7 @@ import { useSavingPlans } from "@/hooks/useSavingPlans";
 import StatsCards from "@/components/stats/StatsCards";
 import ChartAreaGradient from "@/components/stats/StatsChart";
 import ListOfCurrencies from "@/components/currencies/ListOfCurrencies";
-import TestTransactionsTable from "@/components/transactions/TestTransactionsTable";
+import TransactionsTable from "@/components/transactions/TransactionsTable";
 
 export default function DashboardPage() {
   const { stats, transactions, isLoading } = useTransactionStats();
@@ -126,7 +126,7 @@ export default function DashboardPage() {
 
               <CardContent className="flex min-h-0">
                 <div className="flex-1 min-h-0 overflow-y-auto ">
-                  <TestTransactionsTable data={transactions || []} onDelete={() => {}} />
+                  <TransactionsTable limit={5} />
                 </div>
               </CardContent>
             </Card>
