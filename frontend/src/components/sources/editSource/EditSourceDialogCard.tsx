@@ -1,6 +1,3 @@
-import { useState } from "react";
-import type { Source } from "@/types";
-import { updateSource } from "@/api/sources";
 import {
   Dialog,
   DialogContent,
@@ -9,40 +6,33 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import type { UpdateSourceDto } from "@/types/sources";
 
-interface Props {
-  source: Source;
+interface EditSourceDialogCardProps {
+  formData: UpdateSourceDto;
+  isLoading: boolean;
+  onFormChange: (field: keyof UpdateSourceDto, value: string | number) => void;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSuccess: () => void;
+  onSubmit: (e: React.FormEvent) => void;
 }
 
-export function EditSourceDialog({ source, open, onOpenChange, onSuccess }: Props) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [name, setName] = useState(source.name);
-  const [balance, setBalance] = useState(source.balance);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      await updateSource(source._id, { name, balance: Number(balance) });
-      onSuccess(); //оновлюємо таблицю
-      onOpenChange(false); // Закриваємо діалог
-    } catch (error) {
-      console.error("Failed to update source", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+export default function EditSourceDialogCard({
+  isLoading,
+  formData,
+  onFormChange,
+  open,
+  onOpenChange,
+  onSubmit,
+}: EditSourceDialogCardProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
           <DialogHeader>
             <DialogTitle>Редагувати гаманець</DialogTitle>
             <DialogDescription>Змініть назву або скоригуйте баланс.</DialogDescription>
@@ -55,8 +45,8 @@ export function EditSourceDialog({ source, open, onOpenChange, onSuccess }: Prop
               </Label>
               <Input
                 id="edit-name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={formData.name}
+                onChange={(e) => onFormChange("name", e.target.value)}
                 className="col-span-3"
                 required
               />
@@ -68,12 +58,37 @@ export function EditSourceDialog({ source, open, onOpenChange, onSuccess }: Prop
               <Input
                 id="edit-balance"
                 type="number"
-                value={balance}
-                onChange={(e) => setBalance(+e.target.value)}
+                value={formData.balance}
+                onChange={(e) => onFormChange("balance", Number(e.target.value))}
                 className="col-span-3"
                 required
               />
             </div>
+            {/* <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="edit-type" className="text-right">
+                Тип
+                <select
+                  name="type"
+                  value={formData.type}
+                  onChange={(e) => {
+                    onFormChange("type", e.target.value);
+                  }}
+                >
+                  {sourceTypes.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+
+                  <Input
+                    id="edit-type"
+                    value={formData.type}
+                    onChange={(e) => onFormChange("type", e.target.value)}
+                    className="col-span-3"
+                  />
+                </select>
+              </Label>
+            </div> */}
           </div>
 
           <DialogFooter>
