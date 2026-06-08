@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Source } from "@/types";
+import type { Source, UpdateSourceDto } from "@/types";
 import { updateSource } from "@/api/sources";
 import EditSourceDialogCard from "./EditSourceDialogCard";
 
@@ -7,28 +7,23 @@ interface Props {
   source: Source;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSuccess: () => void;
-}
-interface EditSourceFormData {
-  name: string;
-  balance: number;
+  onRefresh: () => void;
 }
 
 export default function EditSourceDialogContainer({
   source,
   open,
   onOpenChange,
-  onSuccess,
+  onRefresh,
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
-  const [name, setName] = useState(source.name);
-  const [balance, setBalance] = useState(source.balance);
-  const [formData, setFormData] = useState<EditSourceFormData>({
+
+  const [formData, setFormData] = useState<UpdateSourceDto>({
     name: source.name,
     balance: source.balance,
   });
 
-  const handleFormChange = (field: keyof EditSourceFormData, value: string | number) => {
+  const handleFormChange = (field: keyof UpdateSourceDto, value: string | number) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -36,9 +31,12 @@ export default function EditSourceDialogContainer({
     e.preventDefault();
     setIsLoading(true);
     try {
-      await updateSource(source._id, { name, balance: Number(balance) });
-      onSuccess(); //оновлюємо таблицю
-      onOpenChange(false); // Закриваємо діалог
+      await updateSource(source._id, {
+        name: formData.name,
+        balance: Number(formData.balance),
+      });
+      onRefresh();
+      onOpenChange(false);
     } catch (error) {
       console.error("Failed to update source", error);
     } finally {

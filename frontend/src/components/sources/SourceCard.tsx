@@ -16,15 +16,13 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
-export default function SourceCard({
-  sourceData,
-  handleSourceUpdate,
-  handleSourceDelete,
-}: {
+interface SourceCardProps {
   sourceData: Source;
-  handleSourceUpdate: (updatedSource: Source) => void;
-  handleSourceDelete: (id: string) => void;
-}) {
+  onUpdate: (source: Source) => void;
+  onDelete: (sourceId: string) => void;
+}
+
+export default function SourceCard({ sourceData, onUpdate, onDelete }: SourceCardProps) {
   return (
     <Card className="flex flex-row items-stretch overflow-hidden p-0 shadow-sm border-0 bg-[#e9f0e7]">
       <div className="flex items-center justify-center w-24 shrink-0 bg-[#1e3a32]">
@@ -53,7 +51,7 @@ export default function SourceCard({
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
-                  <DropdownMenuItem onClick={() => handleSourceUpdate(sourceData)}>
+                  <DropdownMenuItem onClick={() => onUpdate(sourceData)}>
                     <PencilIcon />
                     Edit
                   </DropdownMenuItem>
@@ -61,7 +59,7 @@ export default function SourceCard({
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   <DropdownMenuItem
-                    onClick={() => handleSourceDelete(sourceData._id)}
+                    onClick={() => onDelete(sourceData._id)}
                     variant="destructive"
                   >
                     <TrashIcon />

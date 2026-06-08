@@ -1,46 +1,30 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { Source } from "@/types";
-import { getSources } from "@/api/sources";
 import SourceCard from "./SourceCard";
-import EditSourceDialogContainer from "./EditSourceDialogContainer";
+import EditSourceDialogContainer from "./editSource/EditSourceDialogContainer";
 import { deleteSource } from "@/api/sources";
 
-export default function SourceContainer({}: {}) {
-  const [sources, setSources] = useState<Source[]>([]);
+interface SourceContainerProps {
+  sources: Source[];
+  onRefresh: () => void;
+}
+
+export default function SourceContainer({ sources, onRefresh }: SourceContainerProps) {
   const [selectedSource, setSelectedSource] = useState<Source | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const fetchSources = async () => {
-    try {
-      const sourcesList = await getSources();
-      setSources(sourcesList);
-    } catch (error) {
-      console.error("Error fetching sources:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchSources();
-  }, []);
-
-  const handleSourceUpdate = (updatedSource: Source) => {
-    console.log(updatedSource);
-
-    setSelectedSource(updatedSource);
+  const handleSourceUpdate = (source: Source) => {
+    setSelectedSource(source);
     setIsOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
-    const prevSources = [...sources];
-
-    setSources(sources.filter((source) => source._id !== id));
-
+  const handleSourceDelete = async (sourceId: string) => {
     try {
-      await deleteSource(id);
+      await deleteSource(sourceId);
+      onRefresh();
     } catch (error) {
       console.error("Failed to delete source", error);
-      setSources(prevSources); // Відновлюємо попередній стан у разі помилки
-      alert("Не вдалося видалити гаманець. Спробуйте ще раз."); //TODO: Замінити alert
+      alert("Помилка при видаленні джерела. Спробуйте ще раз."); // todo: замінити на нормальний компонент для повідомлень про помилки
     }
   };
 
@@ -50,8 +34,8 @@ export default function SourceContainer({}: {}) {
         <SourceCard
           key={source._id}
           sourceData={source}
-          handleSourceUpdate={handleSourceUpdate}
-          handleSourceDelete={handleDelete}
+          onUpdate={handleSourceUpdate}
+          onDelete={handleSourceDelete}
         />
       ))}
       {selectedSource && (
@@ -60,7 +44,7 @@ export default function SourceContainer({}: {}) {
           source={selectedSource}
           open={isOpen}
           onOpenChange={setIsOpen}
-          onSuccess={fetchSources}
+          onRefresh={onRefresh}
         />
       )}
     </>

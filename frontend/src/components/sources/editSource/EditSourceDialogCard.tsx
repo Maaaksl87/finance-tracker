@@ -7,19 +7,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-
-interface EditSourceFormData {
-  name: string;
-  balance: number;
-}
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import type { UpdateSourceDto } from "@/types/sources";
 
 interface EditSourceDialogCardProps {
-  formData: EditSourceFormData;
+  formData: UpdateSourceDto;
   isLoading: boolean;
-  onFormChange: (field: keyof EditSourceFormData, value: string | number) => void;
+  onFormChange: (field: keyof UpdateSourceDto, value: string | number) => void;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (e: React.FormEvent) => void;
@@ -68,6 +64,31 @@ export default function EditSourceDialogCard({
                 required
               />
             </div>
+            {/* <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="edit-type" className="text-right">
+                Тип
+                <select
+                  name="type"
+                  value={formData.type}
+                  onChange={(e) => {
+                    onFormChange("type", e.target.value);
+                  }}
+                >
+                  {sourceTypes.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+
+                  <Input
+                    id="edit-type"
+                    value={formData.type}
+                    onChange={(e) => onFormChange("type", e.target.value)}
+                    className="col-span-3"
+                  />
+                </select>
+              </Label>
+            </div> */}
           </div>
 
           <DialogFooter>
