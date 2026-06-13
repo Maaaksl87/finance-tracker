@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { bankSources, colors, currencies, cryptoSources } from "@/types/sources";
+import { bankSources, colors, currencies, cryptoSources, type Color } from "@/types/sources";
 
-const colorValues = colors.map((color) => color.value) as [string, ...string[]];
+const colorValues = colors.map((color) => color.value) as [Color, ...Color[]];
 
 const walletDetailsSchema = z.object({
   name: z
@@ -62,9 +62,9 @@ const cryptoSourceSchema = z.object({
   cryptoConfig: cryptoConfigSchema,
 });
 
-const depositSourceSchema = walletDetailsSchema.extend({
-  sourceType: z.literal("deposit"),
-});
+// const depositSourceSchema = walletDetailsSchema.extend({
+//   sourceType: z.literal("deposit"),
+// });
 
 export const sourceSchema = z.discriminatedUnion("sourceType", [
   z.object({
@@ -73,7 +73,7 @@ export const sourceSchema = z.discriminatedUnion("sourceType", [
   }),
   cashSourceSchema,
   cryptoSourceSchema,
-  depositSourceSchema,
+  // depositSourceSchema,
 ]);
 
 export type SourceSchemaType = z.input<typeof sourceSchema>;

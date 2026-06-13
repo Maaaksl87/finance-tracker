@@ -18,10 +18,10 @@ import {
 import { useFormContext } from "react-hook-form";
 
 interface Step1Props {
-  onNextStep: () => void;
+  onTypeSelect: (type: SourceType) => void;
 }
 
-export function Step1Type({ onNextStep }: Step1Props) {
+export function Step1Type({ onTypeSelect }: Step1Props) {
   const sourceIcons: Record<SourceType, LucideIcon> = {
     card: Wallet,
     cash: DollarSign,
@@ -42,7 +42,7 @@ export function Step1Type({ onNextStep }: Step1Props) {
               onValueChange={(value) => {
                 if (value) {
                   field.onChange(value);
-                  onNextStep();
+                  onTypeSelect(value as SourceType);
                 }
               }}
               spacing={1}
@@ -58,26 +58,26 @@ export function Step1Type({ onNextStep }: Step1Props) {
                     value={type.value}
                     disabled={type.disabled}
                     variant="wallet"
-                    className="hover:border-[#f0bb0b79]"
+                    className="hover:border-wizard-accent/50"
                   >
                     <div className="flex w-full flex-col gap-3 ">
                       <div className="flex w-full items-start justify-between">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-[#141418] text-[#737373] transition-colors group-data-[state=on]:bg-[#262118] group-data-[state=on]:text-[#eab308]">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-input text-foreground transition-colors group-data-[state=on]:bg-wizard-accent/20 group-data-[state=on]:text-wizard-accent">
                           {Icon && <Icon className="h-5 w-5" />}
                         </div>
                         {type.hasApi && (
-                          <div className="flex items-center gap-1.5 rounded-full bg-[#16271c] px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-[#0ebd68]">
-                            <div className="h-1.5 w-1.5 rounded-full bg-[#0ebd68]" />
+                          <div className="flex items-center gap-1.5 rounded-full bg-api-badge-bg px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-api-badge-text">
+                            <div className="h-1.5 w-1.5 rounded-full bg-api-badge-text" />
                             API
                           </div>
                         )}
                       </div>
 
                       <div className="mt-2 flex flex-col gap-1 text-left">
-                        <span className="text-base font-bold text-white">
+                        <span className="text-base font-bold text-foreground">
                           {type.label}
                         </span>
-                        <span className="text-xs text-[#737373]">{type.description}</span>
+                        <span className="text-xs text-muted">{type.description}</span>
                       </div>
                     </div>
                   </ToggleGroupItem>
@@ -85,12 +85,12 @@ export function Step1Type({ onNextStep }: Step1Props) {
               })}
             </ToggleGroup>
           </FormControl>
-          <div className="flex items-center gap-3 text-muted bg-[#1b1b21] p-3 rounded-md mt-4">
+          <div className="flex items-center gap-3 text-muted bg-input p-3 rounded-md mt-4">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-yellow-500/10 text-yellow-500">
               <AlertCircle className="h-5 w-5" />
             </div>
             <span className="leading-snug text-[12px] font-normal leading-normal">
-              Для <span className="text-white">банків та бірж</span> рекомендуємо API —
+              Для <span className="text-foreground font-semibold">банків та бірж</span> рекомендуємо API —
               баланси та транзакції оновлюються автоматично. Готівку та інше додають
               вручну.
             </span>

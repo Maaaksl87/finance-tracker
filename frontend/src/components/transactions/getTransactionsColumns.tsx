@@ -12,7 +12,7 @@ export const getTransactionsColumns = (): ColumnDef<Transaction>[] => [
       return formatDate(getValue<Date>());
     },
     meta: {
-      className: "text-sm dark:text-[#777777]",
+      className: "text-sm dark:text-table-muted",
     },
   },
   {
@@ -28,7 +28,7 @@ export const getTransactionsColumns = (): ColumnDef<Transaction>[] => [
     accessorKey: "sourceId.name",
     header: "Гаманець",
     meta: {
-      className: "dark:text-[#aaaaaa]",
+      className: "dark:text-table-cell-secondary",
     },
   },
   {

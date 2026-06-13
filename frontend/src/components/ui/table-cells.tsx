@@ -2,9 +2,9 @@ import type { TransactionType } from "@/types";
 
 export const TypeCell = ({ type }: { type: TransactionType }) => {
   const styleMap: Record<TransactionType, string> = {
-    income: "text-[#66bb6a] before:content-['↙'] before:mr-1",
-    expense: "text-[#ef5350] before:content-['↗'] before:mr-1",
-    transfer: "text-[#ab47bc] before:content-['⇄'] before:mr-1",
+    income: "text-type-income before:content-['↙'] before:mr-1",
+    expense: "text-type-expense before:content-['↗'] before:mr-1",
+    transfer: "text-type-transfer before:content-['⇄'] before:mr-1",
   };
 
   const labelMap: Record<TransactionType, string> = {

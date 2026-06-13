@@ -42,7 +42,7 @@ const TransactionsTable = ({ limit }: { limit?: number }) => {
   return (
     <>
       <div className="flex items-center justify-between">
-        <span className="text-lg font-semibold border-none px-3 py-2 rounded-full bg-[#25252c] text-[#999999] text-[13px]">
+        <span className="text-lg font-semibold border-none px-3 py-2 rounded-full bg-table-badge-bg text-table-badge-text text-[13px]">
           {filteredTransactions.length} записів
         </span>
         <TestCreateTransactionDialog onSuccess={fetchData} />

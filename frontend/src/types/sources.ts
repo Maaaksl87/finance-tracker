@@ -41,18 +41,20 @@ export const bankSources = ["monobank", "privatbank", "pumb", "other"] as const;
 export const cryptoSources = ["binance", "bybit", "okx"] as const;
 
 export const colors = [
-  { value: "teal", label: "Бірюзовий", hex: "#2dd4bf" },
-  { value: "green", label: "Зелений", hex: "#22c55e" },
-  { value: "yellow", label: "Жовтий", hex: "#fbbf24" },
-  { value: "red", label: "Червоний", hex: "#f87171" },
-  { value: "blue", label: "Синій", hex: "#60a5fa" },
-  { value: "purple", label: "Фіолетовий", hex: "#a78bfa" },
+  { value: "teal", label: "Бірюзовий", hex: "#0ecb81" },
+  { value: "green", label: "Зелений", hex: "#00a651" },
+  { value: "yellow", label: "Жовтий", hex: "#f0b90b" },
+  { value: "red", label: "Червоний", hex: "#f6465d" },
+  { value: "blue", label: "Синій", hex: "#3b82f6" },
+  { value: "purple", label: "Фіолетовий", hex: "#a855f7" },
   { value: "gray", label: "Сірий", hex: "#9ca3af" },
 ] as const;
 
 export type BankSource = (typeof bankSources)[number];
 export type CryptoSource = (typeof cryptoSources)[number];
 export type Color = (typeof colors)[number]["value"];
+export type ColorOption = (typeof colors)[number];
+
 
 export interface Source {
   _id: string;
@@ -66,18 +68,6 @@ export interface Source {
   updatedAt: string;
 }
 
-export interface CreateSourceDto {
-  name: string;
-  balance: number;
-  currency: Currency;
-  color: Color;
-  type: SourceType;
-}
+export type CreateSourceDto = Pick<Source, "name" | "balance" | "currency" | "color" | "type">;
 
-export interface UpdateSourceDto {
-  name?: string;
-  balance?: number;
-  color?: Color;
-  type?: SourceType;
-  currency?: Currency;
-}
+export type UpdateSourceDto = Partial<CreateSourceDto>;

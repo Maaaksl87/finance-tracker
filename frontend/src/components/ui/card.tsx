@@ -1,23 +1,13 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-// todo: переглянути можливість переписати на окремий компонент, який буде використовуватись для створення карток з бекдропом, а не додавати нові стилі до існуючого Card
-// function CardWithBackdrop({ className, ...props }: React.ComponentProps<"div">) {
-//   return (
-//     <div
-//       data-slot="card-with-backdrop"
-//       className={cn(glassStyle, "flex flex-col gap-4", className)}
-//       {...props}
-//     />
-//   );
-// }
 
 function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card"
       className={cn(
-        "flex bg-card border-card-border flex-col rounded-xl border py-3 shadow-card hover:shadow-card-hover transition-shadow",
+        "flex bg-card border-card-border flex-col rounded-xl border py-3",
         className,
       )}
       {...props}

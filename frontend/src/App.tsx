@@ -4,7 +4,7 @@ import Layout from "./components/Layout";
 import DashboardPage from "./pages/DashboardPage";
 import Transactions from "./pages/TransactionsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
-import TestSourcesPage from "./pages/TestSourcePage";
+import TestSourcesPage from "./pages/SourcePage";
 import StatsPage from "./pages/StatsPage";
 import AuthPage from "./components/auth/AuthPage";
 

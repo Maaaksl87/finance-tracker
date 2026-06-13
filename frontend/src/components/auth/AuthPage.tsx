@@ -15,15 +15,9 @@ export default function AuthPage() {
 
   const activeTab = location.pathname.includes("register") ? "register" : "login";
   return (
-    <div className="min-h-screen w-full relative">
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          background: "var(--bg-gradient)",
-        }}
-      />
-      <div className="relative flex items-center justify-center w-full p-6 min-h-screen md:p-10">
-        <div className="relative z-10 w-full max-w-sm">
+    <div className="min-h-screen w-full bg-background">
+      <div className="flex items-center justify-center w-full p-6 min-h-screen md:p-10">
+        <div className="w-full max-w-sm">
           <Tabs defaultValue={activeTab} className="w-full">
             <TabsList className="flex-row w-full max-w-sm">
               <TabsTrigger value="login" onClick={() => navigate("/auth/login")}>

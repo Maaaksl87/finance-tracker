@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { cn, glassStyle } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 import { Field, FieldGroup, FieldLabel, FieldSeparator } from "@/components/ui/field";
 import AppleIcon from "@/assets/icons/AppleIcon";
@@ -56,11 +56,11 @@ export function RegisterForm() {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       await registerUser(data);
-    } catch (err) {}
+    } catch (err) { }
   };
 
   return (
-    <div className={cn("flex flex-col gap-6")}>
+    <div className="flex flex-col gap-6">
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Реєстрація</CardTitle>
@@ -95,7 +95,7 @@ export function RegisterForm() {
                 <Input
                   id="name"
                   type="text"
-                  className={cn(glassStyle, "rounded-md ")}
+                  className="h-12 rounded-xl border border-border bg-input px-4 text-sm text-foreground shadow-none placeholder:text-muted-foreground focus-visible:border-primary/50 focus-visible:ring-0"
                   placeholder="Ваше ім'я"
                   {...register("name")}
                   disabled={isLoading}
@@ -113,7 +113,7 @@ export function RegisterForm() {
                 <Input
                   id="email"
                   type="email"
-                  className={cn(glassStyle, "rounded-md ")}
+                  className="h-12 rounded-xl border border-border bg-input px-4 text-sm text-foreground shadow-none placeholder:text-muted-foreground focus-visible:border-primary/50 focus-visible:ring-0"
                   placeholder="example@mail.com"
                   {...register("email")}
                   disabled={isLoading}
@@ -132,7 +132,7 @@ export function RegisterForm() {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Введіть пароль"
-                    className={cn(glassStyle, "rounded-md")}
+                    className="h-12 rounded-xl border border-border bg-input px-4 text-sm text-foreground shadow-none placeholder:text-muted-foreground focus-visible:border-primary/50 focus-visible:ring-0 pr-10"
                     required
                     {...register("password")}
                     disabled={isLoading}
@@ -164,7 +164,7 @@ export function RegisterForm() {
                   <Input
                     id="confirmPassword"
                     type={showConfirmPassword ? "text" : "password"}
-                    className={cn(glassStyle, "rounded-md ")}
+                    className="h-12 rounded-xl border border-border bg-input px-4 text-sm text-foreground shadow-none placeholder:text-muted-foreground focus-visible:border-primary/50 focus-visible:ring-0 pr-10"
                     placeholder="Повторіть пароль"
                     {...register("confirmPassword")}
                     disabled={isLoading}

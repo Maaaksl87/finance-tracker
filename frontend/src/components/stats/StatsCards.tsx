@@ -12,7 +12,7 @@ const StatsCards = ({
           <CardTitle className="text-sm font-medium">Всього доходів</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-green-600 font-heading">
+          <div className="text-2xl font-bold text-stats-positive font-heading">
             +{stats.totalIncome.toLocaleString()} ₴
           </div>
         </CardContent>
@@ -22,7 +22,7 @@ const StatsCards = ({
           <CardTitle className="text-sm font-medium">Всього витрат</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-red-600 font-heading">
+          <div className="text-2xl font-bold text-stats-negative font-heading">
             -{stats.totalExpense.toLocaleString()} ₴
           </div>
         </CardContent>
@@ -33,7 +33,7 @@ const StatsCards = ({
         </CardHeader>
         <CardContent>
           <div
-            className={`text-2xl font-bold font-heading ${stats.totalIncome || stats.totalExpense ? (stats.totalIncome - stats.totalExpense >= 0 ? "text-blue-600" : "text-orange-600") : "text-gray-500"}`}
+            className={`text-2xl font-bold font-heading ${stats.totalIncome || stats.totalExpense ? (stats.totalIncome - stats.totalExpense >= 0 ? "text-stats-net-positive" : "text-stats-net-negative") : "text-stats-neutral"}`}
           >
             {(stats.totalIncome || stats.totalExpense
               ? stats.totalIncome - stats.totalExpense

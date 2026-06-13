@@ -15,17 +15,17 @@ import {
 } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import type { SourceSchemaType } from "@/components/sources/source.schema";
-import { colors, currencies, type BankSource } from "@/types/sources";
+import { colors, currencies } from "@/types/sources";
 import { useFormContext } from "react-hook-form";
 
 const fieldLabelClass =
-  "text-[11px] font-bold uppercase tracking-[0.18em] text-[#6b6b76]";
+  "text-[11px] font-bold uppercase tracking-[0.18em] text-muted";
 const fieldControlClass =
-  "h-12 rounded-xl border-[#22222a] bg-[#1b1b21] px-4 text-sm text-white shadow-none placeholder:text-[#6b6b76] focus-visible:border-[#f0b90b80] focus-visible:ring-0";
+  "h-12 rounded-xl border border-border bg-input px-4 text-sm text-foreground shadow-none placeholder:text-muted-foreground focus-visible:border-wizard-accent/50 focus-visible:ring-0";
 
 export default function WalletDetailsFields({ prefix }: { prefix?: string }) {
   const { control } = useFormContext<SourceSchemaType>();
-  const fieldName = (name: string) => (prefix ? `${prefix}.${name}` : name);
+  const fieldName = (name: string) => (prefix ? `${prefix}.${name}` : name) as any;
 
   return (
     <>
@@ -83,11 +83,11 @@ export default function WalletDetailsFields({ prefix }: { prefix?: string }) {
               <FormLabel className={fieldLabelClass}>ВАЛЮТА</FormLabel>
               <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-full pl-4 py-5 dark:bg-[#1b1b21] border-[#22222a] placeholder:text-[#737373] placeholder:text-sm focus-visible:border-[#f0b90b80] focus-visible:ring-0">
+                  <SelectTrigger className="w-full pl-4 py-5 bg-input border-border text-foreground placeholder:text-muted-foreground placeholder:text-sm focus-visible:border-wizard-accent/50 focus-visible:ring-0">
                     <SelectValue placeholder="UAH" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className="border-[#22222a] bg-[#15151a] text-white">
+                <SelectContent className="border-border bg-modal text-foreground">
                   {currencies.map((currency) => (
                     <SelectItem key={currency} value={currency}>
                       {currency}
@@ -104,7 +104,6 @@ export default function WalletDetailsFields({ prefix }: { prefix?: string }) {
       <FormField
         control={control}
         name={fieldName("color")}
-        defaultValue={colors[0].value}
         render={({ field }) => (
           <FormItem className="grid gap-2">
             <FormLabel className={fieldLabelClass}>КОЛІР КАРТКИ</FormLabel>
@@ -126,7 +125,7 @@ export default function WalletDetailsFields({ prefix }: { prefix?: string }) {
                     value={color.value}
                     aria-label={color.label}
                     variant="default"
-                    className="h-9! w-9! min-w-9! rounded-full! border-2 border-[#23232b]! p-0! shadow-none transition-transform hover:scale-105 data-[state=on]:border-[#f0b90b]! data-[state=on]:ring-1 data-[state=on]:ring-[#f0b90b] data-[state=on]:ring-offset-1 data-[state=on]:ring-offset-[#15151a]"
+                    className="h-9! w-9! min-w-9! rounded-full! border-2 border-border! p-0! shadow-none transition-transform hover:scale-105 data-[state=on]:border-wizard-accent! data-[state=on]:ring-1 data-[state=on]:ring-wizard-accent data-[state=on]:ring-offset-1 data-[state=on]:ring-offset-modal"
                     style={{ backgroundColor: color.hex }}
                   >
                     <span className="sr-only">{color.label}</span>
