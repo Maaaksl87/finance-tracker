@@ -44,7 +44,7 @@ const CURRENCY: Record<number, string> = {
 };
 
 const fieldLabelClass =
-  "text-[11px] font-bold uppercase tracking-[0.18em] text-[#6b6b76]";
+  "text-[11px] font-bold uppercase tracking-[0.18em] text-muted";
 
 export default function BankApiForm() {
   const { control, watch, setValue } = useFormContext<SourceSchemaType>();
@@ -104,7 +104,7 @@ export default function BankApiForm() {
         name="cardConfig.bank"
         render={({ field }) => (
           <FormItem className="flex flex-col gap-2">
-            <FormLabel className="text-[11px] font-semibold uppercase tracking-wider text-[#6b6b76]">
+            <FormLabel className="text-[11px] font-semibold uppercase tracking-wider text-muted">
               Провайдер
             </FormLabel>
             <FormControl>
@@ -123,12 +123,13 @@ export default function BankApiForm() {
                     <ToggleGroupItem
                       key={bank}
                       value={bank}
-                      className="group flex! h-auto w-full! items-center! justify-start! gap-2 rounded-lg! border! border-transparent! bg-[#1b1b21]! px-2.5! py-2 text-left transition-colors hover:border-[#f0b90b66]! data-[state=on]:border-[#f0b90b]! data-[state=on]:bg-[#1b1b21]!"
+                      disabled={bankProviderMeta[bank].disabled}
+                      className="group flex! h-auto w-full! items-center! justify-start! gap-2 rounded-lg! border! border-transparent! bg-input! px-2.5! py-2 text-left transition-colors hover:border-wizard-accent/40! data-[state=on]:border-wizard-accent! data-[state=on]:bg-input! disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#0e0e12] text-xs font-bold text-[#f0b90b]">
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-input text-xs font-bold text-wizard-accent">
                         {bankProviderMeta[bank].mark}
                       </span>
-                      <span className="truncate text-[13px] font-semibold text-white">
+                      <span className="truncate text-[13px] font-semibold text-foreground">
                         {bankProviderMeta[bank].label}
                       </span>
                     </ToggleGroupItem>
@@ -142,15 +143,15 @@ export default function BankApiForm() {
       />
 
       {bankConfig === "monobank" && (
-        <div className="flex flex-col gap-4 rounded-2xl border border-[#22222a] bg-[#13131a] p-4">
+        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-4">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#0e0e12] text-sm font-bold text-[#f0b90b]">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-input text-sm font-bold text-wizard-accent">
                 {bankProviderMeta[bankConfig].mark}
               </span>
               <div className="flex flex-col">
-                <span className="text-sm font-bold text-white">Monobank API</span>
-                <span className="text-[11px] text-[#6b6b76]">
+                <span className="text-sm font-bold text-foreground">Monobank API</span>
+                <span className="text-[11px] text-muted">
                   X-Token з api.monobank.ua
                 </span>
               </div>
@@ -159,7 +160,7 @@ export default function BankApiForm() {
               href="https://api.monobank.ua/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex shrink-0 items-center gap-0.5 text-xs font-semibold text-[#f0b90b] hover:text-[#ffd33d]"
+              className="flex shrink-0 items-center gap-0.5 text-xs font-semibold text-wizard-accent hover:text-wizard-accent-hover"
             >
               Інструкція
               <ArrowUpRight className="h-3.5 w-3.5" />
@@ -173,7 +174,7 @@ export default function BankApiForm() {
               <FormItem className="flex flex-col gap-1.5">
                 <FormLabel
                   htmlFor="X-Token"
-                  className="text-[11px] font-semibold uppercase tracking-wider text-[#6b6b76]"
+                  className="text-[11px] font-semibold uppercase tracking-wider text-muted"
                 >
                   X-Token
                 </FormLabel>
@@ -184,13 +185,13 @@ export default function BankApiForm() {
                       id="X-Token"
                       type={showToken ? "text" : "password"}
                       placeholder="Вставте ваш ключ"
-                      className="h-11 rounded-lg border-[#22222a] bg-[#1b1b21] pl-3 pr-10 text-sm text-white placeholder:text-sm placeholder:text-[#737373]"
+                      className="h-11 rounded-lg border-border bg-input pl-3 pr-10 text-sm text-foreground placeholder:text-sm placeholder:text-muted-foreground"
                     />
                     <button
                       type="button"
                       onClick={() => setShowToken((v) => !v)}
                       aria-label={showToken ? "Сховати ключ" : "Показати ключ"}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6b6b76] transition-colors hover:text-white"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted transition-colors hover:text-foreground"
                     >
                       {showToken ? (
                         <Eye className="h-4 w-4" />
@@ -210,7 +211,7 @@ export default function BankApiForm() {
             variant="outline"
             onClick={handleCheckConnection}
             disabled={loading}
-            className="w-fit rounded-lg border-[#22222a] bg-[#1b1b21] px-4 text-sm font-medium text-white hover:bg-[#22222a] hover:text-white dark:border-[#22222a] dark:bg-[#1b1b21] dark:hover:bg-[#22222a]"
+            className="w-fit rounded-lg border border-border bg-input px-4 text-sm font-medium text-foreground hover:bg-input-hover hover:text-foreground"
           >
             {loading ? (
               <>
@@ -234,7 +235,7 @@ export default function BankApiForm() {
               control={control}
               render={({ field }) => (
                 <FormItem className="flex flex-col gap-1.5 mt-2">
-                  <FormLabel className="text-[11px] font-semibold uppercase tracking-wider text-[#6b6b76]">
+                  <FormLabel className="text-[11px] font-semibold uppercase tracking-wider text-muted">
                     Оберіть картку (рахунок)
                   </FormLabel>
                   <FormControl>
@@ -268,10 +269,10 @@ export default function BankApiForm() {
                       }}
                       value={field.value ?? ""}
                     >
-                      <SelectTrigger className="h-11 w-full! rounded-lg border-[#22222a] bg-[#1b1b21] px-3 text-sm text-white placeholder:text-sm placeholder:text-[#737373] focus:border-[#f0b90b66]">
+                      <SelectTrigger className="h-11 w-full! rounded-lg border border-border bg-input px-3 text-sm text-foreground placeholder:text-sm placeholder:text-muted-foreground focus:border-wizard-accent/40">
                         <SelectValue placeholder="Оберіть рахунок..." />
                       </SelectTrigger>
-                      <SelectContent className="border-[#22222a] bg-[#15151a] text-white">
+                      <SelectContent className="border border-border bg-modal text-foreground">
                         {accounts.map((acc) => {
                           const currencySymbol = CURRENCY[acc.currencyCode] || "UAH";
                           const cardNum = acc.maskedPan?.[0] ?? acc.iban;
@@ -293,7 +294,7 @@ export default function BankApiForm() {
                             <SelectItem
                               key={acc.id}
                               value={acc.id}
-                              className="focus:bg-[#1b1b21] focus:text-white cursor-pointer"
+                              className="focus:bg-input-hover focus:text-foreground cursor-pointer"
                             >
                               <span>
                                 {accTypeLabel} — {formattedCard} ({balanceStr} {currencySymbol})
@@ -314,7 +315,7 @@ export default function BankApiForm() {
       <FormField
         control={control}
         name="cardConfig.color"
-        defaultValue={colors[0].value}
+        defaultValue={colors[Math.floor(Math.random() * colors.length)].value}
         render={({ field }) => (
           <FormItem className="grid gap-2">
             <FormLabel className={fieldLabelClass}>КОЛІР КАРТКИ</FormLabel>
@@ -336,7 +337,7 @@ export default function BankApiForm() {
                     value={color.value}
                     aria-label={color.label}
                     variant="default"
-                    className="h-9! w-9! min-w-9! rounded-full! border-2 border-[#23232b]! p-0! shadow-none transition-transform hover:scale-105 data-[state=on]:border-[#f0b90b]! data-[state=on]:ring-1 data-[state=on]:ring-[#f0b90b] data-[state=on]:ring-offset-1 data-[state=on]:ring-offset-[#15151a]"
+                    className="h-9! w-9! min-w-9! rounded-full! border-2 border-border! p-0! shadow-none transition-transform hover:scale-105 data-[state=on]:border-wizard-accent! data-[state=on]:ring-1 data-[state=on]:ring-wizard-accent data-[state=on]:ring-offset-1 data-[state=on]:ring-offset-modal"
                     style={{ backgroundColor: color.hex }}
                   >
                     <span className="sr-only">{color.label}</span>
@@ -351,12 +352,12 @@ export default function BankApiForm() {
 
       {/* {bankConfig === "other" && <div>Other bank form</div>} */}
 
-      <div className="flex items-center gap-3 rounded-xl bg-[#1b1b21] p-3">
-        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#16271c] text-[#0ebd68]">
+      <div className="flex items-center gap-3 rounded-xl bg-input p-3">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-api-badge-bg text-api-badge-text">
           <ShieldCheck className="h-4 w-4" />
         </div>
-        <span className="text-[11px] leading-snug text-[#6b6b76]">
-          Використовуйте <span className="font-semibold text-white">read-only</span> права
+        <span className="text-[11px] leading-snug text-muted">
+          Використовуйте <span className="font-semibold text-foreground">read-only</span> права
           — додаток не виконує транзакції.
         </span>
       </div>

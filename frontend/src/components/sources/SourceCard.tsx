@@ -1,12 +1,9 @@
 import {
   Card,
   CardAction,
-  CardContent,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
-import { TrashIcon, Wallet, PencilIcon } from "lucide-react";
-import type { Source } from "@/types";
+import { TrashIcon, Wallet, PencilIcon, MoreHorizontal } from "lucide-react";
+import { colors, type Color, type Source, type SourceType, type ColorOption, type Currency } from "@/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Button } from "../ui/button";
 
 interface SourceCardProps {
   sourceData: Source;
@@ -22,32 +20,61 @@ interface SourceCardProps {
   onDelete: (sourceId: string) => void;
 }
 
+const colorMap = Object.fromEntries(colors.map((c) => [c.value, c])) as Record<Color, ColorOption>;
+
+const typeLabels: Record<SourceType, string> = {
+  card: "BANK",
+  cash: "CASH",
+  crypto: "CRYPTO",
+  deposit: "DEPOSIT",
+};
+
+const currencySymbols: Record<Currency, string> = {
+  UAH: "₴",
+  USD: "$",
+  EUR: "€",
+};
+
+function formatBalance(amount: number): string {
+  return amount.toLocaleString("uk-UA", { maximumFractionDigits: 2 });
+}
+
 export default function SourceCard({ sourceData, onUpdate, onDelete }: SourceCardProps) {
+  const activeColor = colorMap[sourceData.color] ?? colors[0];
+  const label = typeLabels[sourceData.type] ?? "WALLET";
+  const currencySymbol = currencySymbols[sourceData.currency] ?? sourceData.currency;
+
   return (
-    <Card className="flex flex-row items-stretch overflow-hidden p-0 shadow-sm border-0 bg-[#e9f0e7]">
-      <div className="flex items-center justify-center w-24 shrink-0 bg-[#1e3a32]">
-        <div className="flex flex-col items-center gap-1 text-[#7fd66b]">
-          <Wallet className="w-6 h-6" />
-          <span className="text-[10px] font-bold tracking-wider uppercase">Privat</span>
+    <Card
+      className="flex flex-row items-stretch overflow-hidden p-0 border border-border shadow-card hover:shadow-card-hover transition-shadow"
+      style={{
+        "--c": activeColor.hex,
+        backgroundColor: "color-mix(in srgb, var(--c) 8%, var(--card))",
+      } as React.CSSProperties}
+    >
+      <div
+        className="flex items-center justify-center w-20 shrink-0"
+        style={{ backgroundColor: "var(--c)" }}
+      >
+        <div className="flex flex-col items-center gap-1.5 text-white">
+          <Wallet className="w-5 h-5" />
+          <span className="text-[0.56rem] font-bold tracking-widest uppercase">
+            {label}
+          </span>
         </div>
       </div>
 
-      <div className="flex flex-col flex-1">
-        <CardHeader className="flex flex-row items-start justify-between pb-0 pt-4">
-          <div className="space-y-1">
-            <CardTitle className="text-[12px] font-normal text-[#5a6b58]">
-              {sourceData?.name}
-            </CardTitle>
-            <div className="text-[20px] text-[#1e3a32] font-bold">
-              {sourceData?.balance} <span className="text-xl">₴</span>
-            </div>
-          </div>
-          <CardAction>
+      <div className="flex flex-col flex-1 min-w-0 px-4 py-2">
+        <div className="flex items-start justify-between gap-2">
+          <span className="font-dm font-medium text-[0.8125rem] text-muted-foreground leading-snug truncate">
+            {sourceData.name}
+          </span>
+          <CardAction className="-mt-1 -mr-2 shrink-0">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="text-muted-foreground hover:text-foreground">
-                  ···
-                </button>
+                <Button variant="ghost" size="icon" aria-label="Дії з гаманцем">
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
@@ -69,13 +96,15 @@ export default function SourceCard({ sourceData, onUpdate, onDelete }: SourceCar
               </DropdownMenuContent>
             </DropdownMenu>
           </CardAction>
-        </CardHeader>
+        </div>
 
-        {/* <CardContent className="pb-2">
-          <div className="flex items-center gap-2 text-[11px] text-[#7a8a78] font-mono">
-            <span>4127 8723 0045 9967</span>
-          </div>
-        </CardContent> */}
+        <div className="font-dm font-extrabold text-[1.6rem] text-foreground leading-tight">
+          {formatBalance(sourceData.balance)}{" "}
+          <span className="text-[1.25rem] font-bold">{currencySymbol}</span>
+        </div>
+
+
+        {/* <div className="font-mono text-[0.75rem] text-muted-foreground leading-snug" /> */}
       </div>
     </Card>
   );

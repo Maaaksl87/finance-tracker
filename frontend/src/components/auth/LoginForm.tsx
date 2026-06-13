@@ -14,7 +14,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/hooks/useAuth";
 import AppleIcon from "@/assets/icons/AppleIcon";
 import GoogleIcon from "@/assets/icons/GoogleIcon";
-import { cn, glassStyle } from "@/lib/utils";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
@@ -82,7 +81,7 @@ export function LoginForm() {
                 id="email"
                 type="email"
                 placeholder="m@example.com"
-                className={cn(glassStyle, "rounded-md")}
+                className="h-12 rounded-xl border border-border bg-input px-4 text-sm text-foreground shadow-none placeholder:text-muted-foreground focus-visible:border-primary/50 focus-visible:ring-0"
                 required
                 {...register("email")}
                 disabled={isLoading}
@@ -99,7 +98,7 @@ export function LoginForm() {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Введіть пароль"
-                  className={cn(glassStyle, "rounded-md")}
+                  className="h-12 rounded-xl border border-border bg-input px-4 text-sm text-foreground shadow-none placeholder:text-muted-foreground focus-visible:border-primary/50 focus-visible:ring-0 pr-10"
                   required
                   {...register("password")}
                   disabled={isLoading}

@@ -45,14 +45,14 @@ export default function CryptoApiForm() {
                           key={source}
                           value={source}
                           disabled={meta.disabled}
-                          className="group flex! h-auto w-full! items-center! justify-start! gap-2 rounded-lg! border! border-transparent! bg-[#1b1b21]! px-2.5! py-2 text-left transition-colors hover:border-[#f0b90b66]! data-[state=on]:border-[#f0b90b]! data-[state=on]:bg-[#1b1b21]! disabled:cursor-not-allowed disabled:opacity-50"
+                          className="group flex! h-auto w-full! items-center! justify-start! gap-2 rounded-lg! border! border-transparent! bg-input! px-2.5! py-2 text-left transition-colors hover:border-wizard-accent/40! data-[state=on]:border-wizard-accent! data-[state=on]:bg-input! disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           <span
                             className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-xs font-bold ${meta.markClass}`}
                           >
                             {meta.mark}
                           </span>
-                          <span className="truncate text-[13px] font-semibold text-white">
+                          <span className="truncate text-[13px] font-semibold text-foreground">
                             {meta.label}
                           </span>
                         </ToggleGroupItem>

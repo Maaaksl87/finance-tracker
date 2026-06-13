@@ -11,6 +11,9 @@ import {
   Tooltip as RechartsTooltip,
 } from "recharts";
 
+// Рекомендація: щоб зробити кольори PieChart динамічними на основі CSS-змінних,
+// можна зчитувати значення через getComputedStyle у useEffect або використовувати
+// CSS-класи для стилізації елементів Recharts (якщо це підтримується версією).
 const COLORS = ["#10b981", "#ef4444", "#3b82f6"];
 
 function StatsPage() {

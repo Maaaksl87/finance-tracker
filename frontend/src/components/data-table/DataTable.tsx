@@ -42,7 +42,7 @@ const DataTable = <TData, TValue>({
               {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
-                  className={`${header.column.columnDef.meta?.headerClassName || ""} uppercase dark:text-[#777777]`}
+                  className={`${header.column.columnDef.meta?.headerClassName || ""} uppercase dark:text-table-muted`}
                 >
                   {flexRender(header.column.columnDef.header, header.getContext())}
                 </TableHead>

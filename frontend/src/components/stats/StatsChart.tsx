@@ -1,35 +1,37 @@
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { buildCashFlowData } from "@/lib/charts/buildCashFlowData";
 import { useTransactionStats } from "@/hooks/useTransactionStats";
-
-import { Card, CardContent } from "@/components/ui/card";
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
+import { useMemo } from "react";
 
 const chartConfig = {
   balance: {
     label: "Баланс",
-    color: "rgb(0, 210, 190)",
+    color: "var(--chart-balance)",
   },
   income: {
     label: "Доходи",
-    color: "rgb(0, 210, 190)",
+    color: "var(--chart-balance)",
   },
   expense: {
     label: "Витрати",
-    color: "rgb(130, 255, 90)",
+    color: "var(--chart-expense-line)",
   },
 } satisfies ChartConfig;
 
 export default function ChartAreaGradient() {
   const { transactions } = useTransactionStats();
-  const chartData = buildCashFlowData(transactions, "dd.MM");
+  const chartData = useMemo(
+    () => buildCashFlowData(transactions, "dd.MM"),
+    [transactions],
+  );
   const formatYAxis = (value: number) => (value === 0 ? "0" : `${value / 1000}к ₴`);
-  console.log("Chart data:", chartData);
+
   return (
     <div className="w-full h-auto">
       {/*TODO: змінити висоту графіка використовуючі плаваючі величини: aspect-[16/9] і так далі */}

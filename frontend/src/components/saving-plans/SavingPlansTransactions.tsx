@@ -42,11 +42,11 @@ export function SavingPlansTransactions({
   const getTypeBadge = (type: TransactionType) => {
     switch (type) {
       case TransactionType.INCOME:
-        return <Badge className="bg-green-500 hover:bg-green-600">Поповнення</Badge>;
+        return <Badge className="bg-status-positive hover:bg-status-positive/80 text-white">Поповнення</Badge>;
       case TransactionType.EXPENSE:
         return <Badge variant="destructive">Витрата</Badge>;
       case TransactionType.TRANSFER:
-        return <Badge className="bg-blue-500 hover:bg-blue-600">Переказ</Badge>;
+        return <Badge className="bg-stats-neutral hover:bg-stats-neutral/80 text-white">Переказ</Badge>;
       default:
         return <Badge variant="outline">{type}</Badge>;
     }
@@ -57,10 +57,10 @@ export function SavingPlansTransactions({
   };
 
   return (
-    <div className="border rounded-md border-zinc-700">
+    <div className="border rounded-md border-table-border">
       <Table>
         <TableHeader>
-          <TableRow className="border-zinc-700">
+          <TableRow className="border-table-border">
             <TableHead className="text-foreground">Дата</TableHead>
             <TableHead className="text-foreground">Тип</TableHead>
             <TableHead className="text-foreground">Опис</TableHead>
@@ -72,15 +72,15 @@ export function SavingPlansTransactions({
           {transactions.map((transaction) => (
             <TableRow
               key={transaction._id}
-              className="border-zinc-700 hover:bg-zinc-800/20"
+              className="border-table-border hover:bg-table-row-hover"
             >
-              <TableCell className="text-sm text-zinc-300">
+              <TableCell className="text-sm text-table-cell-secondary">
                 {format(new Date(transaction.date), "d MMM yyyy, HH:mm", {
                   locale: uk,
                 })}
               </TableCell>
               <TableCell>{getTypeBadge(transaction.type)}</TableCell>
-              <TableCell className="text-sm text-zinc-300">
+              <TableCell className="text-sm text-table-cell-secondary">
                 {transaction.description || transaction.category || "—"}
               </TableCell>
               <TableCell className="text-sm text-foreground">
@@ -92,8 +92,8 @@ export function SavingPlansTransactions({
                 <span
                   className={`font-medium ${
                     transaction.type === TransactionType.EXPENSE
-                      ? "text-red-500"
-                      : "text-green-500"
+                      ? "text-status-negative"
+                      : "text-status-positive"
                   }`}
                 >
                   {transaction.type === TransactionType.EXPENSE ? "-" : "+"}

@@ -1,6 +1,11 @@
-import { CardHeader, CardTitle, CardContent, Card } from "@/components/ui/card";
+import {
+  CardHeader,
+  CardTitle,
+  CardContent,
+  Card,
+  CardAction,
+} from "@/components/ui/card";
 import { useAuthStore } from "@/store/authStore";
-import { PlusCircle, ArrowRightLeft, Sparkles, PiggyBank } from "lucide-react";
 import SavingPlansList from "@/components/saving-plans/SavingPlansList";
 
 import { useTransactionStats } from "@/hooks/useTransactionStats";
@@ -9,6 +14,7 @@ import StatsCards from "@/components/stats/StatsCards";
 import ChartAreaGradient from "@/components/stats/StatsChart";
 import ListOfCurrencies from "@/components/currencies/ListOfCurrencies";
 import TransactionsTable from "@/components/transactions/TransactionsTable";
+import BalanceCard from "@/components/balance/BalanceCard";
 
 export default function DashboardPage() {
   const { stats, transactions, isLoading } = useTransactionStats();
@@ -27,60 +33,10 @@ export default function DashboardPage() {
   return (
     <div className="grid h-full min-h-0 grid-cols-12 gap-4 overflow-hidden text-foreground">
       <div className="flex flex-col min-h-0 col-span-12 gap-4 xl:col-span-9">
-        <div className="flex items-center justify-between">
-          <div>
-            {/*TODO: при перемиканні на іншого користувача, показує імя попереднього користувача, виправити*/}
-            <h1 className="text-2xl font-bold font-heading text-foreground">
-              Вітаю, {user?.name || "користувач"}!
-            </h1>
-            <p className="text-sm text-foreground-muted">
-              Контролюй свої фінанси для фінансового здоров'я.
-            </p>
-          </div>
-
-          <div className="text-right">
-            <p className="text-sm text-foreground-muted">Загальний баланс:</p>
-            <p className="text-3xl font-bold text-primary">
-              {totalBalance.toLocaleString()} ₴
-            </p>
-          </div>
-        </div>
-
         <div className="grid flex-1 min-h-0 grid-cols-12 gap-4">
           <div className="flex flex-col min-h-0 col-span-12 gap-4 md:col-span-5 xl:col-span-4">
-            <Card className="glass">
-              <div className="glass-overlay" />
-
-              <CardHeader className="relative z-10">
-                <CardTitle>Баланс аккаунта</CardTitle>
-              </CardHeader>
-
-              <CardContent className="relative z-10">
-                <p className="text-4xl font-bold text-primary">
-                  {totalBalance.toLocaleString()} ₴
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="glass">
-              <div className="glass-overlay" />
-
-              <CardContent className="relative z-10">
-                <div className="grid grid-cols-4 gap-3 text-xs text-center text-foreground-muted">
-                  {[PlusCircle, ArrowRightLeft, PiggyBank, Sparkles].map((Icon, i) => (
-                    <div key={i} className="flex flex-col items-center gap-1">
-                      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/15">
-                        <Icon className="w-5 h-5 text-primary" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="glass">
-              <div className="glass-overlay" />
-
+            <BalanceCard totalBalance={totalBalance} trendPercentage={20} />
+            <Card>
               <CardHeader className="relative z-10">
                 <CardTitle>Денний ліміт</CardTitle>
               </CardHeader>
@@ -102,8 +58,8 @@ export default function DashboardPage() {
           <div className="flex flex-col h-full min-h-0 col-span-12 gap-4 md:col-span-7 xl:col-span-8">
             {stats && <StatsCards stats={stats} />}
 
-            <Card className="glass">
-              <div className="glass-overlay" />
+            <Card>
+              <div />
 
               <CardHeader className="relative z-10">
                 <CardTitle>Огляд та грошовий потік</CardTitle>
@@ -117,8 +73,8 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            <Card className="flex-1 min-h-0 overflow-hidden glass">
-              <div className="glass-overlay" />
+            <Card className="flex-1 min-h-0 overflow-hidden">
+              <div />
 
               <CardHeader className="relative z-10">
                 <CardTitle>Останні транзакції</CardTitle>
@@ -135,8 +91,8 @@ export default function DashboardPage() {
       </div>
 
       <div className="min-h-0 col-span-12 space-y-4 xl:col-span-3">
-        <Card className="glass">
-          <div className="glass-overlay" />
+        <Card>
+          <div />
 
           <CardHeader className="relative z-10">
             <CardTitle>Статистика</CardTitle>
@@ -151,8 +107,8 @@ export default function DashboardPage() {
 
         <ListOfCurrencies />
         {/*TODO: доповнити картку з фін. порадами*/}
-        <Card className="glass">
-          <div className="glass-overlay" />
+        <Card>
+          <div />
 
           <CardHeader className="relative z-10">
             <CardTitle>Фінансові поради</CardTitle>
