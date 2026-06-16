@@ -6,12 +6,12 @@ import type {
   TransactionStats,
 } from "../types";
 
-// Отримати список (з пагінацією та фільтрами)
 export const getTransactions = async (params?: {
-  page?: number;
   limit?: number;
   type?: string;
   sourceId?: string;
+  startDate?: string;
+  endDate?: string;
 }): Promise<{ transactions: Transaction[]; pagination: TransactionPagination }> => {
   const { data } = await api.get("/transactions", { params });
   return data;
