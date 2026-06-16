@@ -16,7 +16,6 @@ import { useSourceWizard } from "@/hooks/useSourceWizard";
 import { sourceSchema } from "./source.schema";
 import {
   type CreateSourceDto,
-  type Source,
   type Currency,
   type Color,
   type SourceType,
@@ -29,11 +28,8 @@ import Step2Crypto from "./steps/Step2Crypto";
 
 import { Step1Type } from "./steps/Step1Type";
 import { Separator } from "@/components/ui/separator";
-import { createSource } from "@/api/sources";
-
-interface CreateSourceDialogProps {
-  onSuccess: (newSource: Source) => void;
-}
+// createSource більше не імпортуємо напряму — хук робить це сам
+import { useCreateSource } from "@/hooks/useSources";
 const pickRandomColor = (): Color =>
   colors[Math.floor(Math.random() * colors.length)].value;
 
@@ -84,9 +80,10 @@ function buildCreateDto(data: SourceSchemaType): CreateSourceDto | null {
 }
 
 
-export function CreateSourceDialog({ onSuccess }: CreateSourceDialogProps) {
+export function CreateSourceDialog() {
   const [open, setOpen] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const { mutateAsync } = useCreateSource();
   const { currentStep, goNext, goBack, reset, isFirstStep } = useSourceWizard(2);
 
   const form = useForm<SourceSchemaType>({
@@ -153,8 +150,7 @@ export function CreateSourceDialog({ onSuccess }: CreateSourceDialogProps) {
 
     setSubmitError(null);
     try {
-      const newSource = await createSource(dto);
-      onSuccess(newSource);
+      await mutateAsync(dto);
       handleOpenChange(false);
     } catch (error) {
       console.error("Failed to create source", error);

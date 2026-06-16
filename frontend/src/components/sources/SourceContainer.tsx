@@ -1,16 +1,16 @@
 import { useState } from "react";
 import type { Source } from "@/types";
 import SourceCard from "./SourceCard";
-import EditSourceDialogContainer from "./editSource/EditSourceDialogContainer";
-import { deleteSource } from "@/api/sources";
+import EditSourceDialog from "./editSource/EditSourceDialog";
+import { useDeleteSource } from "@/hooks/useSources";
 
 interface SourceContainerProps {
   sources: Source[];
-  onRefresh: () => void;
 }
 
-export default function SourceContainer({ sources, onRefresh }: SourceContainerProps) {
+export default function SourceContainer({ sources }: SourceContainerProps) {
   const [selectedSource, setSelectedSource] = useState<Source | null>(null);
+  const { mutateAsync } = useDeleteSource();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSourceUpdate = (source: Source) => {
@@ -20,8 +20,8 @@ export default function SourceContainer({ sources, onRefresh }: SourceContainerP
 
   const handleSourceDelete = async (sourceId: string) => {
     try {
-      await deleteSource(sourceId);
-      onRefresh();
+      await mutateAsync(sourceId);
+
     } catch (error) {
       console.error("Failed to delete source", error);
       alert("Помилка при видаленні джерела. Спробуйте ще раз."); // todo: замінити на нормальний компонент для повідомлень про помилки
@@ -39,12 +39,12 @@ export default function SourceContainer({ sources, onRefresh }: SourceContainerP
         />
       ))}
       {selectedSource && (
-        <EditSourceDialogContainer
+        <EditSourceDialog
           key={selectedSource._id}
           source={selectedSource}
           open={isOpen}
           onOpenChange={setIsOpen}
-          onRefresh={onRefresh}
+
         />
       )}
     </>
