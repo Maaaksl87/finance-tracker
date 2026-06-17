@@ -13,9 +13,15 @@ export class Source {
   @Prop({ required: true })
   balance: number;
 
-  /* Reference to the User who owns this Source
-  type: Types.ObjectId - this is ID from Mongo
-  ref: User.name - this is ID from User schema */
+  @Prop({ required: true })
+  type: string;
+
+  @Prop({ required: true })
+  currency: string;
+
+  @Prop({ required: true })
+  color: string;
+
   @Prop({ type: Types.ObjectId, ref: User.name, required: true })
   userId: Types.ObjectId;
 }

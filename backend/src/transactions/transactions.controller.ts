@@ -36,13 +36,17 @@ export class TransactionsController {
     @Query("limit") limit?: string,
     @Query("type") type?: TransactionType,
     @Query("sourceId") sourceId?: string,
+    @Query("startDate") startDate?: string,
+    @Query("endDate") endDate?: string,
   ) {
     return this.transactionsService.findAll(
       req.user._id,
       page ? parseInt(page, 10) : 1,
-      limit ? parseInt(limit, 10) : 10,
+      limit ? parseInt(limit, 10) : undefined,
       type,
       sourceId,
+      startDate ? new Date(startDate) : undefined,
+      endDate ? new Date(endDate) : undefined,
     );
   }
 
