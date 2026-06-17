@@ -15,7 +15,7 @@ export class TransactionsService {
     @InjectModel(Transaction.name) private transactionModel: Model<Transaction>,
     @InjectConnection() private connection: Connection,
     private sourcesService: SourcesService,
-  ) {}
+  ) { }
 
   async create(createTransactionDto: CreateTransactionDto, userId: string) {
     const { type, amount, sourceId, destinationSourceId } = createTransactionDto;
@@ -71,31 +71,50 @@ export class TransactionsService {
     }
   }
 
+  // Хелпер для побудови фільтра за діапазоном дат
+  private buildDateFilter(
+    startDate?: Date,
+    endDate?: Date,
+  ): { $gte?: Date; $lte?: Date } | undefined {
+    if (!startDate && !endDate) return undefined;
+    const range: { $gte?: Date; $lte?: Date } = {};
+    if (startDate) range.$gte = startDate;
+    if (endDate) range.$lte = endDate;
+    return range;
+  }
+
   // пагінація та фільтри
   async findAll(
     userId: string,
     page: number = 1,
-    limit: number = 10,
+    limit?: number,
     type?: TransactionType,
     sourceId?: string,
+    startDate?: Date,
+    endDate?: Date,
   ) {
-    const skip = (page - 1) * limit;
+    const hasLimit = limit !== undefined;
+    const skip = hasLimit ? (page - 1) * limit : 0;
     const filter: {
       userId: string;
       type?: TransactionType;
       sourceId?: string;
+      date?: { $gte?: Date; $lte?: Date };
     } = { userId };
 
     // Додаємо фільтри за потреби
     if (type) filter.type = type;
     if (sourceId) filter.sourceId = sourceId;
 
+    const dateFilter = this.buildDateFilter(startDate, endDate);
+    if (dateFilter) filter.date = dateFilter;
+
+    const query = this.transactionModel.find(filter).sort({ date: -1 }).skip(skip);
+
+    if (hasLimit) query.limit(limit);
+
     const [transactions, total] = await Promise.all([
-      this.transactionModel
-        .find(filter)
-        .sort({ date: -1 })
-        .skip(skip)
-        .limit(limit)
+      query
         .populate("sourceId", "name type")
         .populate("destinationSourceId", "name type")
         .exec(),
@@ -106,10 +125,10 @@ export class TransactionsService {
       transactions,
       pagination: {
         current: page,
-        pages: Math.ceil(total / limit),
+        pages: hasLimit ? Math.ceil(total / limit) : 1,
         total,
-        hasNext: page * limit < total,
-        hasPrev: page > 1,
+        hasNext: hasLimit ? page * limit < total : false,
+        hasPrev: hasLimit ? page > 1 : false,
       },
     };
   }
@@ -192,11 +211,8 @@ export class TransactionsService {
       date?: { $gte?: Date; $lte?: Date };
     } = { userId };
 
-    if (startDate || endDate) {
-      matchStage.date = {};
-      if (startDate) matchStage.date.$gte = startDate;
-      if (endDate) matchStage.date.$lte = endDate;
-    }
+    const dateFilter = this.buildDateFilter(startDate, endDate);
+    if (dateFilter) matchStage.date = dateFilter;
 
     interface StatsResult {
       _id: TransactionType;
