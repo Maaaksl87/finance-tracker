@@ -19,7 +19,7 @@ import { TransactionsService } from "./transactions.service";
 @Controller("transactions")
 @UseGuards(JwtAuthGuard)
 export class TransactionsController {
-  constructor(private readonly transactionsService: TransactionsService) {}
+  constructor(private readonly transactionsService: TransactionsService) { }
 
   @Post()
   create(
@@ -36,6 +36,8 @@ export class TransactionsController {
     @Query("limit") limit?: string,
     @Query("type") type?: TransactionType,
     @Query("sourceId") sourceId?: string,
+    @Query("startDate") startDate?: string,
+    @Query("endDate") endDate?: string,
   ) {
     return this.transactionsService.findAll(
       req.user._id,
@@ -43,6 +45,8 @@ export class TransactionsController {
       limit ? parseInt(limit, 10) : 10,
       type,
       sourceId,
+      startDate ? new Date(startDate) : undefined,
+      endDate ? new Date(endDate) : undefined,
     );
   }
 

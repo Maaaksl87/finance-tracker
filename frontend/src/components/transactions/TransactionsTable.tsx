@@ -1,86 +1,72 @@
-import type { Transaction } from "@/types";
 import DataTable from "@/components/data-table/DataTable";
 import { Button } from "@/components/ui/button";
-import { memo, useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { getTransactionsColumns } from "./getTransactionsColumns";
-import { getTransactions } from "@/api/transactions";
 import { TestCreateTransactionDialog } from "./TestCreateTransactionDialog";
+import { PeriodFilter } from '@/components/stats/PeriodFilter'
+import { resolvePeriod } from "@/lib/period";
+import { useSearchParams } from "react-router-dom";
+import { useTransactions, useTypeFilter, type TypeFilter } from '@/hooks/useTransactions'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
+
+const TYPE_FILTERS: { key: TypeFilter; label: string }[] = [
+  { key: "all", label: "Усі" },
+  { key: "expense", label: "Витрата" },
+  { key: "income", label: "Дохід" },
+  { key: "transfer", label: "Переказ" },
+];
 
 const TransactionsTable = ({ limit }: { limit?: number }) => {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [filter, setFilter] = useState<"all" | "expense" | "income" | "transfer">("all");
-  const [isLoading, setIsLoading] = useState(true);
+
   const columns = useMemo(() => getTransactionsColumns(), []);
 
-  const fetchData = async () => {
-    try {
-      const { transactions: data } = await getTransactions({ limit });
-      setTransactions(data);
-    } catch (error) {
-      console.error("Failed to fetch transactions", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const [searchParams] = useSearchParams();
+  const { startDate, endDate } = resolvePeriod(searchParams);
+  const { transactions } = useTransactions(startDate, endDate, limit);
+  const { filter, setFilter, filtered } = useTypeFilter(transactions);
 
-  const filteredTransactions = useMemo(() => {
-    switch (filter) {
-      case "expense":
-        return transactions.filter((t) => t.type === "expense");
-      case "income":
-        return transactions.filter((t) => t.type === "income");
-      case "transfer":
-        return transactions.filter((t) => t.type === "transfer");
-      default:
-        return transactions;
-    }
-  }, [transactions, filter]);
+  const currentTypeLabel = TYPE_FILTERS.find((f) => f.key === filter)?.label ?? "Усі";
 
   return (
     <>
       <div className="flex items-center justify-between">
         <span className="text-lg font-semibold border-none px-3 py-2 rounded-full bg-table-badge-bg text-table-badge-text text-[13px]">
-          {filteredTransactions.length} записів
+          {filtered.length} записів
         </span>
-        <TestCreateTransactionDialog onSuccess={fetchData} />
+        <TestCreateTransactionDialog />
       </div>
-      <div className="flex gap-2">
-        <Button
-          variant={filter === "all" ? "active" : "filter"}
-          onClick={() => setFilter("all")}
-        >
-          Усі
-        </Button>
-        <Button
-          variant={filter === "expense" ? "active" : "filter"}
-          onClick={() => setFilter("expense")}
-        >
-          Витрата
-        </Button>
-        <Button
-          variant={filter === "income" ? "active" : "filter"}
-          onClick={() => setFilter("income")}
-        >
-          Дoхід
-        </Button>
-        <Button
-          variant={filter === "transfer" ? "active" : "filter"}
-          onClick={() => setFilter("transfer")}
-        >
-          Переказ
-        </Button>
+      <div className="flex items-center gap-2">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="filter" className="flex items-center gap-1">
+              {currentTypeLabel}
+              <ChevronDown className="size-3.5 opacity-50" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            {TYPE_FILTERS.map(({ key, label }) => (
+              <DropdownMenuItem
+                key={key}
+                onSelect={() => setFilter(key)}
+                className={filter === key ? "font-medium text-foreground" : ""}
+              >
+                {label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <PeriodFilter />
       </div>
 
       <DataTable
-        data={filteredTransactions}
+        data={filtered}
         columns={columns}
         className="[&_tr]:border-0 [&_td]:py-4 [&_th]:py-4"
       />
+
     </>
   );
 };
 
-export default memo(TransactionsTable);
+export default TransactionsTable;

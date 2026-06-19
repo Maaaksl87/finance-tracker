@@ -1,6 +1,6 @@
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { buildCashFlowData } from "@/lib/charts/buildCashFlowData";
-import { useTransactionStats } from "@/hooks/useTransactionStats";
+import { useTransactionStats } from "@/hooks/useTransactions";
 import {
   ChartContainer,
   ChartTooltip,

@@ -1,9 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { InjectConnection } from "@nestjs/mongoose";
-import { Model } from "mongoose";
-import { ClientSession } from "mongoose";
-import { Connection } from "mongoose";
+import { InjectConnection, InjectModel } from "@nestjs/mongoose";
+import { ClientSession, Connection, Model, Types } from "mongoose";
 
 import { SourcesService } from "../sources/sources.service";
 import { CreateTransactionDto } from "./dto/create-transaction.dto";
@@ -15,7 +12,7 @@ export class TransactionsService {
     @InjectModel(Transaction.name) private transactionModel: Model<Transaction>,
     @InjectConnection() private connection: Connection,
     private sourcesService: SourcesService,
-  ) {}
+  ) { }
 
   async create(createTransactionDto: CreateTransactionDto, userId: string) {
     const { type, amount, sourceId, destinationSourceId } = createTransactionDto;
@@ -75,27 +72,38 @@ export class TransactionsService {
   async findAll(
     userId: string,
     page: number = 1,
-    limit: number = 10,
+    limit?: number,
     type?: TransactionType,
     sourceId?: string,
+    startDate?: Date,
+    endDate?: Date,
   ) {
-    const skip = (page - 1) * limit;
+    const hasLimit = limit !== undefined;
+    const skip = hasLimit ? (page - 1) * limit : 0;
     const filter: {
-      userId: string;
+      userId: Types.ObjectId;
       type?: TransactionType;
       sourceId?: string;
-    } = { userId };
+      date?: { $gte?: Date; $lte?: Date };
+    } = { userId: new Types.ObjectId(userId) };
 
-    // Додаємо фільтри за потреби
     if (type) filter.type = type;
     if (sourceId) filter.sourceId = sourceId;
+    if (startDate || endDate) {
+      filter.date = {};
+      if (startDate) filter.date.$gte = startDate;
+      if (endDate) filter.date.$lte = endDate;
+    }
+
+    const query = this.transactionModel
+      .find(filter)
+      .sort({ date: -1 })
+      .skip(skip);
+
+    if (limit !== undefined) query.limit(limit);
 
     const [transactions, total] = await Promise.all([
-      this.transactionModel
-        .find(filter)
-        .sort({ date: -1 })
-        .skip(skip)
-        .limit(limit)
+      query
         .populate("sourceId", "name type")
         .populate("destinationSourceId", "name type")
         .exec(),
@@ -106,17 +114,17 @@ export class TransactionsService {
       transactions,
       pagination: {
         current: page,
-        pages: Math.ceil(total / limit),
+        pages: hasLimit ? Math.ceil(total / limit) : 1,
         total,
-        hasNext: page * limit < total,
-        hasPrev: page > 1,
+        hasNext: hasLimit ? page * limit < total : false,
+        hasPrev: hasLimit ? page > 1 : false,
       },
     };
   }
 
   async findOne(id: string, userId: string) {
     const transaction = await this.transactionModel
-      .findOne({ _id: id, userId })
+      .findOne({ _id: id, userId: new Types.ObjectId(userId) })
       .populate("sourceId", "name type")
       .populate("destinationSourceId", "name type")
       .exec();
@@ -188,9 +196,9 @@ export class TransactionsService {
   // Метод для отримання статистики
   async getStats(userId: string, startDate?: Date, endDate?: Date) {
     const matchStage: {
-      userId: string;
+      userId: Types.ObjectId;
       date?: { $gte?: Date; $lte?: Date };
-    } = { userId };
+    } = { userId: new Types.ObjectId(userId) };
 
     if (startDate || endDate) {
       matchStage.date = {};
