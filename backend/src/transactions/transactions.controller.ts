@@ -42,7 +42,7 @@ export class TransactionsController {
     return this.transactionsService.findAll(
       req.user._id,
       page ? parseInt(page, 10) : 1,
-      limit ? parseInt(limit, 10) : 10,
+      limit ? parseInt(limit, 10) : undefined,
       type,
       sourceId,
       startDate ? new Date(startDate) : undefined,

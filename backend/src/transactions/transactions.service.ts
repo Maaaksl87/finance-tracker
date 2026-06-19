@@ -68,6 +68,18 @@ export class TransactionsService {
     }
   }
 
+  // Хелпер для побудови фільтра за діапазоном дат
+  private buildDateFilter(
+    startDate?: Date,
+    endDate?: Date,
+  ): { $gte?: Date; $lte?: Date } | undefined {
+    if (!startDate && !endDate) return undefined;
+    const range: { $gte?: Date; $lte?: Date } = {};
+    if (startDate) range.$gte = startDate;
+    if (endDate) range.$lte = endDate;
+    return range;
+  }
+
   // пагінація та фільтри
   async findAll(
     userId: string,
@@ -101,6 +113,13 @@ export class TransactionsService {
       .skip(skip);
 
     if (limit !== undefined) query.limit(limit);
+
+    const dateFilter = this.buildDateFilter(startDate, endDate);
+    if (dateFilter) filter.date = dateFilter;
+
+    const query = this.transactionModel.find(filter).sort({ date: -1 }).skip(skip);
+
+    if (hasLimit) query.limit(limit);
 
     const [transactions, total] = await Promise.all([
       query
@@ -200,11 +219,8 @@ export class TransactionsService {
       date?: { $gte?: Date; $lte?: Date };
     } = { userId: new Types.ObjectId(userId) };
 
-    if (startDate || endDate) {
-      matchStage.date = {};
-      if (startDate) matchStage.date.$gte = startDate;
-      if (endDate) matchStage.date.$lte = endDate;
-    }
+    const dateFilter = this.buildDateFilter(startDate, endDate);
+    if (dateFilter) matchStage.date = dateFilter;
 
     interface StatsResult {
       _id: TransactionType;
