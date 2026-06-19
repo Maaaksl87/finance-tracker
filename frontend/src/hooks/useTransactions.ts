@@ -1,29 +1,35 @@
 import { createTransaction, deleteTransaction, getTransactions, getTransactionStats } from "@/api/transactions";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { sourcesKeys } from "./useSources";
+import type { Transaction } from "@/types";
+import { useMemo, useState } from 'react'
+
+type DateRange = { startDate?: string; endDate?: string }
+export type TypeFilter = "all" | "expense" | "income" | "transfer";
+
 
 export const transactionsKey = {
   all: ["transactions"] as const,
-  stats: (startDate?: string, endDate?: string) =>
-    [...transactionsKey.all, "stats", startDate, endDate],
-  list: (startDate?: string, endDate?: string, limit?: number) =>
-    [...transactionsKey.all, "list", startDate, endDate, limit],
+  stats: (range?: DateRange) =>
+    [...transactionsKey.all, "stats", range?.startDate, range?.endDate],
+  list: (range?: DateRange, limit?: number) =>
+    [...transactionsKey.all, "list", range?.startDate, range?.endDate, limit],
 };
 
 export const transactionsQuery = {
-  stats: ({ startDate, endDate }: { startDate?: string; endDate?: string } = {}) => ({
-    queryKey: transactionsKey.stats(startDate, endDate),
-    queryFn: () => getTransactionStats({ startDate, endDate }),
+  stats: (range?: DateRange) => ({
+    queryKey: transactionsKey.stats(range),
+    queryFn: () => getTransactionStats(range),
   }),
-  list: (
-    { startDate, endDate, limit }: { startDate?: string; endDate?: string; limit?: number } = {},
-  ) => ({
-    queryKey: transactionsKey.list(startDate, endDate, limit),
-    queryFn: () => getTransactions({ startDate, endDate, limit }),
+  list: (range?: DateRange, limit?: number) => ({
+    queryKey: transactionsKey.list(range, limit),
+    queryFn: () => getTransactions({ startDate: range?.startDate, endDate: range?.endDate, limit }),
+
   }),
 };
-export function useTransactions(limit?: number) {
-  const { data, isLoading, error } = useQuery(transactionsQuery.list({ limit }));
+
+export function useTransactions(startDate?: string, endDate?: string, limit?: number) {
+  const { data, isLoading, error } = useQuery(transactionsQuery.list({ startDate, endDate }, limit));
   return {
     transactions: data?.transactions ?? [],
     isLoading,
@@ -63,13 +69,20 @@ export function useDeleteTransaction() {
   });
 }
 
-export function useTransactionStats() {
-  const statsQuery = useQuery(transactionsQuery.stats());
-  const listQuery = useQuery(transactionsQuery.list({ limit: 100 }));
+export function useTransactionStats(range?: { startDate?: string; endDate?: string }) {
+  const statsQuery = useQuery(transactionsQuery.stats(range));
+  const listQuery = useQuery(transactionsQuery.list(range));
 
   return {
     stats: statsQuery.data,
     transactions: listQuery.data?.transactions ?? [],
     isLoading: statsQuery.isLoading || listQuery.isLoading,
   };
+}
+
+
+export function useTypeFilter(transactions: Transaction[]) {
+  const [filter, setFilter] = useState<TypeFilter>("all");
+  const filtered = useMemo(() => (filter === "all" ? transactions : transactions.filter((t) => t.type === filter)), [transactions, filter]);
+  return { filter, setFilter, filtered };
 }

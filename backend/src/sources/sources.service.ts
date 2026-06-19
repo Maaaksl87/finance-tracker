@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { ClientSession, Model } from "mongoose";
+import { ClientSession, Model, Types } from "mongoose";
 
 import { CreateSourceDto } from "./dto/create-source.dto";
 import { UpdateSourceDto } from "./dto/update-source.dto";
@@ -12,18 +12,20 @@ export class SourcesService {
 
   async create(createSourceDto: CreateSourceDto, userId: string) {
     const newSource = new this.sourceModel({
-      ...createSourceDto, // spread the DTO properties (name, balance)
-      userId, // associate the source with the user creating it
+      ...createSourceDto,
+      userId: new Types.ObjectId(userId),
     });
-    return newSource.save(); // save to DB
+    return newSource.save();
   }
 
   async findAll(userId: string) {
-    return this.sourceModel.find({ userId }).exec(); // find all sources for the given user
+    return this.sourceModel.find({ userId: new Types.ObjectId(userId) }).exec();
   }
 
   async findOne(id: string, userId: string) {
-    const source = await this.sourceModel.findOne({ _id: id, userId }).exec(); // check both source ID and user ID
+    const source = await this.sourceModel
+      .findOne({ _id: id, userId: new Types.ObjectId(userId) })
+      .exec();
     if (!source) throw new NotFoundException("Джерело не знайдено");
     return source;
   }
@@ -31,9 +33,9 @@ export class SourcesService {
   async update(id: string, updateSourceDto: UpdateSourceDto, userId: string) {
     const updatedSource = await this.sourceModel
       .findOneAndUpdate(
-        { _id: id, userId }, // ensure the source belongs to the user
+        { _id: id, userId: new Types.ObjectId(userId) },
         updateSourceDto,
-        { new: true }, // return the updated document
+        { new: true },
       )
       .exec();
     if (!updatedSource) throw new NotFoundException("Джерело не знайдено");
@@ -41,7 +43,9 @@ export class SourcesService {
   }
 
   async remove(id: string, userId: string) {
-    const source = await this.sourceModel.findOneAndDelete({ _id: id, userId }).exec(); // ensure the source belongs to the user
+    const source = await this.sourceModel
+      .findOneAndDelete({ _id: id, userId: new Types.ObjectId(userId) })
+      .exec();
     if (!source) throw new NotFoundException("Схоже, що такого джерела не існує");
     return source;
   }
@@ -54,9 +58,8 @@ export class SourcesService {
     userId: string,
     session?: ClientSession,
   ): Promise<Source> {
-    // атомарне оновлення балансу
     const updatedSource = await this.sourceModel.findOneAndUpdate(
-      { _id: id, userId },
+      { _id: id, userId: new Types.ObjectId(userId) },
       { $inc: { balance: delta } },
       { new: true, session },
     );

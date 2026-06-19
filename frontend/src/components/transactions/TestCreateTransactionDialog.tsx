@@ -5,9 +5,8 @@ import * as z from "zod";
 import { format } from "date-fns";
 import { CalendarIcon, Plus } from "lucide-react";
 
-import { CreateTransactionDto, Source, TransactionType } from "@/types";
-import { createTransaction } from "@/api/transactions";
-import { getSources } from "@/api/sources"; // Нам треба список гаманців!
+import { type CreateTransactionDto, type Source, TransactionType } from "@/types";
+import { useSources } from "@/hooks/useSources";
 
 import {
   Dialog,
@@ -66,11 +65,8 @@ const formSchema = z
 // Тип даних форми на основі схеми
 type FormValues = z.infer<typeof formSchema>;
 
-interface Props {
-  onSuccess: () => void; // Що робити після успіху (напр. оновити таблицю)
-}
 
-export function TestCreateTransactionDialog({ onSuccess }: Props) {
+export function TestCreateTransactionDialog() {
   const [open, setOpen] = useState(false);
   const [sources, setSources] = useState<Source[]>([]);
   const [isLoading, setIsLoading] = useState(false);

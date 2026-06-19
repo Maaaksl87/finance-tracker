@@ -19,7 +19,7 @@ import { TransactionsService } from "./transactions.service";
 @Controller("transactions")
 @UseGuards(JwtAuthGuard)
 export class TransactionsController {
-  constructor(private readonly transactionsService: TransactionsService) {}
+  constructor(private readonly transactionsService: TransactionsService) { }
 
   @Post()
   create(

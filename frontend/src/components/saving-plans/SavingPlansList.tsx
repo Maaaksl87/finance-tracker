@@ -18,7 +18,7 @@ function SavingPlansList({
   };
 
   return (
-    <div className="flex flex-col flex-1 h-full min-h-0 overflow-hidden border bg-card border-card-border rounded-xl shadow-card dark:glass">
+    <div className="flex flex-col flex-1 h-full min-h-0 overflow-hidden border bg-card border-card-border rounded-xl  dark:glass">
       <div className="dark:glass-overlay" />
 
       <div className="relative z-10 flex items-center justify-between p-4 font-medium">

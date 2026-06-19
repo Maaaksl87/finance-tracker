@@ -8,7 +8,7 @@ import {
 import { useAuthStore } from "@/store/authStore";
 import SavingPlansList from "@/components/saving-plans/SavingPlansList";
 
-import { useTransactionStats } from "@/hooks/useTransactionStats";
+import { useTransactionStats } from "@/hooks/useTransactions";
 import { useSavingPlans } from "@/hooks/useSavingPlans";
 import StatsCards from "@/components/stats/StatsCards";
 import ChartAreaGradient from "@/components/stats/StatsChart";
@@ -51,7 +51,7 @@ export default function DashboardPage() {
             </Card>
 
             <div className="flex-1 min-h-0">
-              <SavingPlansList plans={plans} setSelectedPlanId={() => {}} />
+              <SavingPlansList plans={plans} setSelectedPlanId={() => { }} />
             </div>
           </div>
 

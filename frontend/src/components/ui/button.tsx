@@ -18,9 +18,9 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
         filter:
-          "border border-border rounded-[1.25rem] bg-input text-muted hover:bg-input-hover hover:text-foreground transition-all",
+          "text-muted-foreground text-[13px] font-normal hover:text-foreground transition-colors px-2 h-auto py-1 rounded-md",
         active:
-          "border border-foreground bg-foreground text-background rounded-[1.25rem] transition-all",
+          "text-foreground text-[13px] font-medium bg-foreground/10 px-2 h-auto py-1 rounded-md",
         wallet:
           "flex flex-col gap-2 h-24 w-28 rounded-2xl bg-input text-muted-foreground border border-transparent hover:bg-input-hover hover:text-foreground transition-all data-[state=on]:border-wizard-accent data-[state=on]:bg-input-active",
       },

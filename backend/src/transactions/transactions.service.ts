@@ -1,9 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { InjectConnection } from "@nestjs/mongoose";
-import { Model } from "mongoose";
-import { ClientSession } from "mongoose";
-import { Connection } from "mongoose";
+import { InjectConnection, InjectModel } from "@nestjs/mongoose";
+import { ClientSession, Connection, Model, Types } from "mongoose";
 
 import { SourcesService } from "../sources/sources.service";
 import { CreateTransactionDto } from "./dto/create-transaction.dto";
@@ -96,15 +93,26 @@ export class TransactionsService {
     const hasLimit = limit !== undefined;
     const skip = hasLimit ? (page - 1) * limit : 0;
     const filter: {
-      userId: string;
+      userId: Types.ObjectId;
       type?: TransactionType;
       sourceId?: string;
       date?: { $gte?: Date; $lte?: Date };
-    } = { userId };
+    } = { userId: new Types.ObjectId(userId) };
 
-    // Додаємо фільтри за потреби
     if (type) filter.type = type;
     if (sourceId) filter.sourceId = sourceId;
+    if (startDate || endDate) {
+      filter.date = {};
+      if (startDate) filter.date.$gte = startDate;
+      if (endDate) filter.date.$lte = endDate;
+    }
+
+    const query = this.transactionModel
+      .find(filter)
+      .sort({ date: -1 })
+      .skip(skip);
+
+    if (limit !== undefined) query.limit(limit);
 
     const dateFilter = this.buildDateFilter(startDate, endDate);
     if (dateFilter) filter.date = dateFilter;
@@ -135,7 +143,7 @@ export class TransactionsService {
 
   async findOne(id: string, userId: string) {
     const transaction = await this.transactionModel
-      .findOne({ _id: id, userId })
+      .findOne({ _id: id, userId: new Types.ObjectId(userId) })
       .populate("sourceId", "name type")
       .populate("destinationSourceId", "name type")
       .exec();
@@ -207,9 +215,9 @@ export class TransactionsService {
   // Метод для отримання статистики
   async getStats(userId: string, startDate?: Date, endDate?: Date) {
     const matchStage: {
-      userId: string;
+      userId: Types.ObjectId;
       date?: { $gte?: Date; $lte?: Date };
-    } = { userId };
+    } = { userId: new Types.ObjectId(userId) };
 
     const dateFilter = this.buildDateFilter(startDate, endDate);
     if (dateFilter) matchStage.date = dateFilter;

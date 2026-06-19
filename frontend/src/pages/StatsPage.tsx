@@ -1,6 +1,6 @@
 import ChartAreaGradient from "@/components/stats/StatsChart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useTransactionStats } from "@/hooks/useTransactionStats";
+import { useTransactionStats } from "@/hooks/useTransactions";
 import StatsCards from "@/components/stats/StatsCards";
 import {
   PieChart,
@@ -21,9 +21,9 @@ function StatsPage() {
 
   const pieChartData = stats
     ? [
-        { name: "Доходи", value: stats.totalIncome },
-        { name: "Витрати", value: stats.totalExpense },
-      ].filter((item) => item.value > 0)
+      { name: "Доходи", value: stats.totalIncome },
+      { name: "Витрати", value: stats.totalExpense },
+    ].filter((item) => item.value > 0)
     : [];
 
   if (isLoading)
