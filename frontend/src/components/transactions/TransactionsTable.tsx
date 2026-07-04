@@ -2,21 +2,19 @@ import DataTable from "@/components/data-table/DataTable";
 import { Button } from "@/components/ui/button";
 import { useMemo } from "react";
 import { getTransactionsColumns } from "./getTransactionsColumns";
-import { TestCreateTransactionDialog } from "./TestCreateTransactionDialog";
-import { PeriodFilter } from '@/components/stats/PeriodFilter'
+
+// import { PeriodFilter } from '@/components/stats/PeriodFilter'
+
 import { resolvePeriod } from "@/lib/period";
 import { useSearchParams } from "react-router-dom";
 import { useTransactions, useTypeFilter, type TypeFilter } from '@/hooks/useTransactions'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
-
+import { CreateTransactionDialog } from "./CreateTransactionDialog";
 const TYPE_FILTERS: { key: TypeFilter; label: string }[] = [
   { key: "all", label: "Усі" },
   { key: "expense", label: "Витрата" },
   { key: "income", label: "Дохід" },
   { key: "transfer", label: "Переказ" },
-];
-
+]
 const TransactionsTable = ({ limit }: { limit?: number }) => {
 
   const columns = useMemo(() => getTransactionsColumns(), []);
@@ -26,37 +24,27 @@ const TransactionsTable = ({ limit }: { limit?: number }) => {
   const { transactions } = useTransactions(startDate, endDate, limit);
   const { filter, setFilter, filtered } = useTypeFilter(transactions);
 
-  const currentTypeLabel = TYPE_FILTERS.find((f) => f.key === filter)?.label ?? "Усі";
-
   return (
     <>
-      <div className="flex items-center justify-between">
-        <span className="text-lg font-semibold border-none px-3 py-2 rounded-full bg-table-badge-bg text-table-badge-text text-[13px]">
-          {filtered.length} записів
-        </span>
-        <TestCreateTransactionDialog />
-      </div>
-      <div className="flex items-center gap-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="filter" className="flex items-center gap-1">
-              {currentTypeLabel}
-              <ChevronDown className="size-3.5 opacity-50" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex gap-6">
+
+          <div className="flex items-center gap-2">
             {TYPE_FILTERS.map(({ key, label }) => (
-              <DropdownMenuItem
+              <Button
                 key={key}
-                onSelect={() => setFilter(key)}
-                className={filter === key ? "font-medium text-foreground" : ""}
+                variant={filter === key ? "active" : "filter"}
+                onClick={() => setFilter(key)}
               >
                 {label}
-              </DropdownMenuItem>
+              </Button>
             ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <PeriodFilter />
+          </div>
+          <span className="text-lg font-semibold border-none px-3 py-2 rounded-full bg-table-badge-bg text-table-badge-text text-[13px]">
+            {filtered.length} записів
+          </span>
+        </div>
+        <CreateTransactionDialog />
       </div>
 
       <DataTable
@@ -64,7 +52,6 @@ const TransactionsTable = ({ limit }: { limit?: number }) => {
         columns={columns}
         className="[&_tr]:border-0 [&_td]:py-4 [&_th]:py-4"
       />
-
     </>
   );
 };

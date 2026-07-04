@@ -33,7 +33,7 @@ export default function SourceContainer({ sources }: SourceContainerProps) {
       {sources.map((source) => (
         <SourceCard
           key={source._id}
-          sourceData={source}
+          source={source}
           onUpdate={handleSourceUpdate}
           onDelete={handleSourceDelete}
         />

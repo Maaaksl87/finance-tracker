@@ -21,7 +21,7 @@ import { useFormContext } from "react-hook-form";
 const fieldLabelClass =
   "text-[11px] font-bold uppercase tracking-[0.18em] text-muted";
 const fieldControlClass =
-  "h-12 rounded-xl border border-border bg-input px-4 text-sm text-foreground shadow-none placeholder:text-muted-foreground focus-visible:border-wizard-accent/50 focus-visible:ring-0";
+  "h-12 rounded-md border border-border bg-input px-4 text-sm text-foreground shadow-none placeholder:text-muted-foreground focus-visible:border-wizard-accent/50 focus-visible:ring-0";
 
 export default function WalletDetailsFields({ prefix }: { prefix?: string }) {
   const { control } = useFormContext<SourceSchemaType>();
@@ -83,7 +83,7 @@ export default function WalletDetailsFields({ prefix }: { prefix?: string }) {
               <FormLabel className={fieldLabelClass}>ВАЛЮТА</FormLabel>
               <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-full pl-4 py-5 bg-input border-border text-foreground placeholder:text-muted-foreground placeholder:text-sm focus-visible:border-wizard-accent/50 focus-visible:ring-0">
+                  <SelectTrigger className="w-full pl-4 py-5 bg-input border-border text-foreground focus-visible:border-wizard-accent/50 focus-visible:ring-0 data-[size=default]:h-12">
                     <SelectValue placeholder="UAH" />
                   </SelectTrigger>
                 </FormControl>

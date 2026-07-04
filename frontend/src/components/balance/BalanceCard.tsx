@@ -3,9 +3,9 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
-  CardAction,
 } from "@/components/ui/card";
 import ActionButtons from "@/components/ui/ActionButtons";
+import ChartAreaGradient from '@/components/stats/StatsChart'
 
 interface BalanceCardProps {
   totalBalance: number;
@@ -13,19 +13,19 @@ interface BalanceCardProps {
 
 export default function BalanceCard({ totalBalance }: BalanceCardProps) {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle>Баланс</CardTitle>
-        <CardAction>
-          <button>···</button>
-        </CardAction>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="flex flex-1 flex-col">
         <div className="flex items-center gap-3">
-          <p className="text-4xl font-bold text-primary">
+          <p className="text-4xl font-bold ">
             {totalBalance.toLocaleString()} ₴
           </p>
+        </div>
+        <div className="mt-5 mb-4 flex-1 min-h-0">
+          <ChartAreaGradient className="w-full h-full aspect-auto" />
         </div>
 
         <ActionButtons />

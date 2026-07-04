@@ -1,4 +1,4 @@
-import { Brain, Home, Inbox, Search, Settings, Wallet, Coins } from "lucide-react";
+import { Home, Wallet, AlignLeft, TrendingUp, Signpost, Sparkles, Star } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 import {
@@ -25,7 +25,7 @@ const items = [
   {
     title: "Транзакції",
     url: "/transactions",
-    icon: Inbox,
+    icon: AlignLeft,
   },
   {
     title: "Джерела",
@@ -35,7 +35,7 @@ const items = [
   {
     title: "Аналітика",
     url: "/stats",
-    icon: Search,
+    icon: TrendingUp,
   },
   // {
   //   title: "Бюджети",
@@ -45,18 +45,18 @@ const items = [
   {
     title: "Плани заощаджень",
     url: "/saving-plans",
-    icon: Coins,
+    icon: Signpost,
   },
 
   {
     title: "AI Асистент",
     url: "/ai",
-    icon: Brain,
+    icon: Sparkles,
   },
   {
     title: "Налаштування", // TODO: Перемістити вниз sidebar-menu
     url: "/settings",
-    icon: Settings,
+    icon: Star,
   },
 ];
 

@@ -3,6 +3,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import { useFormState, type Control, type FieldValues, } from "react-hook-form";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
@@ -13,14 +14,14 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
-          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "border border-[#283029] dark:border-[#283029] light:border-[#e2ebdd] border-dashed bg-transparent hover:bg-accent hover:text-accent-foreground",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
         filter:
-          "text-muted-foreground text-[13px] font-normal hover:text-foreground transition-colors px-2 h-auto py-1 rounded-md",
+          "border border-border rounded-[1.25rem] bg-input text-muted hover:bg-input-hover hover:text-foreground transition-all",
         active:
-          "text-foreground text-[13px] font-medium bg-foreground/10 px-2 h-auto py-1 rounded-md",
+          "border border-foreground bg-foreground text-background rounded-[1.25rem] transition-all",
         wallet:
           "flex flex-col gap-2 h-24 w-28 rounded-2xl bg-input text-muted-foreground border border-transparent hover:bg-input-hover hover:text-foreground transition-all data-[state=on]:border-wizard-accent data-[state=on]:bg-input-active",
       },
@@ -63,4 +64,13 @@ function Button({
   );
 }
 
-export { Button, buttonVariants };
+function SubmitButton<TFieldValues extends FieldValues = FieldValues>({ control, children, pendingText, className, }: { control: Control<TFieldValues>, children?: React.ReactNode, className?: string, pendingText?: string }) {
+  const { isValid, isSubmitting } = useFormState({ control })
+  return (
+    <Button type="submit" disabled={!isValid || isSubmitting} className={className}>
+      {isSubmitting ? pendingText : children}
+    </Button>
+  )
+}
+
+export { Button, buttonVariants, SubmitButton };
