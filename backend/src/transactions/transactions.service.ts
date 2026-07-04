@@ -101,23 +101,14 @@ export class TransactionsService {
 
     if (type) filter.type = type;
     if (sourceId) filter.sourceId = sourceId;
-    if (startDate || endDate) {
-      filter.date = {};
-      if (startDate) filter.date.$gte = startDate;
-      if (endDate) filter.date.$lte = endDate;
-    }
+
+    const dateFilter = this.buildDateFilter(startDate, endDate);
+    if (dateFilter) filter.date = dateFilter;
 
     const query = this.transactionModel
       .find(filter)
       .sort({ date: -1 })
       .skip(skip);
-
-    if (limit !== undefined) query.limit(limit);
-
-    const dateFilter = this.buildDateFilter(startDate, endDate);
-    if (dateFilter) filter.date = dateFilter;
-
-    const query = this.transactionModel.find(filter).sort({ date: -1 }).skip(skip);
 
     if (hasLimit) query.limit(limit);
 

@@ -1,40 +1,54 @@
-import { Plus, Landmark, ArrowUpFromLine, Repeat } from "lucide-react";
+import { ArrowUp, ArrowRightLeft, Repeat } from "lucide-react";
+import { forwardRef } from "react";
+import { CreateTransactionDialog } from "@/components/transactions/CreateTransactionDialog";
+import { TransactionType } from "@/types";
 
-interface ActionButtonsProps {
+interface ActionButtonsProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: React.ReactNode;
   label: string;
-  onClick: () => void;
 }
 
-const ActionButton = ({ icon, label, onClick }: ActionButtonsProps) => {
-  return (
-    <button onClick={onClick}>
-      <div className="flex items-center justify-center w-[clamp(2em,10vw,4em)] h-[clamp(2em,6vw,3em)] dark:bg-border border dark:border-border rounded-xl text-white transition-all duration-200 ease-in-out group-hover:bg-white/10 group-active:scale-95">
-        {icon}
-      </div>
-      <span className="text-[13px] font-medium text-gray-300 dark:text-muted transition-colors group-hover:text-white">
-        {label}
-      </span>
-    </button>
-  );
-};
+const ActionButton = forwardRef<HTMLButtonElement, ActionButtonsProps>(
+  ({ icon, label, className, disabled, ...props }, ref) => {
+    return (
+      <button
+        ref={ref}
+        disabled={disabled}
+        className={`group flex flex-1 flex-col items-center justify-center gap-1.5 py-[10px] bg-transparent border border-[#283029] rounded-xl cursor-pointer transition-all duration-200 hover:bg-[#131713] active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:active:scale-100 ${className || ""}`}
+        {...props}
+      >
+        <span className="text-primary transition-colors group-hover:text-primary/80 group-disabled:group-hover:text-primary">
+          {icon}
+        </span>
+        <span className="text-[11px] font-medium text-zinc-300 transition-colors group-hover:text-white group-disabled:group-hover:text-zinc-300">
+          {label}
+        </span>
+      </button>
+    );
+  });
+ActionButton.displayName = "ActionButton";
 
 export default function ActionButtons() {
   const actions = [
-    { label: "Дохід", icon: <Plus size={20} strokeWidth={2} /> },
-    { label: "Витрати", icon: <Landmark size={20} strokeWidth={2} /> },
-    { label: "Переказ", icon: <ArrowUpFromLine size={20} strokeWidth={2} /> },
-    { label: "Обмін", icon: <Repeat size={20} strokeWidth={2} /> },
+    { label: "Дохід", icon: <ArrowUp size={16} strokeWidth={1.8} className="rotate-180" />, type: TransactionType.INCOME },
+    { label: "Витрати", icon: <ArrowUp size={16} strokeWidth={1.8} />, type: TransactionType.EXPENSE },
+    { label: "Переказ", icon: <Repeat size={16} strokeWidth={1.8} className="rotate-45" />, type: TransactionType.TRANSFER },
+    { label: "Обмін", icon: <ArrowRightLeft size={16} strokeWidth={1.8} />, type: TransactionType.TRANSFER, disabled: true },
   ];
 
   return (
-    <div className="flex items-center justify-center gap-4 p-6 ">
+    <div className="flex w-full items-center justify-between gap-3">
       {actions.map((action) => (
-        <ActionButton
+        <CreateTransactionDialog
           key={action.label}
-          label={action.label}
-          icon={action.icon}
-          onClick={() => console.log(`Clicked ${action.label}`)}
+          defaultType={action.type}
+          trigger={
+            <ActionButton
+              label={action.label}
+              icon={action.icon}
+              disabled={action.disabled}
+            />
+          }
         />
       ))}
     </div>

@@ -3,7 +3,7 @@ import {
   CardAction,
 } from "@/components/ui/card";
 import { TrashIcon, Wallet, PencilIcon, MoreHorizontal } from "lucide-react";
-import { colors, type Color, type Source, type SourceType, type ColorOption, type Currency } from "@/types";
+import { sourceTypes, type Source } from "@/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,36 +13,17 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
+import { type SourceListItemProps, formatBalance, getActiveColor, getCurrencySymbol } from "./SourceListItem";
 
-interface SourceCardProps {
-  sourceData: Source;
+interface SourceCardProps extends SourceListItemProps {
   onUpdate: (source: Source) => void;
   onDelete: (sourceId: string) => void;
 }
 
-const colorMap = Object.fromEntries(colors.map((c) => [c.value, c])) as Record<Color, ColorOption>;
-
-const typeLabels: Record<SourceType, string> = {
-  card: "BANK",
-  cash: "CASH",
-  crypto: "CRYPTO",
-  deposit: "DEPOSIT",
-};
-
-const currencySymbols: Record<Currency, string> = {
-  UAH: "₴",
-  USD: "$",
-  EUR: "€",
-};
-
-function formatBalance(amount: number): string {
-  return amount.toLocaleString("uk-UA", { maximumFractionDigits: 2 });
-}
-
-export default function SourceCard({ sourceData, onUpdate, onDelete }: SourceCardProps) {
-  const activeColor = colorMap[sourceData.color] ?? colors[0];
-  const label = typeLabels[sourceData.type] ?? "WALLET";
-  const currencySymbol = currencySymbols[sourceData.currency] ?? sourceData.currency;
+export default function SourceCard({ source, onUpdate, onDelete }: SourceCardProps) {
+  const activeColor = getActiveColor(source.color);
+  const currencySymbol = getCurrencySymbol(source.currency);
+  const label = sourceTypes.find((t) => t.value === source.type)?.label
 
   return (
     <Card
@@ -67,7 +48,7 @@ export default function SourceCard({ sourceData, onUpdate, onDelete }: SourceCar
       <div className="flex flex-col flex-1 min-w-0 px-4 py-2">
         <div className="flex items-start justify-between gap-2">
           <span className="font-dm font-medium text-[0.8125rem] text-muted-foreground leading-snug truncate">
-            {sourceData.name}
+            {source.name}
           </span>
           <CardAction className="-mt-1 -mr-2 shrink-0">
             <DropdownMenu>
@@ -78,7 +59,7 @@ export default function SourceCard({ sourceData, onUpdate, onDelete }: SourceCar
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
-                  <DropdownMenuItem onClick={() => onUpdate(sourceData)}>
+                  <DropdownMenuItem onClick={() => onUpdate(source)}>
                     <PencilIcon />
                     Edit
                   </DropdownMenuItem>
@@ -86,7 +67,7 @@ export default function SourceCard({ sourceData, onUpdate, onDelete }: SourceCar
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   <DropdownMenuItem
-                    onClick={() => onDelete(sourceData._id)}
+                    onClick={() => onDelete(source._id)}
                     variant="destructive"
                   >
                     <TrashIcon />
@@ -99,12 +80,9 @@ export default function SourceCard({ sourceData, onUpdate, onDelete }: SourceCar
         </div>
 
         <div className="font-dm font-extrabold text-[1.6rem] text-foreground leading-tight">
-          {formatBalance(sourceData.balance)}{" "}
+          {formatBalance(source.balance)}
           <span className="text-[1.25rem] font-bold">{currencySymbol}</span>
         </div>
-
-
-        {/* <div className="font-mono text-[0.75rem] text-muted-foreground leading-snug" /> */}
       </div>
     </Card>
   );

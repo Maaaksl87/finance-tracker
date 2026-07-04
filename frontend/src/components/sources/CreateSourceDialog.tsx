@@ -80,7 +80,7 @@ function buildCreateDto(data: SourceSchemaType): CreateSourceDto | null {
 }
 
 
-export function CreateSourceDialog() {
+export function CreateSourceDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
   const [open, setOpen] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const { mutateAsync } = useCreateSource();
@@ -161,9 +161,11 @@ export function CreateSourceDialog() {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button>
-          <Plus className="mr-2 h-4 w-4" /> Додати
-        </Button>
+        {trigger || (
+          <Button>
+            <Plus className="mr-2 h-4 w-4" /> Додати
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent
