@@ -11,6 +11,7 @@ import { SavingPlansModule } from "./saving-plans/saving-palns.module";
 import { SourcesModule } from "./sources/sources.module";
 import { TransactionsModule } from "./transactions/transactions.module";
 import { UsersModule } from "./users/users.module";
+import { IntegrationsModule } from "./integrations/integrations.module";
 
 @Module({
   imports: [
@@ -31,8 +32,9 @@ import { UsersModule } from "./users/users.module";
     SavingPlansModule,
     ScheduleModule.forRoot(),
     CurrenciesModule,
+    IntegrationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
