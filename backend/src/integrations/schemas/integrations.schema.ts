@@ -13,12 +13,12 @@ export class Integration {
     exchange: string;
 
     @Prop({ required: true })
-    apiKey: string;
+    apiKeyEncrypted: string;
 
     @Prop({ required: true })
     apiSecretEncrypted: string;
 
-    @Prop({ type: Types.ObjectId, ref: "Source" })
+    @Prop({ type: Types.ObjectId, ref: "Source", required: true })
     sourceId: Types.ObjectId;
 
     @Prop()

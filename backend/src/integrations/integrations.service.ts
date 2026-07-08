@@ -49,7 +49,7 @@ export class IntegrationsService {
 
     return this.integrationModel.create({
       exchange: dto.exchange,
-      apiKey: dto.apiKey,
+      apiKeyEncrypted: encryptSecret(dto.apiKey),
       apiSecretEncrypted: encryptSecret(dto.apiSecret),
       userId: new Types.ObjectId(userId),
       sourceId: source._id,
@@ -71,7 +71,7 @@ export class IntegrationsService {
     const provider = this.getProvider(integration.exchange);
 
     const balance = await provider.getTotalBalance(
-      integration.apiKey,
+      decryptSecret(integration.apiKeyEncrypted),
       decryptSecret(integration.apiSecretEncrypted),
     );
 

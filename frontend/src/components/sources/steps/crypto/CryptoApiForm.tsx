@@ -10,16 +10,28 @@ import { cryptoSources, type CryptoSource } from "@/types/sources";
 import { CryptoTokenFields } from "./tokenField/CryptoTokenField";
 import { useFormContext } from "react-hook-form";
 import { cryptoProviderMeta } from "../providers";
+import { useEffect } from "react";
+
+const API_ENABLED_PROVIDERS = cryptoSources.filter(
+  (source) => cryptoProviderMeta[source].apiOnly && !cryptoProviderMeta[source].disabled,
+);
 
 export default function CryptoApiForm() {
-  const { control } = useFormContext();
+  const { control, setValue, watch } = useFormContext();
+  const currentProvider = watch("cryptoConfig.provider");
+
+  useEffect(() => {
+    if (!API_ENABLED_PROVIDERS.includes(currentProvider)) {
+      setValue("cryptoConfig.provider", API_ENABLED_PROVIDERS[0], { shouldValidate: true });
+    }
+  }, [currentProvider, setValue]);
 
   return (
     <FormField
       control={control}
       name="cryptoConfig.provider"
       render={({ field }) => {
-        const provider = (field.value ?? "bybit") as CryptoSource;
+        const provider = (field.value ?? API_ENABLED_PROVIDERS[0]) as CryptoSource;
 
         return (
           <>
