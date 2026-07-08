@@ -28,8 +28,9 @@ import Step2Crypto from "./steps/Step2Crypto";
 
 import { Step1Type } from "./steps/Step1Type";
 import { Separator } from "@/components/ui/separator";
-// createSource більше не імпортуємо напряму — хук робить це сам
 import { useCreateSource } from "@/hooks/useSources";
+import { useConnectCrypto } from "@/hooks/useIntegrations";
+
 const pickRandomColor = (): Color =>
   colors[Math.floor(Math.random() * colors.length)].value;
 
@@ -141,7 +142,26 @@ export function CreateSourceDialog({ trigger }: { trigger?: React.ReactNode } = 
     }
   };
 
+  const { mutateAsync: connectCrypto } = useConnectCrypto();
   const onSubmit = async (data: SourceSchemaType) => {
+    setSubmitError(null);
+
+    if (data.sourceType === 'crypto' && data.cryptoConfig.connectionType === 'api') {
+      try {
+        await connectCrypto({
+          exchange: data.cryptoConfig.provider,
+          apiKey: data.cryptoConfig.apiKey,
+          apiSecret: data.cryptoConfig.apiSecret,
+        })
+
+        handleOpenChange(false);
+      } catch (error) {
+        console.log(error)
+        setSubmitError("Не вдалося підключити біржу. Перевірте ключі.");
+      }
+      return;
+    }
+
     const dto = buildCreateDto(data);
     if (!dto) {
       setSubmitError("Цей тип гаманця ще не підтримується.");

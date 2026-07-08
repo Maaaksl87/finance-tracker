@@ -19,7 +19,7 @@ export default function CryptoApiForm() {
       control={control}
       name="cryptoConfig.provider"
       render={({ field }) => {
-        const provider = (field.value ?? "binance") as CryptoSource;
+        const provider = (field.value ?? "bybit") as CryptoSource;
 
         return (
           <>
@@ -28,7 +28,7 @@ export default function CryptoApiForm() {
               <FormControl>
                 <ToggleGroup
                   type="single"
-                  value={field.value ?? "binance"}
+                  value={field.value ?? "bybit"}
                   spacing={1}
                   onValueChange={(value) => {
                     if (value) field.onChange(value);
