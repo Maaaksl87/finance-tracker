@@ -156,8 +156,7 @@ export function CreateSourceDialog({ trigger }: { trigger?: React.ReactNode } = 
 
         handleOpenChange(false);
       } catch (error) {
-        console.log(error)
-        setSubmitError("Не вдалося підключити біржу. Перевірте ключі.");
+        console.error("Помилка підключення біржі:", error);
       }
       return;
     }

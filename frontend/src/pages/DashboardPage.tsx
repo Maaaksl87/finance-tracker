@@ -60,7 +60,7 @@ export default function DashboardPage() {
                   <span className="bg-card-list border-0 border-card-border rounded px-2 py-0.5 text-xs text-foreground-muted font-medium">
                     {sources.length}
                   </span>
-                  <Button variant="ghost" size="icon" onClick={() => syncNow(true)} disabled={isSyncing}>
+                  <Button variant="ghost" size="icon" aria-label="Синхронізувати інтеграції" onClick={() => syncNow(true)} disabled={isSyncing}>
                     <RefreshCw className={`h-4 w-4 ${isSyncing ? "animate-spin" : ""}`} />
                   </Button>
                 </div>
