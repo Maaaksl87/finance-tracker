@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument, Types } from "mongoose";
+import { HydratedDocument, Types, SchemaTypes } from "mongoose";
 
 import { User } from "src/users/schemas/user.schema";
 
@@ -22,7 +22,7 @@ export class Source {
   @Prop({ required: true })
   color: string;
 
-  @Prop({ type: Types.ObjectId, ref: User.name, required: true })
+  @Prop({ type: SchemaTypes.ObjectId, ref: User.name, required: true })
   userId: Types.ObjectId;
 }
 

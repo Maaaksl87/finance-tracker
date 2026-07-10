@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument, Types } from "mongoose";
+import { HydratedDocument, Types, SchemaTypes } from "mongoose";
 
 import { Source } from "../../sources/schemas/source.schema";
 import { User } from "../../users/schemas/user.schema";
@@ -38,13 +38,13 @@ export class Transaction {
   @Prop()
   description?: string;
 
-  @Prop({ type: Types.ObjectId, ref: Source.name })
+  @Prop({ type: SchemaTypes.ObjectId, ref: Source.name })
   destinationSourceId?: Types.ObjectId; // Куди (для трансферів)
 
   @Prop({ required: true, default: Date.now })
   date: Date;
 
-  @Prop({ type: Types.ObjectId, ref: Source.name, required: true })
+  @Prop({ type: SchemaTypes.ObjectId, ref: Source.name, required: true })
   sourceId: Types.ObjectId;
 
   @Prop({ type: [String], default: [] })
@@ -53,10 +53,10 @@ export class Transaction {
   @Prop({ default: false })
   excludeFromStats: boolean; // щоб виключити транзакцію зі статистики
 
-  @Prop({ type: Types.ObjectId, ref: User.name, required: true })
+  @Prop({ type: SchemaTypes.ObjectId, ref: User.name, required: true })
   userId: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: "SavingPlan", required: false })
+  @Prop({ type: SchemaTypes.ObjectId, ref: "SavingPlan", required: false })
   savingPlanId?: Types.ObjectId;
 }
 
