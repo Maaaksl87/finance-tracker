@@ -1,12 +1,12 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument, Types } from "mongoose";
+import { HydratedDocument, Types, SchemaTypes } from "mongoose";
 import { User } from "src/users/schemas/user.schema";
 
 export type IntegrationDocument = HydratedDocument<Integration>;
 
 @Schema({ timestamps: true })
 export class Integration {
-    @Prop({ type: Types.ObjectId, ref: User.name, required: true })
+    @Prop({ type: SchemaTypes.ObjectId, ref: User.name, required: true })
     userId: Types.ObjectId;
 
     @Prop({ required: true })
@@ -18,7 +18,7 @@ export class Integration {
     @Prop({ required: true })
     apiSecretEncrypted: string;
 
-    @Prop({ type: Types.ObjectId, ref: "Source", required: true })
+    @Prop({ type: SchemaTypes.ObjectId, ref: "Source", required: true })
     sourceId: Types.ObjectId;
 
     @Prop()
