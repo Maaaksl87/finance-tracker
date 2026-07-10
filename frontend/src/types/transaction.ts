@@ -45,6 +45,14 @@ export interface TransactionStats {
   };
 }
 
+export interface CalendarDay {
+  date: string;
+  income: number;
+  expense: number;
+  transfer: number;
+  count: number;
+}
+
 export interface TransactionPagination {
   current: number;
   pages: number;

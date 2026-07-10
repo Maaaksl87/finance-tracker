@@ -6,6 +6,14 @@ import { SourcesService } from "../sources/sources.service";
 import { CreateTransactionDto } from "./dto/create-transaction.dto";
 import { Transaction, TransactionType } from "./schemas/transaction.schema";
 
+export interface CalendarDayResult {
+  date: string;
+  income: number;
+  expense: number;
+  transfer: number;
+  count: number;
+}
+
 @Injectable()
 export class TransactionsService {
   constructor(
@@ -243,5 +251,29 @@ export class TransactionsService {
         transfer: getStat(TransactionType.TRANSFER)?.count ?? 0,
       },
     };
+  }
+
+  // Метод для отримання статистики по дням
+  async getCalendar(userId: string, from: Date, to: Date, timezone?: string) {
+    return await this.transactionModel.aggregate<CalendarDayResult>([
+      {
+        $match: {
+          userId: new Types.ObjectId(userId),
+          date: { $gte: from, $lte: to },
+          excludeFromStats: { $ne: true },
+        }
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$date", timezone: timezone ?? "UTC" } },
+          income: { $sum: { $cond: [{ $eq: ["$type", "income"] }, "$amount", 0] } },
+          expense: { $sum: { $cond: [{ $eq: ["$type", "expense"] }, "$amount", 0] } },
+          transfer: { $sum: { $cond: [{ $eq: ["$type", "transfer"] }, "$amount", 0] } },
+          count: { $sum: 1 },
+        }
+      },
+      { $project: { _id: 0, date: "$_id", income: 1, expense: 1, transfer: 1, count: 1 } },
+      { $sort: { date: 1 } },
+    ])
   }
 }

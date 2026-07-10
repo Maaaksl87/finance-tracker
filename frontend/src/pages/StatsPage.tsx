@@ -11,6 +11,8 @@ import {
   Tooltip as RechartsTooltip,
 } from "recharts";
 
+import { FinancialCalendar } from "@/components/calendar/FinancialCalendar";
+
 // Рекомендація: щоб зробити кольори PieChart динамічними на основі CSS-змінних,
 // можна зчитувати значення через getComputedStyle у useEffect або використовувати
 // CSS-класи для стилізації елементів Recharts (якщо це підтримується версією).
@@ -73,6 +75,14 @@ function StatsPage() {
                 Немає даних
               </div>
             )}
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Календар</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <FinancialCalendar />
           </CardContent>
         </Card>
       </div>
