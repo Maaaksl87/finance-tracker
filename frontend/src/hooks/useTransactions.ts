@@ -1,4 +1,4 @@
-import { createTransaction, deleteTransaction, getTransactions, getTransactionStats } from "@/api/transactions";
+import { createTransaction, deleteTransaction, getCalendar, getTransactions, getTransactionStats } from "@/api/transactions";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { sourcesKeys } from "./useSources";
 import type { Transaction } from "@/types";
@@ -14,6 +14,8 @@ export const transactionsKey = {
     [...transactionsKey.all, "stats", range?.startDate, range?.endDate],
   list: (range?: DateRange, limit?: number) =>
     [...transactionsKey.all, "list", range?.startDate, range?.endDate, limit],
+  calendar: (year: number, month: number) =>
+    [...transactionsKey.all, 'calendar', year, month] as const,
 };
 
 export const transactionsQuery = {
@@ -24,8 +26,16 @@ export const transactionsQuery = {
   list: (range?: DateRange, limit?: number) => ({
     queryKey: transactionsKey.list(range, limit),
     queryFn: () => getTransactions({ startDate: range?.startDate, endDate: range?.endDate, limit }),
-
   }),
+  calendar: (year: number, month: number) => ({
+    queryKey: transactionsKey.calendar(year, month),
+    queryFn: () => {
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const from = new Date(year, month, 1).toISOString();
+      const to = new Date(year, month + 1, 0, 23, 59, 59, 999).toISOString();
+      return getCalendar({ from, to, timezone });
+    }
+  })
 };
 
 export function useTransactions(startDate?: string, endDate?: string, limit?: number) {
@@ -80,6 +90,10 @@ export function useTransactionStats(range?: { startDate?: string; endDate?: stri
   };
 }
 
+export function useTransactionCalendar(monthDate: Date) {
+  const { data, isLoading, error } = useQuery(transactionsQuery.calendar(monthDate.getFullYear(), monthDate.getMonth()));
+  return { days: data ?? [], isLoading, error }
+}
 
 export function useTypeFilter(transactions: Transaction[]) {
   const [filter, setFilter] = useState<TypeFilter>("all");

@@ -15,6 +15,7 @@ import type { RequestWithUser } from "../common/interfaces/request-with-user.int
 import { CreateTransactionDto } from "./dto/create-transaction.dto";
 import { TransactionType } from "./schemas/transaction.schema";
 import { TransactionsService } from "./transactions.service";
+import { BadRequestException } from "@nestjs/common";
 
 @Controller("transactions")
 @UseGuards(JwtAuthGuard)
@@ -61,6 +62,25 @@ export class TransactionsController {
       startDate ? new Date(startDate) : undefined,
       endDate ? new Date(endDate) : undefined,
     );
+  }
+
+  @Get("calendar")
+  getCalendar(
+    @Request() req: RequestWithUser,
+    @Query("from") from: string,
+    @Query("to") to: string,
+    @Query("timezone") timezone?: string
+  ) {
+    if (!from || !to) {
+      throw new BadRequestException("Параметри from і to обов'язкові");
+    }
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+    if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
+      throw new BadRequestException("Некоректний формат дати");
+    }
+
+    return this.transactionsService.getCalendar(req.user._id, fromDate, toDate, timezone ?? "UTC");
   }
 
   @Get(":id")

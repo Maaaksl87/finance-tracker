@@ -4,6 +4,7 @@ import type {
   TransactionPagination,
   Transaction,
   TransactionStats,
+  CalendarDay
 } from "../types";
 
 export const getTransactions = async (params?: {
@@ -40,3 +41,8 @@ export const getTransactionStats = async (params?: {
 export const deleteTransaction = async (id: string): Promise<void> => {
   await api.delete(`/transactions/${id}`);
 };
+
+export const getCalendar = async (params: { from: string, to: string, timezone: string }): Promise<CalendarDay[]> => {
+  const { data } = await api.get<CalendarDay[]>('/transactions/calendar', { params });
+  return data
+}
