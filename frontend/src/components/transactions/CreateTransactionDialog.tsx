@@ -36,9 +36,9 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { getSources } from "@/api/sources";
-import { createTransaction } from "@/api/transactions";
 import { formSchema, type FormValues, EXPENSE_CATEGORIES, INCOME_CATEGORIES } from "./transaction.schema";
 import SourceSelect from "./SourceSelect";
+import { useCreateTransaction } from "@/hooks/useTransactions";
 
 interface CreateTransactionDialogProps {
   trigger?: React.ReactNode;
@@ -63,9 +63,7 @@ export function CreateTransactionDialog({
 }: CreateTransactionDialogProps = {}) {
   const [open, setOpen] = useState(false);
   const [sources, setSources] = useState<Source[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  // 2. Ініціалізація форми
+  const { mutateAsync: createTransaction, isPending } = useCreateTransaction();
   const getDefaultValues = (type: TransactionType): FormValues => ({
     amount: 0,
     type,
@@ -115,7 +113,6 @@ export function CreateTransactionDialog({
   };
 
   const onSubmit = async (values: FormValues) => {
-    setIsLoading(true);
     try {
       const payload: CreateTransactionDto = {
         amount: values.amount,
@@ -136,8 +133,6 @@ export function CreateTransactionDialog({
       reset();
     } catch (error) {
       setError('root', { type: "error", message: "Не вдалося додати транзакцію." })
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -386,7 +381,7 @@ export function CreateTransactionDialog({
                 pendingText="Додається..."
                 className={cn(
                   "h-11 rounded-xl font-semibold transition-all duration-200 cursor-pointer",
-                  !isLoading
+                  !isPending
                     ? "bg-primary hover:bg-[#b4d46b] text-primary-foreground"
                     : "bg-input-hover border border-border text-foreground-subtle cursor-not-allowed"
                 )}
