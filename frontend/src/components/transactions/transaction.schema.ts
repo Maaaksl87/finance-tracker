@@ -1,7 +1,6 @@
 import * as z from "zod";
-import { TransactionType } from "@/types";
+import { colors, TransactionType } from "@/types";
 
-// Базові категорії для витрат
 export const EXPENSE_CATEGORIES = [
     { _id: "groceries", name: "Продукти" },
     { _id: "transport", name: "Транспорт" },
@@ -13,7 +12,6 @@ export const EXPENSE_CATEGORIES = [
     { _id: "other_expense", name: "Інше" },
 ] as const;
 
-// Базові категорії для доходів
 export const INCOME_CATEGORIES = [
     { _id: "salary", name: "Зарплата" },
     { _id: "freelance", name: "Фріланс та бізнес" },
@@ -25,8 +23,6 @@ export const INCOME_CATEGORIES = [
     { _id: "other_income", name: "Інше" },
 ] as const;
 
-// 1. СХЕМА ВАЛІДАЦІЇ (ZOD)
-// Це правила, за якими форма перевіряє себе перед відправкою
 export const formSchema = z
     .object({
         amount: z.number().min(0.01, "Сума має бути більше 0"),
@@ -41,7 +37,6 @@ export const formSchema = z
     })
     .refine(
         (data) => {
-            // Кастомна перевірка: Якщо це ПЕРЕКАЗ, то destinationSourceId обов'язковий
             if (data.type === TransactionType.TRANSFER && !data.destinationSourceId) {
                 return false;
             }
@@ -54,7 +49,6 @@ export const formSchema = z
     )
     .refine(
         (data) => {
-            // Кастомна перевірка: Якщо це не ПЕРЕКАЗ, то category обов'язкова
             if (data.type !== TransactionType.TRANSFER && (!data.category || data.category.trim() === "")) {
                 return false;
             }
@@ -66,6 +60,5 @@ export const formSchema = z
         },
     );
 
-// Тип даних форми на основі схеми
 export type FormValues = z.infer<typeof formSchema>;
 

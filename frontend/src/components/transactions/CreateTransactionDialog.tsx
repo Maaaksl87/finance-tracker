@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, Plus, ArrowDownLeft, ArrowUpRight, ArrowRightLeft, XIcon } from "lucide-react";
 
-import { type CreateTransactionDto, type Source, TransactionType } from "@/types";
+import { type CreateTransactionDto, type Source, TransactionType, colors } from "@/types";
 
 import {
   Dialog,
@@ -39,6 +39,8 @@ import { getSources } from "@/api/sources";
 import { formSchema, type FormValues, EXPENSE_CATEGORIES, INCOME_CATEGORIES } from "./transaction.schema";
 import SourceSelect from "./SourceSelect";
 import { useCreateTransaction } from "@/hooks/useTransactions";
+import { useCategories } from "@/hooks/useCategories";
+import { AddCategoryPopover } from "./AddCategoryPopover";
 
 interface CreateTransactionDialogProps {
   trigger?: React.ReactNode;
@@ -77,7 +79,7 @@ export function CreateTransactionDialog({
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: getDefaultValues(defaultType),
-    mode: "onChange",
+    mode: "onTouched",
   });
 
   const handleOpenChange = (nextOpen: boolean) => {
@@ -91,10 +93,20 @@ export function CreateTransactionDialog({
   const { watch, formState, control, handleSubmit, reset, getValues, setValue, setError } = form;
   const { errors } = formState;
 
-  // Слідкуємо за типом транзакції, щоб показувати/ховати поля
   const transactionType = watch("type");
   const sourceId = useWatch({ control, name: "sourceId" })
-  const categories = transactionType === TransactionType.INCOME ? INCOME_CATEGORIES : EXPENSE_CATEGORIES;
+  const { categories: customCategories } = useCategories();
+  const categories = [
+    ...(transactionType === TransactionType.INCOME ? INCOME_CATEGORIES : EXPENSE_CATEGORIES),
+    ...customCategories
+      .filter((c) => c.type === transactionType)
+      .map((c) => ({ _id: c._id, name: c.name })),
+  ];
+
+  const getCategoryColor = (categoryName: string): string | undefined => {
+    const custom = customCategories.find((c) => c.name === categoryName);
+    return custom ? colors.find((c) => c.value === custom.color)?.hex : undefined;
+  };
 
   const handleTypeChange = (newType: TransactionType) => {
     const category =
@@ -102,14 +114,17 @@ export function CreateTransactionDialog({
         ? "Переказ"
         : (() => {
           const currentCategory = getValues("category");
-          const currentList = newType === TransactionType.INCOME ? INCOME_CATEGORIES : EXPENSE_CATEGORIES;
-          return currentList.some((c) => c.name === currentCategory)
+          const staticList = newType === TransactionType.INCOME ? INCOME_CATEGORIES : EXPENSE_CATEGORIES;
+          const isCustomValid = customCategories.some(
+            (c) => c.type === newType && c.name === currentCategory,
+          );
+          return staticList.some((c) => c.name === currentCategory) || isCustomValid
             ? currentCategory
-            : currentList[0].name;
+            : staticList[0].name;
         })();
 
-    setValue("type", newType, { shouldValidate: true });
-    setValue("category", category, { shouldValidate: true });
+    setValue("type", newType);
+    setValue("category", category);
   };
 
   const onSubmit = async (values: FormValues) => {
@@ -304,31 +319,49 @@ export function CreateTransactionDialog({
                   name="category"
                   render={({ field }) => (
                     <FormItem className="flex flex-col space-y-1.5">
-                      <FormLabel className="text-xs uppercase tracking-wider text-muted-foreground/60 font-semibold">
-                        Категорія
-                      </FormLabel>
+                      <div className="flex items-center justify-between">
+                        <FormLabel className="text-xs uppercase tracking-wider text-muted-foreground/60 font-semibold">
+                          Категорія
+                        </FormLabel>
+                        <AddCategoryPopover
+                          type={transactionType === TransactionType.INCOME ? "income" : "expense"}
+                          onCreated={(name) => field.onChange(name)}
+                        />
+                      </div>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
-                          <SelectTrigger className="bg-input border-border rounded-xl px-4 text-foreground focus-visible:ring-0">
+                          <SelectTrigger className="w-full bg-input dark:bg-input dark:hover:bg-input-hover border-border rounded-xl px-4 text-foreground focus-visible:ring-0 data-[size=default]:h-12">
                             <SelectValue placeholder="Оберіть категорію">
-                              {field.value && (
-                                <div className="flex items-center gap-2">
-                                  <span className={cn("w-2 h-2 rounded-full", transactionType === TransactionType.INCOME ? "bg-type-income" : "bg-type-expense")} />
-                                  <span>{field.value}</span>
-                                </div>
-                              )}
+                              {field.value && (() => {
+                                const hex = getCategoryColor(field.value);
+                                return (
+                                  <div className="flex items-center gap-2">
+                                    <span
+                                      className={cn("w-2 h-2 rounded-full", !hex && (transactionType === TransactionType.INCOME ? "bg-type-income" : "bg-type-expense"))}
+                                      style={hex ? { backgroundColor: hex } : undefined}
+                                    />
+                                    <span>{field.value}</span>
+                                  </div>
+                                );
+                              })()}
                             </SelectValue>
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="bg-popover border-border">
-                          {categories.map((category) => (
-                            <SelectItem key={category._id} value={category.name} className="focus:bg-input-active focus:text-foreground">
-                              <div className="flex items-center gap-2">
-                                <span className={cn("w-2 h-2 rounded-full", transactionType === TransactionType.INCOME ? "bg-type-income" : "bg-type-expense")} />
-                                <span>{category.name}</span>
-                              </div>
-                            </SelectItem>
-                          ))}
+                          {categories.map((category) => {
+                            const hex = getCategoryColor(category.name);
+                            return (
+                              <SelectItem key={category._id} value={category.name} className="focus:bg-input-active focus:text-foreground">
+                                <div className="flex items-center gap-2">
+                                  <span
+                                    className={cn("w-2 h-2 rounded-full", !hex && (transactionType === TransactionType.INCOME ? "bg-type-income" : "bg-type-expense"))}
+                                    style={hex ? { backgroundColor: hex } : undefined}
+                                  />
+                                  <span>{category.name}</span>
+                                </div>
+                              </SelectItem>
+                            );
+                          })}
                         </SelectContent>
                       </Select>
                       <FormMessage />
