@@ -83,6 +83,24 @@ export class TransactionsController {
     return this.transactionsService.getCalendar(req.user._id, fromDate, toDate, timezone ?? "UTC");
   }
 
+  @Get("stats/categories")
+  getStatsByCategory(
+    @Request() req: RequestWithUser,
+    @Query("from") from: string,
+    @Query("to") to: string,
+  ) {
+    if (!from || !to) {
+      throw new BadRequestException("Параметри from і to обов'язкові");
+    }
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+    if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
+      throw new BadRequestException("Некоректний формат дати");
+    }
+
+    return this.transactionsService.getStatsByCategory(req.user._id, fromDate, toDate);
+  }
+
   @Get(":id")
   findOne(@Param("id") id: string, @Request() req: RequestWithUser) {
     return this.transactionsService.findOne(id, req.user._id);

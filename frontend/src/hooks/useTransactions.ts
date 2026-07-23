@@ -1,4 +1,4 @@
-import { createTransaction, deleteTransaction, getCalendar, getTransactions, getTransactionStats } from "@/api/transactions";
+import { createTransaction, deleteTransaction, getCalendar, getCategoryStats, getTransactions, getTransactionStats } from "@/api/transactions";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { sourcesKeys } from "./useSources";
 import type { Transaction } from "@/types";
@@ -16,6 +16,8 @@ export const transactionsKey = {
     [...transactionsKey.all, "list", range?.startDate, range?.endDate, limit],
   calendar: (year: number, month: number) =>
     [...transactionsKey.all, 'calendar', year, month] as const,
+  categoryStats: (year: number, month: number) =>
+    [...transactionsKey.all, 'categoryStats', year, month] as const,
 };
 
 export const transactionsQuery = {
@@ -34,6 +36,14 @@ export const transactionsQuery = {
       const from = new Date(year, month, 1).toISOString();
       const to = new Date(year, month + 1, 0, 23, 59, 59, 999).toISOString();
       return getCalendar({ from, to, timezone });
+    }
+  }),
+  categoryStats: (year: number, month: number) => ({
+    queryKey: transactionsKey.categoryStats(year, month),
+    queryFn: () => {
+      const from = new Date(year, month, 1).toISOString();
+      const to = new Date(year, month + 1, 0, 23, 59, 59, 999).toISOString();
+      return getCategoryStats({ from, to });
     }
   })
 };
@@ -93,6 +103,19 @@ export function useTransactionStats(range?: { startDate?: string; endDate?: stri
 export function useTransactionCalendar(monthDate: Date) {
   const { data, isLoading, error } = useQuery(transactionsQuery.calendar(monthDate.getFullYear(), monthDate.getMonth()));
   return { days: data ?? [], isLoading, error }
+}
+
+export function useCategoryStats(monthDate: Date) {
+  const { data, isLoading, error } = useQuery(
+    transactionsQuery.categoryStats(monthDate.getFullYear(), monthDate.getMonth()),
+  );
+  const stats = data ?? [];
+  return {
+    income: stats.filter((s) => s.type === "income"),
+    expense: stats.filter((s) => s.type === "expense"),
+    isLoading,
+    error,
+  };
 }
 
 export function useTypeFilter(transactions: Transaction[]) {

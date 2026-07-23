@@ -53,6 +53,12 @@ export interface CalendarDay {
   count: number;
 }
 
+export interface CategoryStat {
+  type: TransactionType;
+  category: string;
+  total: number;
+}
+
 export interface TransactionPagination {
   current: number;
   pages: number;

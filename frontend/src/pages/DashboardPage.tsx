@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, RefreshCw } from "lucide-react";
 import { CreateSourceDialog } from "@/components/sources/CreateSourceDialog";
 import { useSyncIntegrations } from "@/hooks/useIntegrations";
+import { CategoryStatsCard } from "@/components/stats/CategoryStatsCard";
 
 
 export default function DashboardPage() {
@@ -90,20 +91,6 @@ export default function DashboardPage() {
         </div>
 
         <div className="flex flex-col gap-4 col-span-12 md:col-span-5 xl:col-span-3">
-          <Card>
-            <CardHeader>
-              <CardTitle>Денний ліміт</CardTitle>
-            </CardHeader>
-
-            <CardContent>
-              <p className="text-sm text-foreground-muted">₴2,500.00 з ₴330.00</p>
-
-              <div className="w-full h-2 mt-3 rounded-full bg-limit-bar-track">
-                <div className="w-1/4 h-2 rounded-full bg-limit-bar-fill" />
-              </div>
-            </CardContent>
-          </Card>
-
           <SavingPlansList plans={plans} setSelectedPlanId={() => { }} />
         </div>
 
@@ -126,19 +113,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="flex flex-col min-h-0 col-span-12 gap-4 xl:col-span-3">
-        <Card>
-
-          <CardHeader>
-            <CardTitle>Статистика</CardTitle>
-          </CardHeader>
-
-          <CardContent>
-            <div className="flex items-center justify-center h-40 text-foreground-muted">
-              Діаграма витрат
-            </div>
-          </CardContent>
-
-        </Card>
+        <CategoryStatsCard />
 
         <ListOfCurrencies />
       </div>

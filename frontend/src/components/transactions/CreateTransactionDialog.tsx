@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, Plus, ArrowDownLeft, ArrowUpRight, ArrowRightLeft, XIcon } from "lucide-react";
 
-import { type CreateTransactionDto, type Source, TransactionType, colors } from "@/types";
+import { type CreateTransactionDto, type Source, TransactionType } from "@/types";
 
 import {
   Dialog,
@@ -41,6 +41,7 @@ import SourceSelect from "./SourceSelect";
 import { useCreateTransaction } from "@/hooks/useTransactions";
 import { useCategories } from "@/hooks/useCategories";
 import { AddCategoryPopover } from "./AddCategoryPopover";
+import { getCategoryHex } from "@/lib/categoryColor";
 
 interface CreateTransactionDialogProps {
   trigger?: React.ReactNode;
@@ -102,11 +103,6 @@ export function CreateTransactionDialog({
       .filter((c) => c.type === transactionType)
       .map((c) => ({ _id: c._id, name: c.name })),
   ];
-
-  const getCategoryColor = (categoryName: string): string | undefined => {
-    const custom = customCategories.find((c) => c.name === categoryName);
-    return custom ? colors.find((c) => c.value === custom.color)?.hex : undefined;
-  };
 
   const handleTypeChange = (newType: TransactionType) => {
     const category =
@@ -330,38 +326,23 @@ export function CreateTransactionDialog({
                       </div>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
-                          <SelectTrigger className="w-full bg-input dark:bg-input dark:hover:bg-input-hover border-border rounded-xl px-4 text-foreground focus-visible:ring-0 data-[size=default]:h-12">
-                            <SelectValue placeholder="Оберіть категорію">
-                              {field.value && (() => {
-                                const hex = getCategoryColor(field.value);
-                                return (
-                                  <div className="flex items-center gap-2">
-                                    <span
-                                      className={cn("w-2 h-2 rounded-full", !hex && (transactionType === TransactionType.INCOME ? "bg-type-income" : "bg-type-expense"))}
-                                      style={hex ? { backgroundColor: hex } : undefined}
-                                    />
-                                    <span>{field.value}</span>
-                                  </div>
-                                );
-                              })()}
-                            </SelectValue>
+                          <SelectTrigger
+                            className="w-full bg-input dark:bg-input dark:hover:bg-input-hover border-border rounded-xl px-4 text-foreground focus-visible:ring-0 data-[size=default]:h-12"
+                          >
+                            <SelectValue placeholder="Оберіть категорію" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="bg-popover border-border">
-                          {categories.map((category) => {
-                            const hex = getCategoryColor(category.name);
-                            return (
-                              <SelectItem key={category._id} value={category.name} className="focus:bg-input-active focus:text-foreground">
-                                <div className="flex items-center gap-2">
-                                  <span
-                                    className={cn("w-2 h-2 rounded-full", !hex && (transactionType === TransactionType.INCOME ? "bg-type-income" : "bg-type-expense"))}
-                                    style={hex ? { backgroundColor: hex } : undefined}
-                                  />
-                                  <span>{category.name}</span>
-                                </div>
-                              </SelectItem>
-                            );
-                          })}
+                          {categories.map((category) => (
+                            <SelectItem
+                              key={category._id}
+                              value={category.name}
+                              className="border-l-4 focus:bg-input-active focus:text-foreground"
+                              style={{ borderColor: getCategoryHex(category.name, transactionType === TransactionType.INCOME ? "income" : "expense", customCategories) }}
+                            >
+                              {category.name}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                       <FormMessage />
