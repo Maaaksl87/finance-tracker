@@ -88,7 +88,7 @@ export default function AddNewPlan({
               />
             </Field>
             <Field>
-              <Label htmlFor="targetAmount">Цільова сума ($)</Label>
+              <Label htmlFor="targetAmount">Цільова сума (₴)</Label>
               <Input
                 id="targetAmount"
                 name="targetAmount"

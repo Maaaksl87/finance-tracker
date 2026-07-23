@@ -20,7 +20,11 @@ function SavingPlansPage() {
     <div className="flex h-full overflow-hidden gap-4 p-4 pt-2">
       <div className="flex flex-col w-1/3 min-h-0 gap-4">
         <SavingPlanStatsCards />
-        <SavingPlansList plans={plans} setSelectedPlanId={setSelectedPlanId} />
+        <SavingPlansList
+          plans={plans}
+          setSelectedPlanId={setSelectedPlanId}
+          selectedPlanId={selectedPlanId}
+        />
       </div>
       <div className="flex-1 min-h-0">
         <SavingPlansDetail selectedPlanId={selectedPlanId} />

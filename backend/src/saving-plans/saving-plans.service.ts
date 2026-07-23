@@ -1,7 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model, Types } from "mongoose";
+import { InjectConnection, InjectModel } from "@nestjs/mongoose";
+import { ClientSession, Connection, Model, Types } from "mongoose";
 
+import { SourcesService } from "../sources/sources.service";
 import {
   Transaction,
   TransactionDocument,
@@ -22,7 +23,12 @@ export class SavingPlansService {
 
     @InjectModel(Transaction.name)
     private transactionModel: Model<TransactionDocument>,
-  ) {}
+
+    @InjectConnection()
+    private connection: Connection,
+
+    private sourcesService: SourcesService,
+  ) { }
 
   async create(userId: string, createDto: CreateSavingPlanDto): Promise<SavingPlan> {
     const savingPlan = new this.savingPlanModel({
@@ -122,32 +128,43 @@ export class SavingPlansService {
     const newAmount = savingPlan.currentAmount + amount;
     const isCompleted = newAmount >= savingPlan.targetAmount;
 
-    // Створюємо транзакцію поповнення
-    await new this.transactionModel({
-      amount,
-      type: "income",
-      category: "Заощадження",
-      description: `Поповнення плану "${savingPlan.title}"`,
-      sourceId: new Types.ObjectId(sourceId),
-      savingPlanId: new Types.ObjectId(id),
-      userId: new Types.ObjectId(userId),
-      date: new Date(),
-      excludeFromStats: true,
-    }).save();
+    const session: ClientSession = await this.connection.startSession();
+    try {
+      return await session.withTransaction(async () => {
+        await this.sourcesService.changeBalance(sourceId, -amount, userId, session);
 
-    return this.savingPlanModel
-      .findByIdAndUpdate(
-        id,
-        {
-          $set: {
-            currentAmount: newAmount,
-            status: isCompleted ? SavingPlanStatus.COMPLETED : SavingPlanStatus.ACTIVE,
-          },
-        },
-        { new: true },
-      )
-      .orFail(() => new NotFoundException("План заощаджень не знайдено"))
-      .exec();
+        // Створюємо транзакцію поповнення
+        await new this.transactionModel({
+          amount,
+          type: "income",
+          category: "Заощадження",
+          description: `Поповнення плану "${savingPlan.title}"`,
+          sourceId: new Types.ObjectId(sourceId),
+          savingPlanId: new Types.ObjectId(id),
+          userId: new Types.ObjectId(userId),
+          date: new Date(),
+          excludeFromStats: true,
+        }).save({ session });
+
+        return this.savingPlanModel
+          .findByIdAndUpdate(
+            id,
+            {
+              $set: {
+                currentAmount: newAmount,
+                status: isCompleted
+                  ? SavingPlanStatus.COMPLETED
+                  : SavingPlanStatus.ACTIVE,
+              },
+            },
+            { new: true, session },
+          )
+          .orFail(() => new NotFoundException("План заощаджень не знайдено"))
+          .exec();
+      });
+    } finally {
+      await session.endSession();
+    }
   }
 
   async withdrawFunds(
@@ -168,34 +185,43 @@ export class SavingPlansService {
 
     const newAmount = savingPlan.currentAmount - amount;
 
-    // Створюємо транзакцію зняття
-    await new this.transactionModel({
-      amount,
-      type: "expense",
-      category: "Заощадження",
-      description: `Зняття з плану "${savingPlan.title}"`,
-      sourceId: new Types.ObjectId(sourceId),
-      savingPlanId: new Types.ObjectId(id),
-      userId: new Types.ObjectId(userId),
-      date: new Date(),
-    }).save();
+    const session: ClientSession = await this.connection.startSession();
+    try {
+      return await session.withTransaction(async () => {
+        await this.sourcesService.changeBalance(sourceId, amount, userId, session);
 
-    return this.savingPlanModel
-      .findByIdAndUpdate(
-        id,
-        {
-          $set: {
-            currentAmount: newAmount,
-            status:
-              savingPlan.status === SavingPlanStatus.COMPLETED
-                ? SavingPlanStatus.ACTIVE
-                : savingPlan.status,
-          },
-        },
-        { new: true },
-      )
-      .orFail(() => new NotFoundException("План заощаджень не знайдено"))
-      .exec();
+        await new this.transactionModel({
+          amount,
+          type: "expense",
+          category: "Заощадження",
+          description: `Зняття з плану "${savingPlan.title}"`,
+          sourceId: new Types.ObjectId(sourceId),
+          savingPlanId: new Types.ObjectId(id),
+          userId: new Types.ObjectId(userId),
+          date: new Date(),
+          excludeFromStats: true,
+        }).save({ session });
+
+        return this.savingPlanModel
+          .findByIdAndUpdate(
+            id,
+            {
+              $set: {
+                currentAmount: newAmount,
+                status:
+                  savingPlan.status === SavingPlanStatus.COMPLETED
+                    ? SavingPlanStatus.ACTIVE
+                    : savingPlan.status,
+              },
+            },
+            { new: true, session },
+          )
+          .orFail(() => new NotFoundException("План заощаджень не знайдено"))
+          .exec();
+      });
+    } finally {
+      await session.endSession();
+    }
   }
 
   async getStats(userId: string): Promise<{

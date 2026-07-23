@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
 
+import { SourcesModule } from "../sources/sources.module";
 import {
   Transaction,
   TransactionSchema,
@@ -15,6 +16,7 @@ import { SavingPlan, SavingPlanSchema } from "./schemas/saving-plan.schema";
       { name: SavingPlan.name, schema: SavingPlanSchema },
       { name: Transaction.name, schema: TransactionSchema },
     ]),
+    SourcesModule,
   ],
   controllers: [SavingPlansController],
   providers: [SavingPlansService],

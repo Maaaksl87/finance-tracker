@@ -1,6 +1,6 @@
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis, ReferenceLine } from "recharts";
 import { buildCashFlowData } from "@/lib/charts/buildCashFlowData";
-import { useTransactionStats } from "@/hooks/useTransactions";
+import { useTransactions } from "@/hooks/useTransactions";
 import {
   ChartContainer,
   ChartTooltip,
@@ -25,7 +25,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function ChartAreaGradient({ className = "w-full aspect-video" }: { className?: string }) {
-  const { transactions } = useTransactionStats();
+  const { transactions } = useTransactions();
   const chartData = useMemo(
     () => buildCashFlowData(transactions, "dd.MM"),
     [transactions],

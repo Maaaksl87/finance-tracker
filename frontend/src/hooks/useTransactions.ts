@@ -91,12 +91,10 @@ export function useDeleteTransaction() {
 
 export function useTransactionStats(range?: { startDate?: string; endDate?: string }) {
   const statsQuery = useQuery(transactionsQuery.stats(range));
-  const listQuery = useQuery(transactionsQuery.list(range));
 
   return {
     stats: statsQuery.data,
-    transactions: listQuery.data?.transactions ?? [],
-    isLoading: statsQuery.isLoading || listQuery.isLoading,
+    isLoading: statsQuery.isLoading,
   };
 }
 
