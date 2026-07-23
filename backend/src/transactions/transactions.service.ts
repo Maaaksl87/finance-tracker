@@ -14,6 +14,12 @@ export interface CalendarDayResult {
   count: number;
 }
 
+export interface CategoryStatResult {
+  type: TransactionType;
+  category: string;
+  total: number;
+}
+
 @Injectable()
 export class TransactionsService {
   constructor(
@@ -275,5 +281,27 @@ export class TransactionsService {
       { $project: { _id: 0, date: "$_id", income: 1, expense: 1, transfer: 1, count: 1 } },
       { $sort: { date: 1 } },
     ])
+  }
+
+  // Метод для отримання сум по категоріях
+  async getStatsByCategory(userId: string, from: Date, to: Date) {
+    return this.transactionModel.aggregate<CategoryStatResult>([
+      {
+        $match: {
+          userId: new Types.ObjectId(userId),
+          date: { $gte: from, $lte: to },
+          excludeFromStats: { $ne: true },
+          type: { $in: [TransactionType.INCOME, TransactionType.EXPENSE] },
+        },
+      },
+      {
+        $group: {
+          _id: { type: "$type", category: "$category" },
+          total: { $sum: "$amount" },
+        },
+      },
+      { $project: { _id: 0, type: "$_id.type", category: "$_id.category", total: 1 } },
+      { $sort: { total: -1 } },
+    ]);
   }
 }

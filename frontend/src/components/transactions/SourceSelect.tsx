@@ -29,7 +29,7 @@ export default function SourceSelect({ control, name, sources, label, excludeId 
                         <FormLabel className="text-xs uppercase tracking-wider text-muted-foreground/60 font-semibold">{label}</FormLabel>
                         <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
-                                <SelectTrigger className="w-full bg-input border-border rounded-xl px-4 text-foreground focus-visible:ring-0 data-[size=default]:h-12">
+                                <SelectTrigger className="w-full bg-input dark:bg-input dark:hover:bg-input-hover border-border rounded-xl px-4 text-foreground focus-visible:ring-0 data-[size=default]:h-12">
                                     <SelectValue placeholder="Оберіть гаманець...">
                                         {field.value && (
                                             <div className="flex items-center gap-2">

@@ -24,7 +24,7 @@ export class CreateTransactionDto {
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(15, { message: "Категорія не може перевищувати 15 символів" })
+  @MaxLength(50, { message: "Категорія не може перевищувати 50 символів" })
   category: string;
 
   @IsString()

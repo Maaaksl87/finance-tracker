@@ -12,6 +12,7 @@ import { SourcesModule } from "./sources/sources.module";
 import { TransactionsModule } from "./transactions/transactions.module";
 import { UsersModule } from "./users/users.module";
 import { IntegrationsModule } from "./integrations/integrations.module";
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { IntegrationsModule } from "./integrations/integrations.module";
     ScheduleModule.forRoot(),
     CurrenciesModule,
     IntegrationsModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
