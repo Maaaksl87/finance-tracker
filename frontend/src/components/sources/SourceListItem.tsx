@@ -1,5 +1,7 @@
 import { Wallet } from "lucide-react";
 import { colors, type Color, type Currency, sourceTypes, type Source } from "@/types";
+import { useCurrencyRates } from "@/hooks/useCurrencyRates";
+import { convertToUAH } from "@/lib/currency";
 
 export interface SourceListItemProps {
   source: Source;
@@ -25,6 +27,9 @@ export function getCurrencySymbol(currency: Currency) {
 export default function SourceListItem({ source }: SourceListItemProps) {
   const activeColor = getActiveColor(source.color);
   const currencySymbol = getCurrencySymbol(source.currency);
+  const { rates } = useCurrencyRates();
+  const isForeign = source.currency !== "UAH";
+  const uahBalance = convertToUAH(source.balance, source.currency, rates);
 
   return (
     <div className="flex items-center justify-between py-2 border-b border-border/40 last:border-0 last:pb-0 first:pt-0">
@@ -46,9 +51,14 @@ export default function SourceListItem({ source }: SourceListItemProps) {
           </span>
         </div>
       </div>
-      <span className="font-bold text-sm text-foreground">
-        {formatBalance(source.balance)} {currencySymbol}
-      </span>
+      <div className="flex flex-col items-end text-sm font-bold text-foreground">
+        <span>{formatBalance(uahBalance)} ₴</span>
+        {isForeign && (
+          <span className="text-[0.5em] font-normal text-foreground/50">
+            {formatBalance(source.balance)} {currencySymbol}
+          </span>
+        )}
+      </div>
     </div>
   );
 }

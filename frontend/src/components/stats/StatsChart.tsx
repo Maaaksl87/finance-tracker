@@ -24,11 +24,16 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function ChartAreaGradient({ className = "w-full aspect-video" }: { className?: string }) {
+interface ChartAreaGradientProps {
+  className?: string;
+  currentBalance?: number;
+}
+
+export default function ChartAreaGradient({ className = "w-full aspect-video", currentBalance }: ChartAreaGradientProps) {
   const { transactions } = useTransactions();
   const chartData = useMemo(
-    () => buildCashFlowData(transactions, "dd.MM"),
-    [transactions],
+    () => buildCashFlowData(transactions, "dd.MM", currentBalance),
+    [transactions, currentBalance],
   );
   const formatYAxis = (value: number) => (value === 0 ? "0" : `${Math.round(value / 1000)}к`);
 

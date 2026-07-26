@@ -57,6 +57,9 @@ export function useDeleteSource() {
             queryClient.invalidateQueries({
                 queryKey: sourcesKeys.lists(),
             });
+            queryClient.invalidateQueries({
+                queryKey: ["transactions"],
+            });
         },
         onError: (error) => {
             console.error("Помилка видалення:", error);

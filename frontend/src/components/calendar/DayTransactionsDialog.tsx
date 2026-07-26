@@ -55,7 +55,7 @@ function DayTransactionsList({ day }: { day: Date }) {
                     <div className="flex flex-col gap-0.5">
                         <TypeCell type={tx.type} />
                         <span className="text-xs text-muted-foreground">
-                            {tx.category} · {tx.sourceId.name}
+                            {tx.category} · {tx.sourceId?.name ?? "Гаманець"}
                         </span>
                     </div>
                     <MoneyWithCurrency amount={tx.amount} />

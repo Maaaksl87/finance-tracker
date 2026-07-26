@@ -1,6 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useQuery } from "@tanstack/react-query";
-import { fetchCurrencies } from "@/api/monobankApi";
 import {
   Table,
   TableBody,
@@ -10,14 +8,11 @@ import {
 } from "@/components/ui/table";
 import { useMemo } from "react";
 import type { CurrencyRate } from "@/types";
+import { useCurrencyRates } from "@/hooks/useCurrencyRates";
 import { CurrencyRow } from "./CurrencyRow";
 
 const ListOfCurrencies = () => {
-  const { isPending, isError, data, error } = useQuery({
-    queryKey: ["currencyRates"],
-    queryFn: fetchCurrencies,
-    staleTime: 6 * 60 * 1000,
-  });
+  const { isPending, isError, rates: data, error } = useCurrencyRates();
 
   const currencyRows = useMemo(() => {
     return data?.map((curr: CurrencyRate) => (

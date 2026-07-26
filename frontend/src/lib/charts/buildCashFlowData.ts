@@ -11,11 +11,25 @@ interface ChartDataPoint {
   type: TransactionType;
 }
 
+function buildTodayPoint(dateFormat: string, balance: number): ChartDataPoint {
+  const today = new Date();
+  return {
+    date: format(today, dateFormat),
+    fullDate: format(today, "d MMMM yyyy", { locale: uk }),
+    balance,
+    amount: 0,
+    type: TransactionType.INCOME,
+  };
+}
+
 export function buildCashFlowData(
   transactions: Transaction[],
   dateFormat: string,
+  actualBalance?: number,
 ): ChartDataPoint[] {
-  if (!transactions || transactions.length === 0) return [];
+  if (!transactions || transactions.length === 0) {
+    return actualBalance === undefined ? [] : [buildTodayPoint(dateFormat, actualBalance)];
+  }
   // Сортуємо транзакції від найстарішої до найновішої для коректного розрахунку балансу
   const sorted = [...transactions].sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
@@ -43,5 +57,15 @@ export function buildCashFlowData(
     };
   });
 
-  return Object.values(dailyData);
+  const points = Object.values(dailyData);
+
+  if (actualBalance === undefined) return points;
+
+  const todayPoint = buildTodayPoint(dateFormat, actualBalance);
+  const lastPoint = points[points.length - 1];
+  if (lastPoint.date === todayPoint.date) {
+    return [...points.slice(0, -1), { ...lastPoint, balance: actualBalance }];
+  }
+
+  return [...points, todayPoint];
 }

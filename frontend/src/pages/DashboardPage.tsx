@@ -10,6 +10,8 @@ import SavingPlansList from "@/components/saving-plans/SavingPlansList";
 import { useTransactionStats } from "@/hooks/useTransactions";
 import { useSavingPlans } from "@/hooks/useSavingPlans";
 import { useSources } from "@/hooks/useSources";
+import { useCurrencyRates } from "@/hooks/useCurrencyRates";
+import { convertToUAH } from "@/lib/currency";
 import StatsCards from "@/components/stats/StatsCards";
 import ListOfCurrencies from "@/components/currencies/ListOfCurrencies";
 import TransactionsTable from "@/components/transactions/TransactionsTable";
@@ -27,6 +29,7 @@ export default function DashboardPage() {
   const { stats, isLoading } = useTransactionStats();
   const { data: plans } = useSavingPlans();
   const { data: sources = [] } = useSources();
+  const { rates } = useCurrencyRates();
 
   useEffect(() => {
     syncNow(false);
@@ -37,9 +40,7 @@ export default function DashboardPage() {
     return <div className="p-4">Loading...</div>;
   }
 
-  const totalIncome = stats?.totalIncome || 0;
-  const totalExpense = stats?.totalExpense || 0;
-  const totalBalance = totalIncome - totalExpense;
+  const totalBalance = sources.reduce((sum, source) => sum + convertToUAH(source.balance, source.currency, rates), 0);
 
   return (
     <div className="grid h-full min-h-0 grid-cols-12 gap-4 overflow-hidden text-foreground">
@@ -75,7 +76,7 @@ export default function DashboardPage() {
               />
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col gap-3 max-h-[236px] overflow-y-auto pr-1">
+              <div className="flex flex-col gap-3 h-[236px] overflow-y-auto pr-1">
                 {sources.length > 0 ? (
                   sources.map((source) => (
                     <SourceListItem key={source._id} source={source} />

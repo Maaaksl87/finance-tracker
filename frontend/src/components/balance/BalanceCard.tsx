@@ -25,7 +25,7 @@ export default function BalanceCard({ totalBalance }: BalanceCardProps) {
           </p>
         </div>
         <div className="mt-5 mb-4 flex-1 min-h-0">
-          <ChartAreaGradient className="w-full h-full aspect-auto" />
+          <ChartAreaGradient className="w-full h-full aspect-auto" currentBalance={totalBalance} />
         </div>
 
         <ActionButtons />

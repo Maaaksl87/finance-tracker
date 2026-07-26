@@ -4,6 +4,8 @@ import {
 } from "@/components/ui/card";
 import { TrashIcon, Wallet, PencilIcon, MoreHorizontal } from "lucide-react";
 import { sourceTypes, type Source } from "@/types";
+import { useCurrencyRates } from "@/hooks/useCurrencyRates";
+import { convertToUAH } from "@/lib/currency";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +26,9 @@ export default function SourceCard({ source, onUpdate, onDelete }: SourceCardPro
   const activeColor = getActiveColor(source.color);
   const currencySymbol = getCurrencySymbol(source.currency);
   const label = sourceTypes.find((t) => t.value === source.type)?.label
+  const { rates } = useCurrencyRates();
+  const isForeign = source.currency !== "UAH";
+  const uahBalance = convertToUAH(source.balance, source.currency, rates);
 
   return (
     <Card
@@ -80,8 +85,13 @@ export default function SourceCard({ source, onUpdate, onDelete }: SourceCardPro
         </div>
 
         <div className="font-dm font-extrabold text-[1.6rem] text-foreground leading-tight">
-          {formatBalance(source.balance)}
-          <span className="text-[1.25rem] font-bold">{currencySymbol}</span>
+          {formatBalance(uahBalance)}
+          <span className="text-[1.25rem] font-bold">₴</span>
+          {isForeign && (
+            <span className="block text-[0.5em] font-normal text-foreground/50">
+              {formatBalance(source.balance)} {currencySymbol}
+            </span>
+          )}
         </div>
       </div>
     </Card>

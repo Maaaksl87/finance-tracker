@@ -84,7 +84,7 @@ export function SavingPlansTransactions({
                 {transaction.description || transaction.category || "—"}
               </TableCell>
               <TableCell className="text-sm text-foreground">
-                {typeof transaction.sourceId === "object"
+                {transaction.sourceId && typeof transaction.sourceId === "object"
                   ? transaction.sourceId.name
                   : "Гаманець"}
               </TableCell>
