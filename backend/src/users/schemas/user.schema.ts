@@ -9,6 +9,7 @@ export type UserDocument = HydratedDocument<User>;
   toJSON: {
     transform: (_, ret: Record<string, unknown>) => {
       delete ret.password; // При перетворенні документа в JSON видаляємо поле password
+      delete ret.hashedRefreshToken;
       delete ret.__v; // Видаляємо поле __v, яке Mongoose використовує для версіювання
       return ret;
     },
@@ -23,6 +24,9 @@ export class User {
 
   @Prop({ required: true })
   password: string;
+
+  @Prop({ select: false })
+  hashedRefreshToken?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -9,10 +9,11 @@ interface User {
 
 interface AuthState {
   token: string | null;
+  refreshToken: string | null;
   user: User | null;
   isAuth: boolean;
 
-  setToken: (token: string, user: User) => void;
+  setTokens: (accessToken: string, refreshToken: string, user: User) => void;
   logout: () => void;
 }
 
@@ -20,20 +21,25 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       token: null,
+      refreshToken: null,
       user: null,
       isAuth: false,
 
-      setToken: (token, user) => set({ token: token, user: user, isAuth: true }),
+      setTokens: (accessToken, refreshToken, user) =>
+        set({ token: accessToken, refreshToken, user, isAuth: true }),
 
       logout: () => {
         // При виході чистимо все
-        localStorage.removeItem("token");
-        set({ token: null, user: null, isAuth: false });
+        set({ token: null, refreshToken: null, user: null, isAuth: false });
       },
     }),
     {
       name: "auth-storage",
-      partialize: (state) => ({ token: state.token, user: state.user }),
+      partialize: (state) => ({
+        token: state.token,
+        refreshToken: state.refreshToken,
+        user: state.user,
+      }),
     },
   ),
 );

@@ -3,6 +3,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import * as bcrypt from "bcrypt";
 import { Model } from "mongoose";
 
+import { hashToken } from "../common/utils/hash-token.util";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { User, UserDocument } from "./schemas/user.schema";
@@ -35,6 +36,26 @@ export class UsersService {
       throw new NotFoundException("Користувача не знайдено");
     }
     return user;
+  }
+
+  async findByIdWithRefreshToken(id: string): Promise<UserDocument | null> {
+    return this.userModel
+      .findById(id)
+      .select("+hashedRefreshToken -password")
+      .exec();
+  }
+
+  async setRefreshToken(userId: string, refreshToken: string): Promise<void> {
+    const hashedRefreshToken = hashToken(refreshToken);
+    await this.userModel
+      .findByIdAndUpdate(userId, { hashedRefreshToken })
+      .exec();
+  }
+
+  async removeRefreshToken(userId: string): Promise<void> {
+    await this.userModel
+      .findByIdAndUpdate(userId, { $unset: { hashedRefreshToken: 1 } })
+      .exec();
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<UserDocument> {

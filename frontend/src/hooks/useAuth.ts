@@ -21,15 +21,15 @@ export function useAuth() {
   const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
-  const setToken = useAuthStore((state) => state.setToken);
+  const setTokens = useAuthStore((state) => state.setTokens);
 
-  const authenticateUser = async (access_token: string) => {
+  const authenticateUser = async (access_token: string, refresh_token: string) => {
     const profileResponse = await api.get("/auth/profile", {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
     });
-    setToken(access_token, profileResponse.data);
+    setTokens(access_token, refresh_token, profileResponse.data);
     navigate("/");
   };
 
@@ -38,7 +38,7 @@ export function useAuth() {
     setError(null);
     try {
       const response = await api.post("/auth/login", data);
-      await authenticateUser(response.data.access_token);
+      await authenticateUser(response.data.access_token, response.data.refresh_token);
     } catch (err: unknown) {
       if (isAxiosError(err) && err.response?.status === 401) {
         setError("Невірний email або пароль");
@@ -55,7 +55,6 @@ export function useAuth() {
     setIsLoading(true);
     setError(null);
     try {
-      // TODO: Реалізувати на бекенді endpoint POST /auth/register
 
       await api.post("/auth/register", {
         name: data.name,
@@ -68,7 +67,7 @@ export function useAuth() {
         email: data.email,
         password: data.password,
       });
-      await authenticateUser(loginResponse.data.access_token);
+      await authenticateUser(loginResponse.data.access_token, loginResponse.data.refresh_token);
     } catch (err: unknown) {
       if (isAxiosError(err) && err.response?.status === 409) {
         setError("Користувач з таким email вже існує");

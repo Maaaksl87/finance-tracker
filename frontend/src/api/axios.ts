@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { useAuthStore } from "@/store/authStore";
 
 const api = axios.create({
@@ -20,16 +20,86 @@ api.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
+interface RetriableConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+}
+
+let isRefreshing = false;
+let refreshWaiters: Array<(token: string | null) => void> = [];
+
+function notifyWaiters(token: string | null) {
+  refreshWaiters.forEach((resolve) => resolve(token));
+  refreshWaiters = [];
+}
+
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      console.warn("Session expired or invalid token. Logging out...");
-      // localStorage.removeItem("token");
-      useAuthStore.getState().logout(); // Очищаємо store
-      // window.location.href = "/auth/login"; // Перекидаємо на логін
+  async (error: AxiosError) => {
+    const originalRequest = error.config as RetriableConfig | undefined;
+    const requestUrl = originalRequest?.url ?? "";
+    const isAuthEndpoint =
+      requestUrl.includes("/auth/login") ||
+      requestUrl.includes("/auth/register") ||
+      requestUrl.includes("/auth/refresh");
+
+    if (
+      error.response?.status !== 401 ||
+      !originalRequest ||
+      originalRequest._retry ||
+      isAuthEndpoint
+    ) {
+      if (error.response?.status === 401) {
+        console.warn("Session expired or invalid token. Logging out...");
+        useAuthStore.getState().logout();
+      }
+      return Promise.reject(error);
     }
-    return Promise.reject(error);
+
+    const { refreshToken } = useAuthStore.getState();
+    if (!refreshToken) {
+      useAuthStore.getState().logout();
+      return Promise.reject(error);
+    }
+
+    originalRequest._retry = true;
+
+    if (isRefreshing) {
+      return new Promise((resolve, reject) => {
+        refreshWaiters.push((newAccessToken) => {
+          if (!newAccessToken) {
+            reject(error);
+            return;
+          }
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          resolve(api(originalRequest));
+        });
+      });
+    }
+
+    isRefreshing = true;
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/refresh`,
+        {},
+        { headers: { Authorization: `Bearer ${refreshToken}` } },
+      );
+
+      useAuthStore.setState({
+        token: data.access_token,
+        refreshToken: data.refresh_token,
+      });
+      notifyWaiters(data.access_token);
+
+      originalRequest.headers.Authorization = `Bearer ${data.access_token}`;
+      return api(originalRequest);
+    } catch (refreshError) {
+      notifyWaiters(null);
+      console.warn("Refresh token invalid. Logging out...");
+      useAuthStore.getState().logout();
+      return Promise.reject(refreshError);
+    } finally {
+      isRefreshing = false;
+    }
   },
 );
 

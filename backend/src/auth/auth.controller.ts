@@ -11,9 +11,11 @@ import {
 
 import { CreateUserDto } from "src/users/dto/create-user.dto";
 
+import type { RequestWithRefreshUser } from "../common/interfaces/request-with-refresh-user.interface";
 import type { RequestWithUser } from "../common/interfaces/request-with-user.interface";
 import { AuthService } from "./auth.service";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
+import { JwtRefreshGuard } from "./guards/jwt-refresh.guard";
 import { LocalGuard } from "./guards/local.guard";
 
 @Controller("auth")
@@ -31,6 +33,20 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   register(@Body() createUserDto: CreateUserDto) {
     return this.authService.register(createUserDto);
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  @Post("refresh")
+  @HttpCode(HttpStatus.OK)
+  refresh(@Req() req: RequestWithRefreshUser) {
+    return this.authService.refreshTokens(req.user._id, req.user.refreshToken);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post("logout")
+  @HttpCode(HttpStatus.OK)
+  logout(@Req() req: RequestWithUser) {
+    return this.authService.logout(req.user._id);
   }
 
   @UseGuards(JwtAuthGuard)
