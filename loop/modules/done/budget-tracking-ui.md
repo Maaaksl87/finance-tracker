@@ -152,4 +152,14 @@ Review and approve visual prototype `loop/prototypes/budgets.html`.
 
 ## 15. Findings
 
-<!-- Filled in by the agent when it closes the module. -->
+- Visual prototype `budgets.html` created, reviewed, and approved with owner corrections (no icons, clean typography, responsive layout, light/dark themes).
+- Implemented:
+  - `frontend/src/types/budget.ts` and exported in `types/index.ts`.
+  - `frontend/src/api/budgets.ts` with full CRUD and status endpoints.
+  - `frontend/src/hooks/useBudgets.ts` using TanStack React Query (`useBudgetStatuses`, `useCreateBudget`, `useUpdateBudget`, `useDeleteBudget`).
+  - `frontend/src/components/budgets/BudgetCard.tsx`: clean card with category color dot, dynamic progress bar (<80% primary, 80-100% amber, >100% red), remaining/exceeded badge, edit and delete actions.
+  - `frontend/src/components/budgets/CreateBudgetDialog.tsx`: category dropdown combining custom and standard expense categories, limit input.
+  - `frontend/src/components/budgets/EditBudgetDialog.tsx`: modal to adjust existing category limits.
+  - `frontend/src/pages/BudgetsPage.tsx`: responsive month navigation with text chevrons, overall summary statistics card, and budgets grid.
+  - Integrated into `src/App.tsx` (`/budgets` route) and enabled `/budgets` link in `src/components/app-sidebar.tsx`.
+- Gate verified: `npm run build` in `frontend/` completed in 3.31s with 0 errors. Backend build also verified (0 errors).
