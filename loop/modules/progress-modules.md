@@ -53,10 +53,11 @@ for a pending approval.
       Done 2026-11-13. Implemented BudgetsModule in NestJS (Budget Mongoose schema, unique index on userId+category, DTOs with validation, CRUD endpoints, and monthly spending status aggregation with normal/warning/exceeded thresholds).
       Gate: nest build passed (0 errors).
 
-- [ ] **[frontend]** `loop/modules/open/budget-tracking-ui.md`
-      Frontend Budgets page: progress bars, warnings, dialogs, and navigation.
+- [x] **[frontend]** `loop/modules/done/budget-tracking-ui.md`
       Branch: `feature/budget-tracking-ui`
-      Prototype: `loop/prototypes/budgets.html`
+      Prototype: `loop/prototypes/budgets.html` — Approved: 2026-11-13
+      Done 2026-11-13. Implemented BudgetsPage, BudgetCard with dynamic progress bars (<80% primary, 80-100% amber warning, >100% red exceeded), CreateBudgetDialog, EditBudgetDialog, useBudgets hook, enabled sidebar link and /budgets route. All user edits applied (clean typography, no icons, light & dark theme compatibility).
+      Gate: vite build passed (3.31s, 0 errors).
 
 ## Answers
 

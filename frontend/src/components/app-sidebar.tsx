@@ -1,4 +1,13 @@
-import { Home, Wallet, AlignLeft, TrendingUp, Signpost, Sparkles, Star } from "lucide-react";
+import {
+  Home,
+  Wallet,
+  AlignLeft,
+  TrendingUp,
+  Signpost,
+  Sparkles,
+  Star,
+  PieChart,
+} from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 import {
@@ -37,11 +46,11 @@ const items = [
     url: "/stats",
     icon: TrendingUp,
   },
-  // {
-  //   title: "Бюджети",
-  //   url: "/budgets",
-  //   icon: Settings,
-  // },
+  {
+    title: "Бюджети",
+    url: "/budgets",
+    icon: PieChart,
+  },
   {
     title: "Плани заощаджень",
     url: "/saving-plans",

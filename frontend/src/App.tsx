@@ -14,6 +14,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { RegisterForm } from "./components/auth/RegisterForm";
 import { LoginForm } from "./components/auth/LoginForm";
 import SavingPlansPage from "./pages/SavingPlansPage";
+import BudgetsPage from "./pages/BudgetsPage";
 
 function App() {
   return (
@@ -49,6 +50,11 @@ function App() {
                 path="/saving-plans"
                 element={<SavingPlansPage />}
                 handle={{ title: "Плани заощаджень" }}
+              />
+              <Route
+                path="/budgets"
+                element={<BudgetsPage />}
+                handle={{ title: "Бюджети" }}
               />
             </Route>
           </Route>
