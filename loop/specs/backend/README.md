@@ -6,12 +6,12 @@
 
 - **Runtime**: Node.js
 - **Language**: TypeScript 5.9.3
-- **Framework**: NestJS 11.1.11
-- **Database**: MongoDB via Mongoose 9.1.5 (`@nestjs/mongoose`)
+- **Framework**: NestJS 11.2.10
+- **Database**: MongoDB via Mongoose 9.12.1 (`@nestjs/mongoose` 11.0.4)
 - **Authentication**: Passport.js (JWT access & refresh strategy, local strategy)
-- **Validation**: `class-validator` 0.14.3, `class-transformer` 0.5.1
-- **Build Tool**: Nest CLI 11.0.14 (`nest build`)
-- **Testing**: Jest 30.2.0, `ts-jest` 29.4.6
+- **Validation**: `class-validator` 0.14.4, `class-transformer` 0.5.1
+- **Build Tool**: Nest CLI 11.0.24 (`nest build`)
+- **Testing**: Jest 30.5.2, `ts-jest` 29.4.15
 
 ## Documents
 
