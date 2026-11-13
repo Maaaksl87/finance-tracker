@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototypes — contents</title>
+<style>
+  :root { --bg:#f6f7f9; --paper:#fff; --ink:#16181d; --muted:#667085; --line:#e3e6eb;
+          --ok:#0f7b4f; --ok-bg:#e6f4ee; --wait:#9a5b00; --wait-bg:#fdf1dc; --info:#3b4a9f; --info-bg:#e9ecfb; }
+  * { box-sizing:border-box }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif }
+  main { max-width:960px; margin:0 auto; padding:32px 16px 64px }
+  h1 { font-size:24px; margin:0 0 4px }
+  p.lead { color:var(--muted); margin:0 0 24px; max-width:64ch }
+  .table { background:var(--paper); border:1px solid var(--line); border-radius:10px; overflow-x:auto }
+  table { width:100%; border-collapse:collapse; min-width:640px }
+  th, td { text-align:left; padding:10px 14px; border-bottom:1px solid var(--line); vertical-align:top }
+  th { font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted) }
+  tr:last-child td { border-bottom:0 }
+  a { color:var(--info) }
+  .tag { display:inline-block; padding:1px 8px; border-radius:999px; font-size:12px; font-weight:600; white-space:nowrap }
+  .approved { color:var(--ok); background:var(--ok-bg) }
+  .waiting  { color:var(--wait); background:var(--wait-bg) }
+  .review   { color:var(--info); background:var(--info-bg) }
+  code { font:13px ui-monospace,Menlo,monospace }
+</style>
+</head>
+<body>
+<main>
+  <h1>Prototypes</h1>
+  <p class="lead">Every prototype in this folder, newest first. The agent adds a row with each new file and
+  updates the status when the prototype is approved.</p>
+
+  <div class="table">
+  <table>
+    <thead>
+      <tr><th>Prototype</th><th>Module</th><th>Status</th><th>Date</th><th>Note</th></tr>
+    </thead>
+    <tbody>
+      <!-- Row shape. Statuses: approved · waiting · review.
+      <tr>
+        <td><a href="auth-two-factor.html">auth-two-factor</a></td>
+        <td><code>loop/modules/open/auth-two-factor.md</code></td>
+        <td><span class="tag approved">approved</span></td>
+        <td>2026-01-15</td>
+        <td>self-approved — every question settled by the module and the parent brief</td>
+      </tr>
+      -->
+    </tbody>
+  </table>
+  </div>
+</main>
+</body>
+</html>
