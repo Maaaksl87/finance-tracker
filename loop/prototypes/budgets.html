@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Прототип — Бюджети (Budgets)</title>
+<style>
+  /* Base page chrome */
+  :root {
+    --bg:#f3f4f6; --paper:#ffffff; --ink:#16181d; --muted:#667085; --line:#e5e7eb;
+    --now:#8a3b12; --now-bg:#fbeee6; --new:#0f7b4f; --new-bg:#e6f4ee; --open:#9a5b00; --open-bg:#fdf1dc;
+  }
+  /* Finance Tracker product tokens from frontend/src/index.css */
+  :root {
+    --p-primary: #7d9542;
+    --p-primary-hover: #6d8438;
+    --p-on-primary: #ffffff;
+    --p-surface: #edeee9;
+    --p-surface-card: #f9faf8;
+    --p-text: #1A1A1A;
+    --p-text-muted: #606060;
+    --p-border: #d1d5db;
+    --p-danger: #ef4444;
+    --p-danger-bg: rgba(239, 68, 68, 0.12);
+    --p-warning: #f59e0b;
+    --p-warning-bg: rgba(245, 158, 11, 0.14);
+    --p-radius: 10px;
+    --p-control-h: 40px;
+    --p-font: "Poppins", "Inter", system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing:border-box }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.55 var(--p-font) }
+  main { max-width:1120px; margin:0 auto; padding:32px 16px 72px }
+  h1 { font-size:26px; margin:0 0 6px }
+  h2 { font-size:18px; margin:40px 0 14px }
+  .meta { color:var(--muted); font-size:13px; display:flex; flex-wrap:wrap; gap:4px 16px; margin-bottom: 20px }
+  code { font:13px ui-monospace,Menlo,monospace }
+  .rule { background:var(--paper); border:1px solid var(--line); border-left:4px solid var(--p-primary); border-radius:8px; padding:16px 20px; max-width:80ch }
+  .pair { display:grid; grid-template-columns:repeat(auto-fit,minmax(420px,1fr)); gap:20px }
+  .pane { background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:20px }
+  .label { display:inline-block; font-size:12px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:3px 12px; border-radius:999px; margin-bottom:16px }
+  .label.now { color:var(--now); background:var(--now-bg) }
+  .label.new { color:var(--new); background:var(--new-bg) }
+
+  /* App container inside prototype */
+  .screen { font-family:var(--p-font); color:var(--p-text); background:var(--p-surface); border:1px solid var(--p-border); border-radius:var(--p-radius); padding:20px }
+  
+  /* Budget UI specific prototype styles */
+  .header-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px }
+  .month-picker { display:flex; align-items:center; gap:8px; background:var(--paper); padding:6px 14px; border-radius:8px; border:1px solid var(--p-border); font-weight:600; font-size:14px }
+  .btn-primary { background:var(--p-primary); color:var(--p-on-primary); border:none; padding:8px 16px; border-radius:8px; font-weight:600; font-size:14px; cursor:pointer; display:inline-flex; align-items:center; gap:6px }
+  .btn-outline { background:transparent; border:1px solid var(--p-border); color:var(--p-text); padding:6px 12px; border-radius:6px; font-size:13px; cursor:pointer }
+  
+  .summary-card { background:var(--paper); border:1px solid var(--p-border); border-radius:var(--p-radius); padding:18px; margin-bottom:20px }
+  .summary-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; text-align:center }
+  .summary-val { font-size:20px; font-weight:700; margin-top:4px }
+  .summary-sub { font-size:12px; color:var(--p-text-muted); text-transform:uppercase; font-weight:600 }
+  
+  .budget-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px }
+  .budget-card { background:var(--paper); border:1px solid var(--p-border); border-radius:var(--p-radius); padding:16px; display:flex; flex-col; gap:12px; position:relative }
+  .budget-card.warning { border-color:var(--p-warning) }
+  .budget-card.exceeded { border-color:var(--p-danger); background:#fff9f9 }
+
+  .b-top { display:flex; justify-content:space-between; align-items:flex-start }
+  .b-cat { font-weight:700; font-size:16px; display:flex; align-items:center; gap:8px }
+  .b-cat-dot { width:12px; height:12px; border-radius:50% }
+  
+  .b-amounts { display:flex; justify-content:space-between; align-items:baseline; margin-top:8px }
+  .b-spent { font-size:17px; font-weight:700 }
+  .b-limit { font-size:13px; color:var(--p-text-muted) }
+  
+  /* Progress Bar */
+  .progress-track { height:10px; background:#e5e7eb; border-radius:999px; overflow:hidden; margin:8px 0 }
+  .progress-fill { height:100%; border-radius:999px; transition:width 0.3s ease }
+  .fill-normal { background:var(--p-primary) }
+  .fill-warning { background:var(--p-warning) }
+  .fill-exceeded { background:var(--p-danger) }
+
+  .badge { display:inline-block; font-size:11px; font-weight:700; padding:2px 8px; border-radius:6px }
+  .badge-normal { color:var(--p-primary); background:rgba(125,149,66,0.12) }
+  .badge-warning { color:#b45309; background:var(--p-warning-bg) }
+  .badge-danger { color:var(--p-danger); background:var(--p-danger-bg) }
+
+  /* Table of QA */
+  .qa { background:var(--paper); border:1px solid var(--line); border-radius:10px; overflow-x:auto }
+  table { width:100%; border-collapse:collapse; min-width:620px }
+  th, td { text-align:left; padding:10px 14px; border-bottom:1px solid var(--line); vertical-align:top }
+  th { font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted) }
+  tr:last-child td { border-bottom:0 }
+</style>
+</head>
+<body>
+<main>
+  <h1>Прототип — Бюджети (Budgets)</h1>
+  <div class="meta">
+    <span>Модуль: <code>loop/modules/open/budget-tracking-ui.md</code></span>
+    <span>Гілка: <code>feature/budget-tracking-ui</code></span>
+    <span>Дата: 2026-11-13</span>
+    <span>Статус: <strong style="color:var(--open)">Очікує підтвердження власника</strong></span>
+  </div>
+
+  <h2>1. Правило словами (The rule in words)</h2>
+  <div class="rule">
+    Користувач встановлює місячний ліміт для кожної потрібної категорії витрат (наприклад, «Продукти: 10 000 ₴»).
+    На сторінці <strong>/budgets</strong> система автоматично підтягує реальні витрати за обраний місяць, розраховує відсоток виконання і відображає прогрес-бар з трьома чіткими колірними станами:
+    <ul style="margin:8px 0 0 16px; padding:0">
+      <li><strong>&lt; 80% (Зелений)</strong>: витрати під контролем.</li>
+      <li><strong>80%–100% (Жовтий/Бурштиновий)</strong>: попередження «Використано X% ліміту».</li>
+      <li><strong>&gt; 100% (Червоний)</strong>: тривожний бейдж «Перевищено на X ₴!».</li>
+    </ul>
+  </div>
+
+  <h2>2. Зараз і Пропозиція (Now and Proposal)</h2>
+  <div class="pair">
+    <div class="pane">
+      <span class="label now">Зараз (Now)</span>
+      <div class="screen" style="min-height:360px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+        <div style="font-size:36px; margin-bottom:12px;">📊</div>
+        <div style="font-weight:700; font-size:16px;">Розділ «Бюджети» відсутній</div>
+        <p style="color:var(--p-text-muted); font-size:13px; max-width:28ch; margin-top:6px;">
+          У меню sidebar пункт закоментований. Користувач не може встановити ліміти на категорії або бачити перевищення.
+        </p>
+      </div>
+    </div>
+
+    <div class="pane">
+      <span class="label new">Пропозиція (Proposal — /budgets)</span>
+      <div class="screen">
+        <!-- Header -->
+        <div class="header-row">
+          <div style="font-size:20px; font-weight:700;">Бюджети</div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <div class="month-picker">
+              <span>‹</span>
+              <span>Листопад 2026</span>
+              <span>›</span>
+            </div>
+            <button class="btn-primary">+ Встановити бюджет</button>
+          </div>
+        </div>
+
+        <!-- Overall Summary Card -->
+        <div class="summary-card">
+          <div class="summary-grid">
+            <div>
+              <div class="summary-sub">Загальний ліміт</div>
+              <div class="summary-val">22 000 ₴</div>
+            </div>
+            <div>
+              <div class="summary-sub">Витрачено</div>
+              <div class="summary-val" style="color:#b45309">17 300 ₴</div>
+            </div>
+            <div>
+              <div class="summary-sub">Залишок</div>
+              <div class="summary-val" style="color:var(--p-primary)">4 700 ₴</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="budget-grid">
+          
+          <!-- Card 1: Normal State -->
+          <div class="budget-card">
+            <div class="b-top">
+              <div class="b-cat">
+                <span class="b-cat-dot" style="background:#3b82f6;"></span>
+                <span>Транспорт</span>
+              </div>
+              <span class="badge badge-normal">40%</span>
+            </div>
+            <div class="b-amounts">
+              <span class="b-spent">1 200 ₴</span>
+              <span class="b-limit">з 3 000 ₴</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill fill-normal" style="width:40%;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--p-text-muted);">
+              <span>Залишок: 1 800 ₴</span>
+              <button class="btn-outline">Змінити</button>
+            </div>
+          </div>
+
+          <!-- Card 2: Warning State (>=80%) -->
+          <div class="budget-card warning">
+            <div class="b-top">
+              <div class="b-cat">
+                <span class="b-cat-dot" style="background:#f59e0b;"></span>
+                <span>Кафе та ресторани</span>
+              </div>
+              <span class="badge badge-warning">⚠️ 84% ліміту</span>
+            </div>
+            <div class="b-amounts">
+              <span class="b-spent">4 200 ₴</span>
+              <span class="b-limit">з 5 000 ₴</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill fill-warning" style="width:84%;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:#b45309; font-weight:600;">
+              <span>Залишилось всього 800 ₴</span>
+              <button class="btn-outline">Змінити</button>
+            </div>
+          </div>
+
+          <!-- Card 3: Exceeded State (>100%) -->
+          <div class="budget-card exceeded">
+            <div class="b-top">
+              <div class="b-cat">
+                <span class="b-cat-dot" style="background:#ef4444;"></span>
+                <span>Продукти</span>
+              </div>
+              <span class="badge badge-danger">🚨 Перевищено на 1 900 ₴!</span>
+            </div>
+            <div class="b-amounts">
+              <span class="b-spent" style="color:var(--p-danger)">11 900 ₴</span>
+              <span class="b-limit">з 10 000 ₴</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill fill-exceeded" style="width:100%;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--p-danger); font-weight:600;">
+              <span>Перевитрата: +19%</span>
+              <button class="btn-outline">Змінити</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>3. Крайні випадки (Edge cases)</h2>
+  <div class="pair">
+    <!-- Empty State -->
+    <div class="pane">
+      <div style="font-weight:700; margin-bottom:10px;">Порожній стан (немає бюджетів на місяць)</div>
+      <div class="screen" style="text-align:center; padding:32px 16px;">
+        <div style="font-size:32px; margin-bottom:8px;">🎯</div>
+        <div style="font-weight:700; margin-bottom:4px;">Немає встановлених бюджетів</div>
+        <p style="color:var(--p-text-muted); font-size:13px; max-width:34ch; margin:0 auto 16px;">
+          Встановіть ліміти витрат на категорії, щоб тримати бюджет під контролем.
+        </p>
+        <button class="btn-primary">+ Встановити перший бюджет</button>
+      </div>
+    </div>
+
+    <!-- Modal Form -->
+    <div class="pane">
+      <div style="font-weight:700; margin-bottom:10px;">Діалог створення / редагування ліміту</div>
+      <div class="screen" style="background:#ffffff; border:1px solid #cbd5e1; max-width:380px; margin:0 auto;">
+        <div style="font-weight:700; font-size:16px; margin-bottom:14px;">Встановити бюджет категорії</div>
+        <div style="margin-bottom:12px;">
+          <label style="display:block; font-size:12px; font-weight:600; margin-bottom:4px; color:var(--p-text-muted);">Категорія витрат</label>
+          <select style="width:100%; padding:8px; border-radius:6px; border:1px solid var(--p-border); font-size:14px;">
+            <option>Продукти</option>
+            <option>Транспорт</option>
+            <option>Розваги</option>
+          </select>
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block; font-size:12px; font-weight:600; margin-bottom:4px; color:var(--p-text-muted);">Місячний ліміт (₴)</label>
+          <input type="number" value="10000" style="width:100%; padding:8px; border-radius:6px; border:1px solid var(--p-border); font-size:14px;" />
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:8px;">
+          <button class="btn-outline">Скасувати</button>
+          <button class="btn-primary">Зберегти бюджет</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Запитання та рішення (Questions & Answers)</h2>
+  <div class="qa">
+    <table>
+      <thead>
+        <tr><th>Питання</th><th>Рішення</th><th>Джерело</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Чи діє ліміт автоматично на кожен місяць?</td>
+          <td><strong>Так</strong>, ліміт є щомісячним регулярним правилом. При зміні місяця перераховуються лише фактичні витрати.</td>
+          <td>Рішення власника, 2026-11-13 (<code>progress-modules.md</code>)</td>
+        </tr>
+        <tr>
+          <td>Який поріг попередження про наближення до ліміту?</td>
+          <td><strong>80%</strong> (смуга прогресу стає жовтою/бурштиновою, з'являється попереджувальний бейдж).</td>
+          <td>Рішення власника, 2026-11-13 (<code>progress-modules.md</code>)</td>
+        </tr>
+        <tr>
+          <td>Що відбувається при перевищенні &gt; 100%?</td>
+          <td>Смуга стає червоною, картка підсвічується червоним бордером і показує точну суму перевитрати.</td>
+          <td>Майстер-бриф §3 (<code>budgets-master.md</code>)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+</body>
+</html>
