@@ -59,6 +59,16 @@ for a pending approval.
       Done 2026-11-13. Implemented BudgetsPage, BudgetCard with dynamic progress bars (<80% primary, 80-100% amber warning, >100% red exceeded), CreateBudgetDialog, EditBudgetDialog, useBudgets hook, enabled sidebar link and /budgets route. All user edits applied (clean typography, no icons, light & dark theme compatibility).
       Gate: vite build passed (3.31s, 0 errors).
 
+- [x] **[backend]** `loop/modules/done/backend-dependencies-update.md`
+      Branch: `feature/backend-dependencies-update`
+      Done 2026-11-13. Updated backend dependencies and devDependencies (NestJS 11.2.10, Mongoose 9.12.1, Bybit-API 4.8.5, Class-Validator 0.14.4, Nest CLI 11.0.24, Jest 30.5.2, Prettier 3.10.1, TS-ESLint 8.72.2). Verified clean bootstrap and 0 DI errors.
+      Gate: nest build passed (0 errors).
+
+- [ ] **[frontend]** `loop/modules/open/frontend-dependencies-update.md`
+      Update frontend dependencies and devDependencies to latest compatible stable versions.
+      Branch: `feature/frontend-dependencies-update`
+      No prototype: frontend dependencies update only, no UI layout or visual changes.
+
 ## Answers
 
 ### 2026-11-13 — budgets: category limits and warning threshold
@@ -80,3 +90,8 @@ Entry shape:
 
 An open question for the owner uses the same shape with `**OPEN — owner:**` instead of
 `**Decided:**`, followed by the options and the agent's recommendation.
+
+### 2026-11-13 — dependencies-upgrade: strategy for major framework breaking changes (NestJS 12, Table v9, DayPicker v10, TypeScript 7)
+
+**Decided:** Option 1 selected. Two-stage approach: in modules 1 & 2 (`backend-dependencies-update` and `frontend-dependencies-update`), upgrade all backend and frontend packages to the latest stable, fully compatible versions without breaking changes (NestJS 11.2.10, Mongoose 9.12.1, React 19.3.1, Vite 8.3.8, Tailwind 4.3.5, TanStack Query 5.107.1, etc.), keeping TypeScript at 5.9.3 to avoid toolchain peer dependency conflicts with `typescript-eslint`. Major migrations requiring code rewrites and peer dependency workarounds (NestJS 12, Table v9, DayPicker v10) are scheduled as separate subsequent dedicated feature modules.
+**Source:** Owner decision, 2026-11-13.
