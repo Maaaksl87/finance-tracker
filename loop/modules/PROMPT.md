@@ -68,8 +68,8 @@ unfinished line of that queue.
    - `mv loop/modules/open/<slug>.md loop/modules/done/<slug>.md` and change the path on the
      `[x]` line so it still points at the file;
    - write anything the next module must know under the module file's `## Findings`;
-   - commit, merge into the integration branch with `--no-ff`, push only that branch, and confirm
-     the branch still boots.
+   - commit on the feature branch, push the feature branch to origin for PR review, and NEVER merge into master locally or remotely.
+     Confirm the feature branch builds cleanly.
 
 8. **Stop.** One module = one iteration.
 

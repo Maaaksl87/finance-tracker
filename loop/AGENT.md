@@ -40,21 +40,22 @@ Warnings:
 
 ## Branching
 
-**The local base branch is `master`. Every module branch starts from `master` and is named with prefix `feature/`.**
-`origin/master` is a protected branch on GitHub. Merging into `origin/master` happens exclusively via Pull Requests after manual owner review and code approval.
+**The base branch is `master`. Every module branch starts from `master` and is named with prefix `feature/`.**
+`master` is a strictly protected branch. Merging into `master` happens EXCLUSIVELY via Pull Requests on GitHub after manual human review and approval.
 
 ```bash
 git checkout master && git pull --ff-only
 git checkout -b feature/<slug>                 # one branch per module
 # ... work, build verification, commit ...
-git push origin feature/<slug>                # push feature branch for PR
-# merge into master locally or via approved PR
+git push -u origin feature/<slug>             # push feature branch for PR
+# STOP: The agent NEVER merges into master! The owner merges on GitHub.
 ```
 
 Rules:
 
-- **Never** push directly to `origin/master`.
-- **The master branch must always build.** A module that leaves backend or frontend in a non-building state is not done.
+- **NEVER merge into `master`** — neither locally (`git merge`) nor remotely (`git push`).
+- **NEVER push directly to `master` or `origin/master`.**
+- **The master branch must always remain untouched by the agent.** Promotion/merging is 100% the owner's decision on GitHub.
 - **Check the working tree before branching.** `git status` must be clean.
 - **Local MongoDB**: database changes run against local/development MongoDB instance.
 
@@ -128,7 +129,8 @@ An iteration is **one module**: one feature, one spec file, one branch, one comm
 
 ## Hard prohibitions
 
-- Don't push directly to `origin/master`.
+- **Never merge into `master` locally or remotely.** Only push feature branch to origin for PR.
+- Don't push directly to `origin/master` or `master`.
 - Don't touch production database or external production credentials.
 - Don't run `npm run start:prod` or deployment scripts.
 - Don't change anything outside the current module.
