@@ -4,14 +4,14 @@
 
 ## Stack (actual)
 
-- **Framework / Library**: React 19.2.3
-- **Build Tool**: Vite 8.0.16 (`@vitejs/plugin-react`)
-- **Styling**: Tailwind CSS v4 (`@tailwindcss/vite`), `tw-animate-css`
-- **UI Components**: Radix UI primitives, Lucide React icons (`lucide-react`)
-- **State Management**: TanStack React Query v5 (server state), Zustand 5 (client state)
-- **Forms & Validation**: React Hook Form 7.71, Zod 4.3, `@hookform/resolvers`
-- **Routing**: React Router DOM 7.12
-- **Data Visualization**: Recharts 3.8
+- **Framework / Library**: React 19.3.1
+- **Build Tool**: Vite 8.3.8 (`@vitejs/plugin-react` 6.3.0)
+- **Styling**: Tailwind CSS v4 (`@tailwindcss/vite` 4.3.5), `tw-animate-css`
+- **UI Components**: Radix UI primitives (`radix-ui` 1.8.1), Lucide React icons (`lucide-react`)
+- **State Management**: TanStack React Query v5.107 (server state), Zustand 5.1 (client state)
+- **Forms & Validation**: React Hook Form 7.92, Zod 4.6, `@hookform/resolvers` 5.9
+- **Routing**: React Router DOM 7.18
+- **Data Visualization**: Recharts 3.10
 
 ## Documents
 

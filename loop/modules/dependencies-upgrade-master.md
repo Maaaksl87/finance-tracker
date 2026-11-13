@@ -1,6 +1,6 @@
 # Dependencies Upgrade — master technical brief
 
-Status: **approved 2026-11-13**
+Status: **implemented through module 2**
 Owner decisions incorporated: **2026-11-13**
 Execution queue: `loop/modules/progress-modules.md`
 
@@ -81,8 +81,8 @@ The shared artifacts are:
 
 | # | Module file | Repo | Delivers | Depends on | Prototype |
 | --- | --- | --- | --- | --- | --- |
-| 1 | `loop/modules/open/backend-dependencies-update.md` | [backend] | Updated backend dependencies, refreshed lockfile, clean `nest build` | — | No |
-| 2 | `loop/modules/open/frontend-dependencies-update.md` | [frontend] | Updated frontend dependencies, refreshed lockfile, clean `vite build` | 1 | No |
+| 1 | `loop/modules/done/backend-dependencies-update.md` | [backend] | Updated backend dependencies, refreshed lockfile, clean `nest build` | — | No |
+| 2 | `loop/modules/done/frontend-dependencies-update.md` | [frontend] | Updated frontend dependencies, refreshed lockfile, clean `vite build` | 1 | No |
 
 ## 10. Required external inputs before launch
 

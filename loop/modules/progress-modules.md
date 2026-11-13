@@ -64,10 +64,10 @@ for a pending approval.
       Done 2026-11-13. Updated backend dependencies and devDependencies (NestJS 11.2.10, Mongoose 9.12.1, Bybit-API 4.8.5, Class-Validator 0.14.4, Nest CLI 11.0.24, Jest 30.5.2, Prettier 3.10.1, TS-ESLint 8.72.2). Verified clean bootstrap and 0 DI errors.
       Gate: nest build passed (0 errors).
 
-- [ ] **[frontend]** `loop/modules/open/frontend-dependencies-update.md`
-      Update frontend dependencies and devDependencies to latest compatible stable versions.
+- [x] **[frontend]** `loop/modules/done/frontend-dependencies-update.md`
       Branch: `feature/frontend-dependencies-update`
-      No prototype: frontend dependencies update only, no UI layout or visual changes.
+      Done 2026-11-13. Updated frontend dependencies and devDependencies (React 19.3.1, Vite 8.3.8, Tailwind 4.3.5, TanStack Query 5.107.1, Radix UI 1.x/2.x, Zustand 5.1.0, Date-fns 4.4.0, Axios 1.21.1, Zod 4.6.7, React Hook Form 7.92.0, Recharts 3.10.1, TS-ESLint 8.72.2). Modernized Vite alias resolution to import.meta.dirname.
+      Gate: vite build passed (2.10s, 0 errors).
 
 ## Answers
 

@@ -161,5 +161,10 @@ None.
 
 ## 15. Findings
 
-<!-- Filled in by the agent when it closes the module -->
+- Successfully updated frontend runtime dependencies (React to 19.3.1, Vite to 8.3.8, Tailwind CSS to 4.3.5, TanStack React Query to 5.107.1, Radix UI packages to latest 1.x/2.x releases, Zustand to 5.1.0, Date-fns to 4.4.0, Axios to 1.21.1, Zod to 4.6.7, React Hook Form to 7.92.0, Recharts to 3.10.1) and devDependencies (ESLint to 9.39.5, Prettier to 3.10.1, TS-ESLint to 8.72.2, Globals to 17.14.0).
+- Clean `npm install` without `--force` or `--legacy-peer-deps`.
+- Modernized `alias` path resolution in `frontend/vite.config.ts` using `import.meta.dirname` to eliminate Vite 8 deprecation warnings.
+- `npm run build` (`vite build`) successfully compiled in 2.10s with 0 errors.
+- Verified frontend dev server startup: Vite boots and initializes client environment smoothly.
+- As decided with the owner (Option 1), `@tanstack/react-table` was kept on stable v8 (8.21.3) and `react-day-picker` on stable v9 (9.14.0) to avoid breaking UI components, and TypeScript was kept on ~5.9.3 for `typescript-eslint` compatibility.
 
