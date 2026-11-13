@@ -134,3 +134,4 @@ export function BudgetCard({ budget }: BudgetCardProps) {
     </>
   );
 }
+

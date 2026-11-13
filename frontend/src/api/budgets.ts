@@ -27,3 +27,4 @@ export const deleteBudget = async (id: string): Promise<Budget> => {
   const response = await api.delete<Budget>(`/budgets/${id}`);
   return response.data;
 };
+

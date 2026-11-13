@@ -140,3 +140,4 @@ export function CreateBudgetDialog({ existingCategories }: CreateBudgetDialogPro
     </Dialog>
   );
 }
+

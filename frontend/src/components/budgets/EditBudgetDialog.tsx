@@ -84,3 +84,4 @@ export function EditBudgetDialog({ budget, open, onOpenChange }: EditBudgetDialo
     </Dialog>
   );
 }
+

@@ -1,4 +1,13 @@
-import { Home, Wallet, AlignLeft, TrendingUp, Signpost, Sparkles, Star, PieChart } from "lucide-react";
+import {
+  Home,
+  Wallet,
+  AlignLeft,
+  TrendingUp,
+  Signpost,
+  Sparkles,
+  Star,
+  PieChart,
+} from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 import {

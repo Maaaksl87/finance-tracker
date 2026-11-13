@@ -30,3 +30,4 @@ export interface CreateBudgetDto {
 export interface UpdateBudgetDto {
   limit: number;
 }
+
